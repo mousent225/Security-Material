@@ -1,0 +1,420 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="main-body" style="height:100%;">
+    <div id="toolbar" class="row card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+        <form class="form" role="form">
+            <div class="input-daterange input-group" id="txtCreateDateRange" style="float:left; padding-right:10px">
+                <div class="form-group" style="padding:0">
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="start" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1))" />
+                        <label>Create Date</label>
+                    </div>
+                    <span class="input-group-addon">to</span>
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="end" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1))" />
+                        <div class="form-control-line"></div>
+                    </div>
+                </div>
+            </div>
+            <div style="float: right; padding-top:10px">
+                <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                <button id="btnNew" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdGuard" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">New</button>
+                <button id="btnGenPass" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Generate Password</button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div id="grdGuard"></div>
+    </div>
+</div>
+
+<!-- BEGIN FORM MODAL GUARD -->
+<div class="modal fade" id="mdGuard" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Guard's Information</h4>
+                <input type="hidden" id="hdfMdVisitorIdentityCard" />
+            </div>
+            <div class="modal-body">
+                <form id="frmMdVendorValidate" role="form" class="form form-validate card card-body" novalidate="novalidate">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtGuardId" readonly>
+                                <label for="txtGuardId">Guard Id</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtGuardName">
+                                <label for="txtGuardName" class="label-require">Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select id="cbVendor" class="form-control input-sm" name="disabled">
+                                    <option value="">&nbsp;</option>
+                                </select>
+                                <label for="cbVendor" class="label-require">Vendor</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="password" class="form-control input-sm change-data" id="txtPass">
+                                <label for="txtPass" class="label-require">Password</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="password" class="form-control input-sm change-data" id="txtRepeatPass">
+                                <label for="txtRepeatPass" class="label-require">Repeat Password</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select id="cbGate" class="form-control input-sm" name="disabled">
+                                    <option value="">&nbsp;</option>
+                                </select>
+                                <label for="cbGate" class="label-require">Gate</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="checkbox checkbox-styled">
+                                    <label>
+                                        <input id="cbIsActive" type="checkbox" checked>
+                                        <span>Acitive</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtRemark">
+                                <label for="txtRemark">Remark</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL GUARD -->
+<!-- BEGIN FORM MODAL EMPLOYEE INFOR -->
+<div class="modal fade" id="mdEmpInfor" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Employee's Information</h4>
+                <input type="hidden" id="hdfMdEmpInforEmpId" />
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnMdEmpSelect" class="btn btn-primary">Select</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL EMPLOYEE INFOR -->
+
+<script type="text/javascript">
+    var _visitorInfor;
+    var _para = { fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString() };
+    var _ent = { Name: "", Password: "", RepeatPass: "", Gate: "", Vendor: "", Remark: "", IsActive: true };
+
+    (function (namespace, $) {
+        "use strict";
+
+        var FormViolation = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+
+        };
+        var p = FormViolation.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+
+            $("#txtCreateDateRange").datepicker({
+                todayHighlight: true, format: _dateFormat,
+            });
+            fnGetCateValueViaCateId("FB5D2CB8-1CF2-4203-B3E2-37ADCECFDDEE", false, $("#cbVendor"));
+            fnGetCateValueViaCateId("07643577-62D2-4AA3-83B6-148664A731EF", false, $("#cbGate"));
+            _fnGridVisitorInit();
+        };
+
+        $("#btnSearch").on("click", function () {
+            _fnGridVisitorInit();
+        })
+
+        // =========================================================================
+        // ACTION CRUD
+        // =========================================================================
+
+        p._setData = function () {
+            $("#txtGuardId").val(_ent.GuardId)
+            $("#txtGuardName").val(_ent.Name);
+            $("#cbVendor").val(_ent.Vendor);
+            $("#txtPass").val(_ent.Password);
+            $("#txtRepeatPass").val(_ent.RepeatPass);
+            $("#cbGate").val(_ent.Gate);
+            $("#cbIsActive").prop("checked", _ent.IsActive);
+            $("#txtRemark").val(_ent.Remark);
+        }
+
+        p._getData = function () {
+            _ent.GuardId = $("#txtGuardId").val();
+            _ent.Name = $("#txtGuardName").val();
+            if (!_fnCheckEmpty($("#txtGuardName"), "Please input the name of guard"))
+                return false;
+            _ent.Vendor = $("#cbVendor").val();
+            if (!_fnCheckEmpty($("#cbVendor"), "Please select Vendor"))
+                return false;
+            _ent.Password = $("#txtPass").val();
+            if (!_fnCheckEmpty($("#txtPass"), "Please input password"))
+                return false;
+
+            _ent.RepeatPass = $("#txtRepeatPass").val();
+            if (!_fnCheckEmpty($("#txtRepeatPass"), "Please input password again"))
+                return false;
+
+            if (_ent.Password != "" && _ent.RepeatPass != "" && _ent.Password != _ent.RepeatPass) {
+                $("#txtRepeatPass").focus();
+                showNotification("Hyosung Portal", "Password does not match", "gray error");
+                return false;
+            }
+            
+            _ent.Gate = $("#cbGate").val();
+            if (!_fnCheckEmpty($("#cbGate"), "Please select Gate"))
+                return false;
+
+            _ent.IsActive = $("#cbIsActive").prop("checked");
+            _ent.Remark = $("#txtRemark").val();
+            return true;
+        }
+
+        $("#btnSave").on("click", function () {
+            if (!p._getData())
+                return;
+            var url = _ent.GuardId != "" ? "/Guard/Update" : "/Guard/Insert";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ model: _ent }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result === "Ok") {
+                        _fnGridVisitorInit();
+                        showNotification("Hyosung Portal", "Operator success", "gray success");
+                        $("#mdGuard").modal("hide");
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        })
+
+        $("#btnNew").on("click", function () {
+            _ent = { GuardId: "", Name: "", Password: "", RepeatPass: "", Gate: "", Vendor: "", Remark: "", IsActive: true };
+            p._setData();
+            $("[name='disabled']").prop("disabled", false);
+        })
+
+        $("#btnGenPass").on("click", function () {
+            var grid = $("#grdGuard").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+            console.log(dataItem);
+            if (dataItem === null) {
+                showNotification("Hyosung Portal", "Please select the Guard first", "gray error");
+            } else {
+                if (confirm("Do you realy want to change password for this Guard?")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Guard/UpdatePass",
+                        data: JSON.stringify({ guardId: dataItem.GuardId, pass: _fnRandomPassword(10) }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        async: true,
+                        cache: false,
+                        success: function (result) {
+                            if (result === "Ok") {
+                                _fnGridVisitorInit();
+                                showNotification("Hyosung Portal", "Operator success", "gray success");
+                            } else {
+                                showNotification("Hyosung Portal", result, "gray error");
+                            }
+                        },
+                        error: function (mess) {
+                            console.log(mess);
+                            return false;
+                        }
+                    });
+                }
+            }
+        })
+
+        $("#grdGuard").on("dblclick", "tbody > tr", function () {
+            var grid = $("#grdGuard").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+            _ent = dataItem;
+            _ent.RepeatPass = _ent.Password;
+            p._setData();
+            $("#mdGuard").modal("show");
+            $("[name='disabled']").prop("disabled", true);
+        })
+        // =========================================================================
+        namespace.FormViolation = new FormViolation;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+
+   function  _fnGridVisitorInit() {
+        var dateRange = $("#txtCreateDateRange").find("input");
+        _para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+        _para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+       
+        var passwordTemplate = $("<div>").addClass("form-group has-feedback")
+            .append($("<input>").attr("type", "text").addClass("form-control input-sm change-data"))
+            .append($("<span>").addClass("glyphicon glyphicon-search form-control-feedback").css({ "cursor": "pointer" }));
+
+        $("#grdGuard").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: "/Guard/GetAll?fromDate=" + _para.fromDate + "&toDate=" + _para.toDate,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            ViolateDate: { type: "date" }, CreateDate: { type: "date" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 178,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                var grid = this;
+                grid.tbody.find("tr").each(function (e) {
+                    $(this).css("white-space", "nowrap");
+                });
+            },
+            selectable: "row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            navigatable: true,
+            dataBinding: function () {
+            },
+            columns: [
+                { field: "GuardId", title: "Guard Id", width: "110px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "Name", title: "Name", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "Password", template: "<i style='float: left'>*************</i><i class='fa fa-eye' data-id='#: Password #' style='padding-top:4px; cursor: pointer; float: right'></i>", title: "Password", width: 135, filterable: false },
+                { field: "GateName", title: "Gate", width: "200px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "VendorName", title: "Vendor Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "IsActiveString", title: "Is Active", width: "100px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "CreateUid", title: "Create Uid", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "CreateName", title: "Create Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, lockable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } }
+            ]
+        });
+    }
+    $("#grdGuard").on("mousedown", ".fa-eye", function (e) {
+        $(this).parent().children().first().html($(this).attr("data-id"));
+    });
+    $("#grdGuard").on("mouseup", ".fa-eye", function (e) {
+        $(this).parent().children().first().html("*************");
+    });
+    // =========================================================================
+    // MODAL ACTION
+    // =========================================================================
+
+    $("a[name='btnNewApplication']").unbind().on("click", function () {
+        var applicationId = $(this).attr("data-id");
+        var link = '@Url.Action("ShowApplication", "Violation", new { id = "applicationId"})';
+        $.get(link.replace("applicationId", applicationId), function (data) {
+            $("#mdViolation .modal-dialog").html(data);
+            $("#mdViolation .modal-body").css({ "max-height": $('footer').position().top - 145, overflow: "auto" });
+        });
+    })
+    $("#mdViolation").on('hidden.bs.modal', function () {
+        $("#mdViolation .modal-body").html("");
+        _fnGridVisitorInit();
+    });
+    //MODAL EMPLOYEE INFORMATION
+    $("#mdEmpInfor").on('shown.bs.modal', function () {
+        var empId = $("#hdfMdEmpInforEmpId").val();
+        var link = '@Url.Action("ShowModalEmployeeInfor", "Common", new { id = "empId" })';
+        $.get(link.replace('empId', empId), function (data) {
+            $("#mdEmpInfor .modal-body").html(data);
+            $("#mdEmpInfor .modal-body").css({ "max-height": $('footer').position().top - 175, overflow: "auto" });
+        });
+    });
+
+    function fnMdEmpInforClose() {
+        var grid = $("#gridEmpInfor").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null)
+            var dataItem = { LoginID: "", Name: "", OrganizeName: "", PlantName: "", DeptName: "", SectionName: "", DeptId: 0 };
+        _fnSetValueForElementEmployeeInfor(_employeeInfor, dataItem);
+    }
+    $("#mdEmpInfor").on('hidden.bs.modal', function () {
+        $("#mdEmpInfor .modal-body").html("");
+    });
+    //END OF MODAL EMPLOYEE INFORMATION
+
+    $("#mdGuard").on('shown.bs.modal', function () {
+
+    });
+
+
+
+    function fnmdGuardClose() {
+
+    }
+</script>

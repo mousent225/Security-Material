@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewBag.Title = "History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main-body" style="height:100%;">
+    <div id="toolbar" class="row card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+        <form class="form" role="form">
+            <div class="input-daterange input-group" id="txtCreateDateRange" style="float:left; padding-right:10px">
+                <div class="form-group" style="padding:0">
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="start" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1))"/>
+                        <label>Create Date</label>
+                    </div>
+                    <span class="input-group-addon">to</span>
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="end" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1))"/>
+                        <div class="form-control-line"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="float: right; padding-top:10px">
+                <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                <button id="btnExport" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Export</button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div id="grdApplicationMaster"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //DateTime fromDate, DateTime toDate, string applicationType, string userId, string approvalStatus
+    var _minDate = new Date(2000, 01, 01);
+    var _maxDate = new Date(2990, 01, 01);
+    var _para = { fromDate: null, toDate: null};
+    var _localHref = window.location.href;
+    var _visitorWorkingDaily = [];
+
+    $(document).ready(function () {
+        fnInit();
+    });
+
+    function fnInit() {
+        $('#txtCreateDateRange').datepicker({ todayHighlight: true, format: _dateFormat });
+        
+        fnGridInitial();
+    }
+
+    function fnGridInitial() {
+
+        var dateRange = $("#txtCreateDateRange").find("input");
+        _para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+        _para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+
+        $("#grdApplicationMaster").kendoGrid({
+            excel: {
+                fileName: "VisitorApplicationList_" + (new Date()).toLocaleDateString() + ".xlsx",
+                filterable: true,
+                allPages: true
+            },
+            dataSource: {
+                transport: {
+                    read: "/VisitorWorkingDaily/VisitorHistory?fromDate=" + _para.fromDate + "&toDate=" + _para.toDate,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            FromDate: { type: "date" },
+                            ToDate: { type: "date" },
+                            WorkDate: { type: "date" },
+                            CreateDate: { type: "date" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 178,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                var grid = this;
+                grid.tbody.find("tr").each(function (e) {
+                    $(this).css("white-space", "nowrap");
+                    
+                });
+            },
+            selectable: "row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            navigatable: true,
+            dataBinding: function () {
+            },
+            columns: [
+                {
+                    title: "Registration Information", columns: [
+                        { field: "VendorName", title: "Company Name", width: "136px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "IdentityCard", title: "Identity Card", width: "100px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "VisitorName", title: "Visitor Name", width: "170px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        //{ field: "TemporaryCard", title: "Temporary Card", width: "130px" },
+                        { field: "PhoneNumber", title: "Phone Number", width: "130px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "FromDate", title: "From Date", width: "100px", format: "{0:yyyy.MM.dd}", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "ToDate", title: "To Date", width: "100px", format: "{0:yyyy.MM.dd}", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "GateNameRegis", title: "Gate", width: "168px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "VehicleTypeNameRegis", title: "Vehicle Name", width: "130px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "VehiclePlateRegis", title: "Vehicle Plate", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "WorkHourOfficle", title: "Office Hours", width: "133px", filterable: { cell: { showOperators: false, operator: "contains" } }  }
+                    ], headerAttributes: _headerAttributes
+                },
+                {
+                    title: "Working Time", columns: [
+                        { field: "GateName", title: "Gate", width: "95px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "WorkDate", title: "Work Date", width: "100px", format: "{0:yyyy.MM.dd}", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "TimeIn", title: "Time In", width: "80px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "TimeOut", title: "Time Out", width: "80px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "VisitorCard", title: "Visitor Card", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "VehicleTypeName", title: "Vehicle Name", width: "130px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "VehiclePlate", title: "Vehicle Plate", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "VehicleCard", title: "Vehicle Card", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "Remark", title: "Remark", width: "160px", filterable: { cell: { showOperators: false, operator: "contains" } }  },
+                        { field: "SecrityNameCreate", title: "Security Name", width: "150px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                    ], headerAttributes: _headerAttributes
+                }
+            ]
+        });
+    }
+    
+    $("#btnSearch").on("click", function () {
+        fnGridInitial();
+    })
+
+    $("#btnExport").on("click", function () {
+        var grid = $("#grdApplicationMaster").data("kendoGrid");
+        grid.saveAsExcel();
+    })
+    
+</script>

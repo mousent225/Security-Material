@@ -1,0 +1,234 @@
+﻿
+@{
+    ViewBag.Title = "Visitor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main-body" style="height:100%;">
+
+    <div id="toolbar" class="card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+        <form class="form" role="form">
+            <div class="input-daterange input-group" id="txtWorkDateRange" style="float:left; padding-right:10px">
+                <div class="form-group" style="padding:0">
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="start" value="@string.Format("{0:yyyy.MM.dd}", DateTime.Now)" />
+                        <label>Work Date</label>
+                    </div>
+                    <span class="input-group-addon">to</span>
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="end" value="@string.Format("{0:yyyy.MM.dd}", DateTime.Now)" />
+                        <div class="form-control-line"></div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="input-daterange input-group" id="txtCreateDateRange" style="float:left; padding-right:10px">
+                <div class="form-group" style="padding:0">
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="start" />
+                        <label>Create Date</label>
+                    </div>
+                    <span class="input-group-addon">to</span>
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="end" />
+                        <div class="form-control-line"></div>
+                    </div>
+                </div>
+            </div>*@
+
+            <div style="float:left;width:130px;padding-right:10px">
+                <div class="form-group">
+                    <select id="cbApplicationType" class="form-control input-sm">
+                        <option value="">&nbsp;</option>
+                        <option value="8">Short Term</option>
+                        <option value="9">Long Term</option>
+                        <option value="13">Container</option>
+                    </select>
+                    <label for="cbApplicationType">Application Type</label>
+                </div>
+            </div>
+            @*<div style="float:left;width:130px;padding-right:10px">
+                <div class="form-group">
+                    <select id="cbStatus" class="form-control input-sm">
+                        <option value="">&nbsp;</option>
+                        <option value="1">No Enter</option>
+                        <option value="2">In-Out</option>
+                        <option value="3">In</option>
+                    </select>
+                    <label for="cbApplicationType">Status</label>
+                </div>
+            </div>*@
+            <div style="float: right; padding-top:10px">
+                <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                <button id="btnExport" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Export</button>
+
+            </div>
+        </form>
+    </div>
+    <div id="grdApplicationMaster"></div>
+
+</div>
+
+<script type="text/javascript">
+    (function (namespace, $) {
+        "use strict";
+        var _entity = {
+            Id: 0, ApplicationMaster: 0, Image: "", FullName: "", IdentityCard: "", PhoneNumber: "",
+            FromDate: "", ToDate: "", IsWorkHourOfficial: true
+        };
+        var _para = { fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString(), applicationType: "", userId: "", approvalStatus: "" };
+
+        var FormVisitorWorkingDaily = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+
+        };
+        var p = FormVisitorWorkingDaily.prototype;
+
+        p.initialize = function () {
+            var o = this;
+
+            $('#txtCreateDateRange').datepicker({ todayHighlight: true, format: _dateFormat });
+            $('#txtWorkDateRange').datepicker({ todayHighlight: true, format: _dateFormat });
+
+            //fnGetCateValueViaParent("054E0F62-4EFE-41E1-A18D-5C28A6531539", false, $("#cbStatus"), 'EAF964F0-F557-40C7-AD06-F0B4A6571A4F', "00f2ec64-cc9b-4fca-ab4c-b37961efad53");
+
+            setTimeout(function () {
+                o._gridApplicationMasterInit();
+            }, 1000);
+
+        };
+
+        // =========================================================================
+        // SELECT DATA FROM DB
+        // =========================================================================
+        p._gridApplicationMasterInit = function () {
+            $("#grdApplicationMaster").html("");
+
+            //var dateRange = $("#txtCreateDateRange").find("input");
+            //_para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+            //_para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+
+            var workDateRange = $("#txtWorkDateRange").find("input");
+            _para.workDateFrom = _isValidDate($(workDateRange[0]).val(), _minDate).toISOString();
+            _para.workDateTo = _isValidDate($(workDateRange[1]).val(), _maxDate).toISOString();
+
+            _para.applicationType = $("#cbApplicationType").val();
+            _para.status = $("#cbStatus").val();
+
+            $("#grdApplicationMaster").kendoGrid({
+                excel: {
+                    fileName: "VisitorList_" + (new Date()).toLocaleDateString() + ".xlsx",
+                    filterable: true,
+                    allPages: true
+                },
+                dataSource: {
+                    transport: {
+                        read: "/Statistics/VisitorList?applicationType=" + _para.applicationType + "&fromDate=" + _para.fromDate + "&toDate=" + _para.toDate + "&workDateFrom=" + _para.workDateFrom + "&workDateTo=" + _para.workDateTo + "&status=" + _para.status,
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                FromDate: { type: "date" }, ToDate: { type: "date" },
+                                WorkDateIn: { type: "date" }, WorkDateOut: { type: "date" },
+                                CreateDate: { type: "date" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                height: $('footer').position().top - 178,
+                filterable: {
+                    mode: "row"
+                },
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                    var grid = this;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                        //var model = grid.dataItem(this);
+                        //switch (model.ApprovalStatus.toUpperCase()) {
+                        //    case "9C817780-2079-4417-B87B-B7E537BBAE8A"://temporary
+                        //        $(this).children().first().addClass("style-warning");
+                        //        break;
+                        //    case "C4FF5A2F-CD32-4785-9499-A26E5148D58D"://process
+                        //        $(this).children().first().addClass("style-info");
+                        //        break;
+                        //    case "00F2EC64-CC9B-4FCA-AB4C-B37961EFAD53"://approve
+                        //        $(this).children().first().addClass("style-success");
+                        //        break;
+                        //    case "9A96D85B-8189-46BA-84CD-3389FDC501B7"://reject
+                        //        $(this).children().first().addClass("style-danger");
+                        //        break;
+                        //    default:
+                        //}
+                    });
+                },
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                navigatable: true,
+                columns: [
+                    { title: "", template: "", width: 5 },
+                    { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, lockable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                    { field: "Code", title: "Doc No", width: "171px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "CompanyName", title: "Company", width: "165px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "FullName", title: "Visitor", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "IdentityCard", title: "Identity Num", width: "130px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    {
+                        title: "Visit Date",
+                        columns: [
+                            { field: "FromDate", title: "From", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "ToDate", title: "To", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } }
+                        ], headerAttributes: _headerAttributes
+                    },
+                    {
+                        title: "Visit Time",
+                        columns: [
+                            { field: "GateIn", title: "Gate In", width: "116px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "WorkDateIn", title: "Date In", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "In", title: "Time In", width: "75px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "RemarkIn", title: "Remark In", width: "210px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "GateOut", title: "Gate Out", width: "116px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "WorkDateOut", title: "Date Out", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "Out", title: "Time Out", width: "75px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "RemarkOut", title: "Remark Out", width: "210px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "VisitorCard", title: "Visitor Card", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        ], headerAttributes: _headerAttributes
+                    },
+                    {
+                        title: "Person in Charge",
+                        columns: [
+                            { field: "Applicant", title: "Emp Id", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "ApplicantName", title: "Name", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "OrgName", title: "Org Name", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "PlantName", title: "Plant", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "DeptName", title: "Department", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "SectName", title: "Section", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                        ], headerAttributes: _headerAttributes
+                    }
+                ]
+            });
+        }
+        $("#btnExport").on("click", function () {
+            var gridName = "#grdApplicationMaster";
+            var grid = $(gridName).data("kendoGrid");
+            grid.saveAsExcel();
+        })
+        $("#btnSearch").on("click", function () {
+            p._gridApplicationMasterInit();
+        })
+        namespace.FormVisitorWorkingDaily = new FormVisitorWorkingDaily;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+</script>

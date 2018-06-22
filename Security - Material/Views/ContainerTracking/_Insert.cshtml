@@ -1,0 +1,1982 @@
+﻿
+@using SSO_Material.Utilities;
+@using System.Security.Claims;
+<link href="~/Content/assets/css/theme-1/libs/wizard/wizard.css" rel="stylesheet" />
+
+<div id="wzShortTerm" class="form-wizard form-wizard-horizontal">
+
+    <form id="frmShortTerm" class="form form-validate card card-body">
+        <input type="hidden" id="hdfApplicationType" value="13" />
+        <div class="form-wizard-nav">
+            <div class="progress"><div class="progress-bar progress-bar-primary"></div></div>
+            <ul class="nav nav-justified">
+                <li class="active"><a href="#tab1" data-toggle="tab"><span class="step">1</span><span class="title">Main Information</span></a></li>
+                <li><a href="#tab2" data-toggle="tab"><span class="step">2</span> <span class="title">Container's List</span></a></li>
+                <li><a href="#tab3" data-toggle="tab"><span class="step">3</span> <span class="title">Approval Line</span></a></li>
+            </ul>
+        </div><!--end .form-wizard-nav -->
+        <div class="tab-content clearfix">
+            <div class="tab-pane active" id="tab1">
+                <br />
+                <div class="row">
+                    <div class="col-md-9">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-primary" style="border-bottom:1px dotted">Common Information</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="input-daterange input-group" id="txtVisitDateRange">
+                                    <div class="form-group" style="padding:0">
+                                        <div class="input-group-content">
+                                            <input type="text" class="form-control input-sm input-date" name="start" required />
+                                            <label class="label-require">Time</label>
+                                        </div>
+                                        <span class="input-group-addon">to</span>
+                                        <div class="input-group-content">
+                                            <input type="text" class="form-control input-sm input-date" name="end" required />
+                                            <div class="form-control-line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" id="txtRemake">
+                                    <label for="txtRemake">Remark</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="label-require">Gate</label>
+                                <div class="form-group" style="padding:0; margin:0">
+                                    <select id="cbGate" multiple="multiple" data-placeholder="Select gates..."></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-primary" style="border-bottom:1px dotted">Applicant's Information</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group has-feedback">
+                                    <input type="text" class="form-control input-sm change-data" id="txtEmpId" value="@User.GetClaimValue(ClaimTypes.Sid)" name="EmployeeInfor" required>
+                                    <label for="txtEmpId" class="label-require">EmpId/Name</label>
+                                    <input type="hidden" id="hdfApplicationMasterId" value="0" />
+                                    <span class="glyphicon glyphicon-search form-control-feedback" style="cursor:pointer"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" id="txtEmpName" name="EmployeeInfor" readonly>
+                                    <label for="txtEmpName" class="label-require">Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" id="txtHandPhone" name="EmployeeInfor" data-rule-number="true" required>
+                                    <label for="txtHandPhone" class="label-require">Hand Phone</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtPhone">
+                                    <label for="txtMobilePhone">Ext. Phone</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtOrgName" readonly>
+                                    <label for="txtOrgName">Organization</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtPlantName" readonly>
+                                    <label for="txtPlantName">Plant</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtDeptName" readonly>
+                                    <label for="txtDeptName">Department</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtSectName" readonly>
+                                    <label for="txtSectName">Section</label>
+                                    <input type="hidden" id="hdfDeptId" name="EmployeeInfor" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-primary label-require" style="border-bottom:1px dotted">Location</h4>
+                            </div>
+                        </div>
+                        <div id="tvVisitPlant"></div>
+                        <input id="hdfVisitPlant" type="hidden" value="0" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" id="txtOtherLocation">
+                                    <label for="txtOtherLocation">Other Location</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--end #tab1 -->
+            <div class="tab-pane" id="tab2">
+                <br />
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-underline">
+                                <div class="card-head">
+                                    <ul class="nav nav-tabs pull-left" data-toggle="tabs">
+                                        <li class="active"><a href="#divContainer" name="tabVisitor">Container</a></li>
+                                        <li><a href="#divVehicle" name="tabVisitor">Vehicle</a></li>
+                                    </ul>
+                                    <div class="tools">
+                                        <div class="btn-group">
+                                            @*<button id="btnTabVisitorPaste" name="btnTabVisitorAction" data-tab-active="" type="button" title="Excel file template" class="btn btn-icon-toggle">*@
+                                            <a class="btn btn-icon-toggle" title="Excel file template" href="~/Resource/Template/Visitor-Vehicle Template 20180330.xlsx" target="_blank"><i class="fa fa-file-excel"></i></a>
+                                            @*</button>*@
+                                            <button id="btnTabVisitorRefresh" name="btnTabVisitorAction" type="button" title="Refresh" class="btn btn-icon-toggle">
+                                                <i class="fa fa-refresh"></i>
+                                            </button>
+                                            <button id="btnTabVisitorDelete" name="btnTabVisitorAction" data-tab-active="" type="button" title="Delete" class="btn btn-icon-toggle">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!--end .card-head -->
+                                <div class="card-body tab-content">
+                                    <div class="tab-pane active" id="divContainer" name="tabVisitorContent" style="padding:3px">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div id="grdContainerList"></div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h4 class="text-primary" style="border-bottom:1px dotted">Transportation Company</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <input type="hidden" id="hdfContainerId" value="0" />
+                                                            <input type="text" class="form-control input-sm change-data" id="txtVendorTaxCode" name="VendorInformation" maxlength="20" readonly style="cursor:pointer">
+                                                            <label for="txtVendorTaxCode" class="label-require">Tax Code</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control input-sm change-data" id="txtVendorName" name="VendorInformation" readonly>
+                                                            <label for="txtVendorName">Name</label>
+                                                            <input type="hidden" name="VendorInformation" />
+                                                            <input type="hidden" name="VendorInformation" />
+                                                            <input type="hidden" name="VendorInformation" />
+                                                            <input type="hidden" name="VendorInformation" />
+                                                            <input type="hidden" id="hdfVendorId" name="VendorInformation" value="0" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control input-sm change-data" id="txtContainerNum" maxlength="20">
+                                                            <label for="txtContainerNum" class="label-require">Container Number</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <div class="radio radio-styled">
+                                                                        <label>
+                                                                            <input id="rdIsImport" type="radio" name="rdIsImport" checked>
+                                                                            <span>Import</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <div class="radio radio-styled">
+                                                                        <label>
+                                                                            <input type="radio" name="rdIsImport">
+                                                                            <span>Export</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="input-daterange input-group" id="txtMdVisitorVisitDateRange">
+                                                            <div class="form-group" style="padding:0">
+                                                                <div class="input-group-content">
+                                                                    <input type="text" class="form-control input-sm input-date" name="start" />
+                                                                    <label class="label-require">Visit Date</label>
+                                                                </div>
+                                                                <span class="input-group-addon">to</span>
+                                                                <div class="input-group-content">
+                                                                    <input type="text" class="form-control input-sm input-date" name="end" />
+                                                                    <div class="form-control-line"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div style="float: right; padding-top:10px">
+                                                            <button type="button" id="btnVisitorAdd" class="btn ink-reaction btn-raised btn-sm btn-primary">Add</button>
+                                                            <button type="button" id="btnVisitorUpdate" class="btn ink-reaction btn-raised btn-sm btn-primary">Update</button>
+                                                            <button type="button" id="btnVisitorDelete" class="btn ink-reaction btn-raised btn-sm btn-danger">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="divVehicle" name="tabVisitorContent" style="padding:3px">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div id="grdVehicleList"></div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <select id="cbMdVisitorVehicleType" class="form-control input-sm">
+                                                                <option value="">&nbsp;</option>
+                                                            </select>
+                                                            <label for="cbMdVisitorVehicleType">Vehicle Type</label>
+                                                            <input type="hidden" id="hdfDetailVehicleId" value="0" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control input-sm change-data" id="txtMdVendorDriverPlate" maxlength="20">
+                                                            <label for="txtMdVendorDriverPlate">Vehicle Plate</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="input-daterange input-group" id="txtMdVehicleVisitDateRange">
+                                                            <div class="form-group" style="padding:0">
+                                                                <div class="input-group-content">
+                                                                    <input type="text" class="form-control input-sm input-date" name="start" />
+                                                                    <label class="label-require">Visit Date</label>
+                                                                </div>
+                                                                <span class="input-group-addon">to</span>
+                                                                <div class="input-group-content">
+                                                                    <input type="text" class="form-control input-sm input-date" name="end" />
+                                                                    <div class="form-control-line"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div style="float: right; padding-top:10px">
+                                                            <button type="button" id="btnVehicleAdd" class="btn ink-reaction btn-raised btn-sm btn-primary">Add</button>
+                                                            <button type="button" id="btnVehicleUpdate" class="btn ink-reaction btn-raised btn-sm btn-primary">Update</button>
+                                                            <button type="button" id="btnVehicleDelete" class="btn ink-reaction btn-raised btn-sm btn-danger">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        
+                    </div>
+
+
+                </div>
+            </div><!--end #tab2 -->
+            <div class="tab-pane" id="tab3">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card card-underline">
+                                <div class="card-head">
+                                    <ul class="nav nav-tabs pull-left" data-toggle="tabs">
+                                        <li class="active"><a href="#divMdApprovalLineSearch" name="tabApproval">Search</a></li>
+                                        <li><a href="#divMdApprovalLineDefault" name="tabApproval">Default</a></li>
+                                        <li><a href="#divMdApprovalLineRecent" name="tabApproval">Recent</a></li>
+                                    </ul>
+                                    <div class="tools">
+                                        <div class="btn-group" style="display:none">
+                                            <button id="btnMdShortTermApprRefresh" name="btnTabsAction" type="button" title="Refresh" class="btn btn-icon-toggle">
+                                                <i class="md md-refresh"></i>
+                                            </button>
+                                            <button id="btnMdShortTermApprCopy" name="btnTabsAction" data-tab-active="" type="button" title="Copy" class="btn btn-icon-toggle">
+                                                <i class="md md-content-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!--end .card-head -->
+                                <div class="card-body tab-content">
+                                    <div class="tab-pane active" id="divMdApprovalLineSearch" name="tabApprovalContent" style="padding:3px">
+                                        <div class="col-md-3">
+                                            <div class="form card card-body" role="form" style="margin-bottom:0 !important">
+                                                <div id="tvShortTermEmpPlant"></div>
+                                                <input id="hdfShortTermEmpPlant" type="hidden" value="0" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div id="toolbar" class="card row" style="background-color:white; height:58px; margin-bottom:10px">
+                                                <div class="form card-body" role="form">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control input-sm change-data" value="@ViewBag.EmpId" id="txtShortTermEmpId">
+                                                            <label for="txtShortTermEmpId">Emp Id/Emp Name</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8" style="padding: 10px 0">
+                                                        <div style="float:right">
+                                                            <button id="btnShortTermEmpSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                                                            <button id="btnShortTermEmpApprover" name="btnApprovalTypeAction" data-id="E408D53D-6E62-4D63-A3D4-CD3EA9A14D36" data-name="Approver" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Approver</button>
+                                                            <button id="btnShortTermEmpConsenter" name="btnApprovalTypeAction" data-id="5325E6FF-6430-49A2-B3D3-D9ABDBE06F9E" data-name="Consenter" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Consenter</button>
+                                                            <button id="btnShortTermEmpCirculator" name="btnApprovalTypeAction" data-id="045872C8-638C-4A12-A70B-4E471C5D90EB" data-name="Circulator" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Circulator</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div id="gridShortTermEmpInfor"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="divMdApprovalLineDefault" name="tabApprovalContent" style="padding:3px">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div id="gridShortTermApprDefault"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <input type="text" data-role="tagsinput" class="form-control input-sm change-data" id="txtCirculatorDefault">
+                                                        <label for="txtCirculatorDefault">Circulator</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="divMdApprovalLineRecent" name="tabApprovalContent" style="padding:3px">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div id="gridShortTermApprHistory"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--end .card-body -->
+                            </div><!--end .card -->
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form" role="form">
+                                        <div style="float: right; padding:3px 0">
+                                            <div class="btn-group">
+                                                <button id="btnMdShortTermApprInitial" type="button" title="Initial" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                    <i class="md md-autorenew"></i>
+                                                </button>
+                                                <button id="btnMdShortTermApprTop" type="button" title="Top" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                    <i class="md md-vertical-align-top"></i>
+                                                </button>
+                                                <button id="btnMdShortTermApprUp" type="button" title="Up" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                    <i class="md md-keyboard-arrow-up"></i>
+                                                </button>
+                                                <button id="btnMdShortTermApprDown" type="button" title="Down" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                    <i class="md md-keyboard-arrow-down"></i>
+                                                </button>
+                                                <button id="btnMdShortTermApprBottom" type="button" title="Bottom" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                    <i class="md md-vertical-align-bottom"></i>
+                                                </button>
+                                                <button id="btnMdShortTermApprDelete" type="button" title="Delete" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                    <i class="md md-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="gridApprovalLine"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" data-role="tagsinput" class="form-control input-sm change-data" id="txtCirculator">
+                                        <label for="txtCirculator">Circulator</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!--end #tab2 -->
+        </div><!--end .tab-content -->
+        @*<ul class="pager wizard">
+                <li class="previous first"><a class="btn-raised" href="javascript:void(0);">First</a></li>
+                <li class="previous"><a class="btn-raised" href="javascript:void(0);">Previous</a></li>
+                <li class="next last"><a class="btn-raised" href="javascript:void(0);">Last</a></li>
+                <li class="next"><a class="btn-raised" href="javascript:void(0);">Next</a></li>
+            </ul>*@
+    </form>
+</div><!--end #rootwizard -->
+
+
+
+<script type="text/javascript">
+
+    var _containerList = [
+        //{ FullName: "", IdentifyNo: "", PhoneNumber: "", FromDate: new Date(), ToDate: new Date(), DriverPlate: "", VehicleType: "", IsContactPerson: false, IsWorkHourOfficial: false }
+    ];
+
+    var _visitPlant = [];
+
+    var _applicationMaster = {
+        Id: 0, Code: "", Applicant: "", PhoneNumber: "", HandPhoneNumber: "", ApplicantName: "", ApplicationType: "", ApplicationTypeName: "", Vendor: "", Purpose: "", PurposeName: "",
+        FromDate: "", ToDate: "", Gate: "", GateName: "", Location: "", LocationOther: "", LocationName: "", Remark: "",
+        ApprovalKind: "", ApprovalKindName: "", ApprovalLine: "", ApprovalLineJson: "", ApprovalStatus: "", ApprovalStatusName: "", NextApprover: "",
+        OrgName: "", PlantName: "", SectionName: "", DeptName: "", ContactPerson: "", ContactNumber: "", Temp: 0, DeptId: 0
+    };
+
+    var _apprLine = [];
+    var _circulator;
+    var _apprLineDefault;
+    var _circulatorDefault;
+    var _apprLineRecent;
+    var _circulatorRecent;
+    var _day = 86400000;
+
+    (function (namespace, $) {
+        "use strict";
+        var _entity = {
+            Id: 0, ApplicationMaster: 0, Image: "", FullName: "", IdentityCard: "", TemporaryCard: "", PhoneNumber: "",
+            FromDate: "", ToDate: "", DriverPlate: "", VehicleType: "", VehicleTypeName: "", IsWorkHourOfficial: true
+        };
+
+        var _entityApproval = {
+            EmpId: "", Name: "", DeptFullName: "", ApproverType: "", ApproverTypeName: "", Seq: 0
+        };
+
+        var _paraMdEmp = {
+            deptCode: 0, userId: "vn551", userName: "", status: "", nation: "", sex: "", hasEmail: null
+        };
+        
+        var $visitorDateRangeInitial = $('#txtMdVisitorVisitDateRange');
+        var $vehicleDateRangeInitial = $('#txtMdVehicleVisitDateRange');
+
+        var FormShortTerm = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+
+            $("#btnMdVisitorSave").on("click", function () {
+                if ($("#frmMdVisitorInfor").valid()) {
+                    o._getData();
+                    o._insertData();
+                }
+            })
+        };
+        var p = FormShortTerm.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+            var o = this;
+            $("#mdAppDetail").find(".modal-dialog").width("80%");
+
+            $("#divMdApprovalLineSearch").css({ height: $("footer").position().top - 299, "max-height": $("footer").position().top - 299, overflow: "auto" });
+
+            $("#lblMdApplicationHeader").html("Container Application Register");
+            $("#frmShortTerm").validate();
+            o._getPlant();
+            $("#tvVisitPlant").css({ "max-height": 300, overflow: "auto" });
+
+            fnGetCateValueViaCateId("AED27DE5-1310-4A02-997B-87A6EF9686BD", false, $("#cbMdVisitorVehicleType"));
+
+            o._getGate();
+
+            $("#txtVisitDateRange").datepicker({ todayHighlight: true, format: _dateFormat });
+
+            _fnGetEmployeeInfor($("#txtEmpId"), $("input[name='EmployeeInfor']"));
+            o._gridApprovalLineInit();
+
+            $('#wzShortTerm').bootstrapWizard({
+                onTabShow: function (tab, navigation, index) {
+                    _handleTabShow(tab, navigation, index, $('#wzShortTerm'));
+
+                    if ($("#tab1").is(":visible") || $("#tab2").is(":visible")) {
+                        $("#mdAppDetail").find(".modal-dialog").width("80%");
+                    }
+                    if ($("#tab3").is(":visible")) {
+                        $("#mdAppDetail").find(".modal-dialog").width("99%");
+                    }
+                },
+                onNext: function (tab, navigation, index) {
+                    if (!o._onTabClick(tab, navigation, index))
+                        return false;
+                },
+                onTabClick: function (tab, navigation, index) {
+                    if (!o._onTabClick(tab, navigation, index))
+                        return false;
+                }
+            });
+
+            //tab approval line
+            o._getApprPlant();
+            o._gridEmployeeInit();
+
+            $("#txtCirculator").tagsinput({ itemValue: 'EmpId', itemText: 'EmpName' });
+            $("#txtCirculatorDefault").tagsinput({ itemValue: 'EmpId', itemText: 'EmpName' });
+            $("#tvShortTermEmpPlant").css({ "max-height": $("#divMdApprovalLineSearch").height() - 11, height: $("#divMdApprovalLineSearch").height() - 11, overflow: "auto" });
+        };
+
+        // =========================================================================
+        // SELECT DATA FROM DB
+        // =========================================================================
+        p._getGate = function () {
+            $.ajax({
+                type: "POST",
+                url: "/Category/GetListValueViaCate",
+                data: JSON.stringify({
+                    category: "07643577-62D2-4AA3-83B6-148664A731EF",
+                    isFilter: false
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    var $control = $("#cbGate");
+                    $.each(result, function (index, item) {
+                        $control.append($("<option>", { value: item.ID, text: item.Name }));
+                    });
+                    var optional = $control.kendoMultiSelect({
+                        autoClose: false
+                    }).data("kendoMultiSelect");
+                },
+                error: function () {
+                    return [];
+                }
+            });
+        }
+        p._getPlant = function () {
+            var durl = "../../Common/GetDeptTreeView";
+            var data = new kendo.data.HierarchicalDataSource({
+                transport: {
+                    read: {
+                        url: durl,
+                        contentType: "application/json"
+                    },
+                    cache: "inmemory"
+                },
+                schema: {
+                    model: {
+                        id: "DeptCode",
+                        children: "Children",
+                        hasChildren: "HasChildren"
+                    }
+                }
+            });
+            $("#tvVisitPlant").kendoTreeView({
+                dataSource: data,
+                loadOnDemand: true,
+                dataTextField: "EnName",
+                select: treeviewSelect,
+                checkboxes: {
+                    checkChildren: true
+                },
+                check: onCheck,
+            });
+            function treeviewSelect(e) {
+                var data = this.dataItem(e.node);
+            }
+            // function that gathers IDs of checked nodes
+            function checkedNodeIds(nodes, checkedNodes) {
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].checked) {
+                        checkedNodes.push(nodes[i].Id);
+                    }
+                    if (nodes[i].hasChildren && !nodes[i].checked) {
+                        checkedNodeIds(nodes[i].children.view(), checkedNodes);
+                    }
+                }
+            }
+
+            // show checked node IDs on datasource change
+            function onCheck() {
+                var checkedNodes = [], treeView = $("#tvVisitPlant").data("kendoTreeView"), message;
+
+                checkedNodeIds(treeView.dataSource.view(), checkedNodes);
+                _visitPlant = checkedNodes;
+                if (checkedNodes.length > 0) {
+                    message = "IDs of checked nodes: " + checkedNodes.join(",");
+                } else {
+                    message = "No nodes checked.";
+                }
+                //console.log(message);
+            }
+        }
+        p._getApprPlant = function () {
+            var durl = "../../Common/GetDeptTreeView";
+            var data = new kendo.data.HierarchicalDataSource({
+                transport: {
+                    read: {
+                        url: durl,
+                        contentType: "application/json"
+                    },
+                    cache: "inmemory"
+                },
+                schema: {
+                    model: {
+                        id: "DeptCode",
+                        children: "Children",
+                        hasChildren: "HasChildren"
+                    }
+                }
+            });
+            $("#tvShortTermEmpPlant").kendoTreeView({
+                dataSource: data,
+                loadOnDemand: true,
+                dataTextField: "EnName",
+                select: treeviewSelect
+            });
+
+            function treeviewSelect(e) {
+                var data = this.dataItem(e.node);
+                _paraMdEmp.deptCode = data.Id;
+                _paraMdEmp.userId = $("#txtShortTermEmpId").val();
+                _paraMdEmp.userName = $("#txtShortTermEmpId").val();
+                p._gridEmployeeInit();
+            }
+            // function that gathers IDs of checked nodes
+        }
+
+        //GRID EMPLOYEE
+        //BEGIN APPROVAL
+        p._gridEmployeeInit = function () {
+            $("#gridShortTermEmpInfor").html("");
+            $("#gridShortTermEmpInfor").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/Common/GetEmployeeInfor?deptCode=" + _paraMdEmp.deptCode + "&userId="
+                        + _paraMdEmp.userId + "&userName=" + _paraMdEmp.userName + "&status=" + _paraMdEmp.status + "&nation="
+                        + _paraMdEmp.nation + "&sex=" + _paraMdEmp.sex + "&hasEmail=" + _paraMdEmp.hasEmail,
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                ID: { type: "string" }, LoginID: { type: "string" }, Name: { type: "string" }, Email: { type: "string" }, DeptFullName: { type: "string" }, DeptId: { type: "string" }, CostCenter: { type: "string" },
+                                OrganizeName: { type: "string" }, PlantName: { type: "string" }, DeptName: { type: "string" }, SectionName: { type: "string" }, CreateName: { type: "string" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                height: $("#divMdApprovalLineSearch").height() - 65,
+                filterable: false,
+                selectable: "multiple row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                columns: [
+                    { field: "LoginID", title: "Emp Id", width: "110px" },
+                    { field: "Name", title: "Emp Name", width: "190px" },
+                    { field: "Email", title: "Email", width: "150px" },
+                    { field: "OrganizeName", title: "Org Name", width: "140px" },
+                    { field: "PlantName", title: "Plant", width: "160px" },
+                    { field: "DeptName", title: "Department", width: "182px" },
+                    { field: "SectionName", title: "Section", width: "150px" }
+                ]
+            });
+        }
+        //GRID APPROVAL LINE
+        var record = 0;
+        p._gridApprovalLineInit = function () {
+            $("#gridApprovalLine").kendoGrid({
+                dataSource: {
+                    data: _apprLine,
+                    schema: {
+                        model: {
+                            fields: {
+                                EmpId: { type: "string" },
+                                Name: { type: "string" },
+                                DeptFullName: { type: "string" },
+                                ApproverType: { type: "string" },
+                                ApproverTypeName: { type: "string" },
+                                Seq: { type: "int" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                //toolbar: ["create"],
+                height: $('footer').position().top - 355,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                dataBinding: function () {
+                    record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+                    //console.log(record);
+                },
+                resizable: true,
+                cache: false,
+                editable: "inline",
+                columns: [
+                    //{ title: "#", template: record, width: 35 },
+                    //{ field: "Seq", title: "No", width: "40px" },
+                    { field: "EmpId", title: "Emp Id", width: "115px" },
+                    { field: "Name", title: "Emp Name" },
+                    { field: "ApproverTypeName", title: "Approver Type", width: "130px" }
+                ]
+
+            });
+        }
+        p._gridDefaultAppr = function (applicationId) {
+            $.ajax({
+                type: "POST",
+                url: "/ApplicationConfig/GetDefaultApprovalLine",
+                data: JSON.stringify({ applicationId: applicationId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    _apprLineDefault = JSON.parse(result.data.split("|")[0]);
+                    _circulatorRecent = JSON.parse(result.data.split("|")[1]);
+                    $("#gridShortTermApprDefault").kendoGrid({
+                        dataSource: {
+                            data: _apprLineDefault,
+                            schema: {
+                                model: {
+                                    fields: {
+                                        EmpId: { type: "string" },
+                                        Name: { type: "string" },
+                                        DeptFullName: { type: "string" },
+                                        ApproverType: { type: "string" },
+                                        ApproverTypeName: { type: "string" },
+                                        Seq: { type: "int" }
+                                    }
+                                }
+                            },
+                            pageSize: 20
+                        },
+                        height: $('footer').position().top - 374,
+                        selectable: "row",
+                        sortable: true,
+                        pageable: true,
+                        resizable: true,
+                        cache: false,
+                        editable: "inline",
+                        columns: [
+                            { field: "EmpId", title: "Emp Id", width: "115px" },
+                            { field: "Name", title: "Emp Name" },
+                            { field: "DeptFullName", title: "Department" },
+                            { field: "ApproverTypeName", title: "Approver Type", width: "130px" }
+                        ]
+
+                    });
+                    $.each(_circulatorRecent, function (index, item) {
+                        var tagItem = { EmpId: item.EmpId, EmpName: item.Name };
+                        $("#txtCirculatorDefault").tagsinput('add', tagItem);
+                    })
+                },
+                error: function () {
+                    return [];
+                }
+            });
+        }
+        p._gridApprvalHistory = function (applicationId) {
+            $("#gridShortTermApprHistory").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/ApprvalLineHistory?applicationId=" + applicationId
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                Id: { type: "int" }, ApplicationId: { type: "int" }, ApplicationMasterName: { type: "string" },
+                                MasterId: { type: "int" }, ApplicationSubject: { type: "string" }, ApprovalLine: { type: "string" }, Circulator: { type: "string" },
+                                ApprovalLineJson: { type: "string" }, CreateDate: { type: "date" }, ApprName: { type: "string" }, CirName: { type: "string" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                height: $("#divMdApprovalLineSearch").height(),
+                filterable: false,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                columns: [
+                    { field: "ApprName", title: "Approval Line", width: "500px" },
+                    { field: "CirName", title: "Circulator", width: "300px" },
+                    { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "90px" }
+                ]
+            });
+        }
+        //END APPROVAL
+
+        // =========================================================================
+        // ACTION CRUD
+        // =========================================================================
+        p._getData = function () {
+            _applicationMaster.Id = $("#hdfApplicationMasterId").val();
+            _applicationMaster.Applicant = $("#txtEmpId").val();
+            _applicationMaster.DeptId = $("#hdfDeptId").val();
+            _applicationMaster.ApplicationType = $("#hdfApplicationType").val();
+            if (!_fnCheckEmpty($("#txtEmpName"), "Please select employee"))
+                return false;
+
+            _applicationMaster.PhoneNumber = $("#txtPhone").val();
+            _applicationMaster.HandPhoneNumber = $("#txtHandPhone").val();
+            if (!_fnCheckEmpty($("#txtHandPhone"), "Please enter in this field: Hand Phone"))
+                return false;
+
+            var dateRange = $("#txtVisitDateRange").find("input");
+            _applicationMaster.FromDate = _isValidDate($(dateRange[0]).val(), _minDate);
+            _applicationMaster.ToDate = _isValidDate($(dateRange[1]).val(), _maxDate);
+
+            var $gate = $("#cbGate").data("kendoMultiSelect");
+            _applicationMaster.Gate = $gate.value().join('|');
+
+            if ($gate.value().length === 0) {
+                showNotification("Hyosung Portal", "Please select Gate", "gray error");
+                return false;
+            }
+
+            _applicationMaster.Remark = $("#txtRemake").val();
+            _applicationMaster.Location = _visitPlant.join(',');
+            _applicationMaster.LocationOther = $("#txtOtherLocation").val();
+
+            if (_applicationMaster.Location === "" && _applicationMaster.LocationOther === "") {
+                showNotification("Hyosung Portal", "The select the location to visit", "gray error");
+                return false;
+            }
+            //console.log(_applicationMaster);
+            return true;
+        };
+        p._insertData = function () {
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/ApplicationMasterInsert",
+                data: JSON.stringify({ model: _applicationMaster }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result !== 0) {
+                        $("#hdfApplicationMasterId").val(result);
+                        o._gridContainerInit();
+                        o._gridVehicleInit();
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+        p._saveAlldata = function () {
+            //kiểm tra lại dữ liệu của master
+            var result = false;
+            result = this._getData();
+            if (!result)
+                return;
+            //kiểm tra dữ liệu của danh sách visitor
+            //var visitorLength = $("#grdContainerList").data("kendoGrid").dataSource.data().length;
+            //if (visitorLength === 0) {
+            //    showNotification("Hyosung Portal", "Please add at least one visior into the list", "gray error");
+            //    return;
+            //}
+            //kiểm tra dữ liệu của approval line
+            if (_apprLine.length === 0) {
+                showNotification("Hyosung Portal", "Please select the approval line", "gray error");
+                return;
+            }
+            //kiểm tra xong
+            //thì giờ sẽ get data tiếp
+            var _circulator = $("#txtCirculator").tagsinput("items");
+            _applicationMaster.ApprovalKind = '2600C4A7-CFB3-4E08-A08D-EDF0C1D99A71'//order
+            _applicationMaster.ApprovalLine = _fnConvertJsonToString(_apprLine, "EmpId", "_") + "|" +
+                _fnConvertJsonToString(_apprLine, "Name", " > ") + "|" +
+                _fnConvertJsonToString(_apprLine, "ApproverType", "_") + "|" +
+                _fnConvertJsonToString(_circulator, "EmpId", ",") + "|" +
+                _fnConvertJsonToString(_circulator, "EmpName", ", ");
+            _applicationMaster.ApprovalLineJson = JSON.stringify(_apprLine) + "|" + JSON.stringify(_circulator);
+
+            p._insertData();
+
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/ApplicationMasterUpdateAll",
+                data: JSON.stringify({ model: _applicationMaster }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result === "Ok") {
+                        fnGridInitial(_para);
+                        $("#mdAppDetail").modal("hide");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+
+        }
+
+        // =========================================================================
+        // EVENT IN FORM
+        // =========================================================================
+        p._onTabClick = function (tab, navigation, index) {
+            var form = $("#frmShortTerm");
+            if (!form.valid()) {
+                $('#wzShortTerm').bootstrapWizard('show', 0)
+                return false;
+            }
+            if (!this._getData()) {
+                $('#wzShortTerm').bootstrapWizard('show', 0)
+                return false;
+            }
+            if (index === 0) {
+                this._insertData();
+
+                p._dateRangeInitial($visitorDateRangeInitial, $("#txtMdVisitorVisitDateRange"));
+                p._dateRangeInitial($vehicleDateRangeInitial, $("#txtMdVehicleVisitDateRange"));
+
+            }
+            return true;
+        }
+        p._dateRangeInitial = function ($dateControl, $oldControl) {
+            var $parent = $dateControl.parent();
+            $oldControl.remove();
+            $parent.append($dateControl);
+            $.each($dateControl.find("input"), function (index, item) {
+                $(item).val("");
+            });
+
+            var $date = $dateControl.find("input");
+            $($date[0]).val(kendo.toString(_applicationMaster.FromDate, _dateFormatKendo));
+            $($date[1]).val(kendo.toString(_applicationMaster.ToDate, _dateFormatKendo))
+
+            $oldControl.datepicker({
+                autoclose: true,
+                todayHighlight: true, format: _dateFormat,
+                startDate: _applicationMaster.FromDate,
+                endDate: _applicationMaster.ToDate
+            });
+        }
+        //BEGIN APPROVAL
+        p._onSetSelect = function (grid, rowIndex) {
+            var grid = grid.data("kendoGrid");
+            var row = grid.tbody.find(">tr").eq(rowIndex);
+            grid.select(row);
+        }
+        p._onPushToApproval = function (item, approverType, approverTypeName) {
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            //if (empId.toLowerCase() === $("#hdfLogInId").val()) {
+            //    return;
+            //}
+            if (!_apprLine.some(function (item) { return item.EmpId === empId; })) {
+                var _entityApproval = {
+                    EmpId: (item.LoginID == undefined ? item.EmpId : item.LoginID),
+                    Name: item.Name, DeptFullName: item.DeptFullName, ApproverType: approverType, ApproverTypeName: approverTypeName, Seq: _apprLine.length + 1
+                };
+                _apprLine.push(_entityApproval);
+            }
+            //console.log(_apprLine);
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), _apprLine.length - 1);
+        }
+        p._onSwapItem = function (item, index) {
+            //console.log("item: " + JSON.stringify(item));
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            var i = _apprLine.map(function (d) { return d["EmpId"] }).indexOf(empId);
+
+            //console.log("index: " + i);
+            if (i == 0 && index == -1) return;//item nằm ở đầu nên ko cho di chuyển lên nữa
+            if (i == _apprLine.length - 1 && index == 1) return;//item nằm ở cuối rồi thì ko cho di chuyển xuống nữa
+
+            _apprLine[i] = _apprLine[i + index];
+            _apprLine[i + index] = item;
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), i + index);
+            return i + index;
+        };
+        p._onMoveOnTop = function (item) {
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            var index = _apprLine.map(function (d) { return d["EmpId"] }).indexOf(empId);
+            if (index == 0)//nếu đã nằm ở vị trí đầu tiên thì return
+                return;
+            if (index > -1) {
+                //cắt item tại vị trí đó
+                var extracted = _apprLine.splice(index, 1)[0];
+                //hàm chèn vào đầu mảng
+                _apprLine.unshift(extracted);
+            }
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), 0);
+        };
+        p._onMoveOnBottom = function (item) {
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            var index = _apprLine.map(function (d) { return d["EmpId"] }).indexOf(empId);
+            if (index === _apprLine.length - 1) return;//nếu nằm vị trí cuối cùng rồi thì thôi
+            if (index > -1) {
+                //cắt item tại vị trí đó
+                var extracted = _apprLine.splice(index, 1)[0];
+                //hàm chèn vào đầu mảng
+                _apprLine.push(extracted);
+            }
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), _apprLine.length - 1);
+        };
+        p._onDelete = function (item) {
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            var index = _apprLine.map(function (d) { return d["EmpId"] }).indexOf(empId);
+            _apprLine.splice(index, 1)[0];
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), index);
+        }
+        //END APPROVAL
+
+        // =========================================================================
+        // ACTION
+        // =========================================================================
+
+        $("#txtEmpId").keyup(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) { //Enter keycode
+                _fnGetEmployeeInfor($("#txtEmpId"), $("input[name='EmployeeInfor']"));
+            }
+        })
+        $("#txtEmpId").on("change", function () {
+            var emptyData = { LoginID: $(this).val(), Name: "", OrganizeName: "", PlantName: "", DeptName: "", SectionName: "", DeptId: 0 };
+            _fnSetValueForElementEmployeeInfor($("input[name='EmployeeInfor']"), emptyData);
+        })
+        $("#btnMdAppDetailSave").unbind().on("click", function () {
+            p._saveAlldata();
+        })
+        $("a[name='tabVisitor']").on("click", function () {
+            $("div[name='tabVisitorContent']").hide();
+            $($(this).attr("href")).show();
+
+            $("a[name='tabVisitor']").each(function (index, item) {
+                $(this).parent().removeClass("active");
+            })
+
+            $("div[name='tabVisitorContent']").each(function (index, item) {
+                $(this).addClass("tab-pane");
+            })
+
+            $(this).parent().addClass("active");
+            $($(this).attr("href")).removeClass("tab-pane");
+
+        })
+
+        // =========================================================================
+        // VENDOR ACTION
+        // =========================================================================
+        //$("#txtVendorTaxCode").keyup(function (e) {
+        //    var code = (e.keyCode ? e.keyCode : e.which);
+        //    if (code == 13) { //Enter keycode
+        //        _fnGetVendorInfor($("#txtVendorTaxCode"), $("input[name='VendorInformation']"), $("#hdfVendorType").val());
+        //    }
+        //})
+        $("#txtVendorTaxCode").on("click", function (e) {            
+            _fnGetVendorInfor($("#txtVendorTaxCode"), $("input[name='VendorInformation']"), $("#hdfVendorType").val());            
+        })
+        // END VENDOR ACTION
+
+        // =========================================================================
+        // ACTION - APPROVAL
+        // =========================================================================
+        $("a[name='tabApproval']").on("click", function () {
+            $("div[name='tabApprovalContent']").hide();
+            $($(this).attr("href")).show();
+
+            $("a[name='tabApproval']").each(function (index, item) {
+                $(this).parent().removeClass("active");
+            })
+
+            $("div[name='tabApprovalContent']").each(function (index, item) {
+                $(this).addClass("tab-pane");
+            })
+
+            $(this).parent().addClass("active");
+            $($(this).attr("href")).removeClass("tab-pane");
+
+            //ẩn tools
+            if ($(this).html() === "Search") {
+                $("button[name='btnTabsAction']").parent().hide();
+            } else {
+                $("button[name='btnTabsAction']").parent().show();
+            }
+            switch ($(this).html()) {
+                case "Recent":
+                    p._gridApprvalHistory($("#hdfApplicationType").val());
+                    break;
+                case "Default":
+                    p._gridDefaultAppr($("#hdfApplicationType").val());
+                    break;
+                default:
+            }
+            $("#btnMdShortTermApprCopy").attr("data-tab-active", $(this).html());
+        })
+        $("#txtShortTermEmpId").keyup(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                _paraMdEmp.userId = $(this).val();
+                _paraMdEmp.userName = $(this).val();
+                p._gridEmployeeInit();
+            }
+        })
+        $("#gridShortTermEmpInfor").on("dblclick", "tbody > tr", function () {
+            var grid = $("#gridShortTermEmpInfor").data("kendoGrid");
+            var rows = $(grid.select());
+            rows.each(function (index, item) {
+                var dataItem = grid.dataItem(this);
+                p._onPushToApproval(dataItem, $("#btnShortTermEmpApprover").attr("data-id"), $("#btnShortTermEmpApprover").attr("data-name"));
+            });
+        })
+        $("button[name='btnApproveAction']").on("click", function () {
+            var grid = $("#gridApprovalLine").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+            if (dataItem === undefined || dataItem === null)
+                return;
+            switch ($(this).prop("id")) {
+                case "btnMdShortTermApprInitial":
+                    _apprLine = [];
+                    p._gridApprovalLineInit();
+                    break;
+                case "btnMdShortTermApprTop":
+                    p._onMoveOnTop(dataItem);
+                    break;
+                case "btnMdShortTermApprUp":
+                    p._onSwapItem(dataItem, -1);
+                    break;
+                case "btnMdShortTermApprDown":
+                    p._onSwapItem(dataItem, 1);
+                    break;
+                case "btnMdShortTermApprBottom":
+                    p._onMoveOnBottom(dataItem);
+                    break;
+                case "btnMdShortTermApprDelete":
+                    p._onDelete(dataItem);
+                    break;
+                default:
+            }
+        })
+        $("button[name='btnApprovalTypeAction']").on("click", function () {
+            var grid = $("#gridShortTermEmpInfor").data("kendoGrid");
+            var rows = $(grid.select());
+            var approverType = $(this).attr("data-id");
+            var approverTypeName = $(this).attr("data-name");
+
+            if ($(this).prop("id") === "btnShortTermEmpApprover" || $(this).prop("id") === "btnShortTermEmpConsenter") {
+                rows.each(function (index, item) {
+                    var dataItem = grid.dataItem(this);
+                    p._onPushToApproval(dataItem, approverType, approverTypeName);
+                });
+            } else {
+                rows.each(function (index, item) {
+                    var dataItem = grid.dataItem(this);
+                    var tagItem = { EmpId: (dataItem.LoginID == undefined ? dataItem.EmpId : dataItem.LoginID), EmpName: dataItem.Name };
+                    $("#txtCirculator").tagsinput('add', tagItem);
+                });
+            }
+        })
+
+        //END ACTION APPROVAL
+
+        // =========================================================================
+        // FORM VISITOR
+        // =========================================================================
+
+        var _container = {
+            Id: 0, MasterId: 0, VendorId: 0, TaxCode: "", CompanyName: "", ContainerNum: "", FromDate: new Date(), ToDate: new Date(), IsImport: true, IsImportName: ""
+        };
+        var _dataContainer = [];
+        //GRID CONTAINER
+        p._gridContainerInit = function () {
+            $("#grdContainerList").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/ContainerTracking/GetList?id=" + null + "&masterId=" + $("#hdfApplicationMasterId").val(),
+                        create: {
+                            cache: false
+                        }
+                    },
+                    //data: _dataContainer,
+                    schema: {
+                        model: {
+                            fields: {
+                                FromDate: { type: "date" },
+                                ToDate: { type: "date" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                //toolbar: ["create"],
+                height: $('footer').position().top - 319,
+                selectable: "multi row",
+                sortable: true,
+                pageable: false,
+                resizable: true,
+                cache: false,
+                filterable: {
+                    mode: "row"
+                },
+                //persistSelection: true,
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                    var grid = this;
+                    var count = 0;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                        $($(this).children()[1]).html(++count);
+
+                        var model = grid.dataItem(this);
+                        if (model.OtherCode === null) {
+                            $(this).children().first().addClass("style-success");
+                            $(this).attr("title", "Data is valid");
+                        }
+                        else {
+                            $(this).children().first().addClass("style-danger");
+                            $(this).attr("title", "Data is invalid, same time with application code: " + model.OtherCode);
+                        }
+                    });
+
+                },
+                columns: [
+                    { title: "", template: "", width: 5 },
+                    { title: "#", width: 40, headerAttributes: _headerAttributes, attributes: { "class": "text-right" } },
+                    { field: "TaxCode", title: "Tax Code", width: 130, filterable: { cell: { showOperators: false } } },
+                    { field: "CompanyName", title: "Transportation Name", width: 160, filterable: { cell: { showOperators: false } } },
+                    { field: "ContainerNum", title: "Container Number", width: "135px", filterable: { cell: { showOperators: false } } },
+                    { field: "FromDate", title: "From Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "ToDate", title: "To Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "IsImportName", title: "Purpose", width: "150px", filterable: { cell: { showOperators: false } } }
+                ]
+
+            });
+        }
+        p._getDataContainer = function () {
+            _dataContainer = [];
+            _container.Id = $("#hdfContainerId").val();
+            _container.MasterId = $("#hdfApplicationMasterId").val();
+            _container.TaxCode = $("#txtVendorTaxCode").val();
+            _container.VendorId = $("#hdfVendorId").val();
+            _container.CompanyName = $("#txtVendorName").val();
+            _container.ContainerNum = $("#txtContainerNum").val();
+
+            if (_container.CompanyName === "") {
+                showNotification("Hyosung Portal", "Please select the transportation company", "gray error");
+                return false;
+            }
+
+            if (!_fnCheckEmpty($("#txtContainerNum"), "Please input to field: Container Number"))
+                return false;
+
+            var dateRange = $("#txtMdVisitorVisitDateRange").find("input");
+            _container.FromDate = _isValidDate($(dateRange[0]).val(), _minDate);
+            _container.ToDate = _isValidDate($(dateRange[1]).val(), _minDate);
+
+            _container.IsImport = $("#rdIsImport").prop("checked");
+            _dataContainer.push(_container);
+            return true;
+        };
+        p._resetDataContainer = function (ent) {
+            $("#txtClipboard").remove();
+            $("#hdfContainerId").val(ent.Id);
+            $("#txtVendorTaxCode").val(ent.TaxCode);
+            $("#hdfVendorId").val(ent.VendorId);
+            $("#txtVendorName").val(ent.CompanyName);
+            $("#txtContainerNum").val(ent.ContainerNum);
+
+            var $date = $("#txtMdVisitorVisitDateRange").find("input");
+            $($date[0]).val(kendo.toString(ent.FromDate, _dateFormatKendo));
+            $($date[1]).val(kendo.toString(ent.ToDate, _dateFormatKendo));
+
+            var $isImport = $("input[name='rdIsImport']");
+            $($isImport[0]).prop("checked", ent.IsImport);
+            $($isImport[1]).prop("checked", !ent.IsImport);
+
+        };
+        p._insertDataContainer = function (ent) {
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/ContainerTracking/Insert",
+                data: JSON.stringify({ list: ent }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Insert success", "gray success");
+                        _container = {
+                            Id: 0, MasterId: 0, VendorId: 0, TaxCode: "", CompanyName: "", ContainerNum: "", FromDate: new Date(), ToDate: new Date(), IsImport: true, IsImportName: ""
+                        };
+                        o._resetDataContainer(_container);
+
+                        //reset cho thằng vehicle
+                        o._gridVehicleInit();
+                        _vehicle = {
+                            Id: 0, ApplicationMaster: 0, DriverPlate: "", VehicleType: "", VehicleTypeName: "", PhoneDriver: "", DriverName: "",
+                            FromDate: _applicationMaster.FromDate, ToDate: _applicationMaster.ToDate
+                        };
+                        o._resetDataVehicle(_vehicle);
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                    o._gridContainerInit();
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        };
+
+        p._updateDataContainer = function (ent) {
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/ContainerTracking/Update",
+                data: JSON.stringify({ model: ent }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Update success", "gray success");
+                        o._gridContainerInit();
+                        _container = {
+                            Id: 0, MasterId: 0, VendorId: 0, TaxCode: "", CompanyName: "", ContainerNum: "", FromDate: new Date(), ToDate: new Date(), IsImport: true, IsImportName: ""
+                        };
+                        o._resetDataContainer(_container);
+
+                        //reset cho thằng vehicle
+                        o._gridVehicleInit();
+                        _vehicle = {
+                            Id: 0, ApplicationMaster: 0, DriverPlate: "", VehicleType: "", VehicleTypeName: "", PhoneDriver: "", DriverName: "",
+                            FromDate: _applicationMaster.FromDate, ToDate: _applicationMaster.ToDate
+                        };
+                        o._resetDataVehicle(_vehicle);
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        };
+        p._deleteContainer = function (list) {
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/ContainerTracking/Delete",
+                data: JSON.stringify({ list: list }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Delete success", "gray success");
+                        o._gridContainerInit();
+                        _container = {
+                            Id: 0, MasterId: 0, VendorId: 0, TaxCode: "", CompanyName: "", ContainerNum: "", FromDate: new Date(), ToDate: new Date(), IsImport: true, IsImportName: ""
+                        };
+                        o._resetDataContainer(_container);
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        };
+        p._findVendor = function (value) {
+            $.ajax({
+                type: "POST",
+                url: "/Vendor/FindVendor",
+                data: JSON.stringify({ value: value, vendorType: $("#hdfVendorType").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    var resultData = result;
+                    if (resultData.length === 1) {
+                        return resultData[0].Id;
+                    }
+                    return 0;
+                },
+                error: function () {
+                    return [];
+                }
+            });
+        }
+        $("#grdContainerList").on('focusin', function (e) {
+            // get the grid position
+            var offset = $(this).offset();
+            // crete a textarea element which will act as a clipboard
+            var textarea = $("<textarea>").attr("id", "txtClipboard");
+            // position the textarea on top of the grid and make it transparent
+            textarea.css({
+                position: 'absolute',
+                opacity: 0,
+                top: offset.top,
+                left: offset.left,
+                border: 'none',
+                width: 0,
+                height: 0
+            })
+                .appendTo("#mdAppDetail")
+                .on('paste', function () {
+                    // handle the paste event
+                    setTimeout(function () {
+                        // the the pasted content
+                        var value = $.trim(textarea.val());
+                        // get instance to the grid
+                        var grid = $("#grdContainerList").data("kendoGrid");
+                        // get the pasted rows - split the text by new line
+                        var rows = value.split('\n');
+                        console.log(rows);
+                        if (rows.length === 0) {
+                            showNotification("Hyosung Portal", "Please check your data of excel file", "gray error");
+                            $(this).trigger("focusout");
+                            return;
+                        }
+                        _dataContainer = $("#grdContainerList").data("kendoGrid").dataSource.data();
+                        var newContainer = [];
+                        for (var i = 0; i < rows.length; i++) {
+                            var cells = rows[i].split('\t');
+                            if (cells.length !== 6) {
+                                showNotification("Hyosung Portal", "The format is incorrect. Please check row " + (i + 1) + " again", "gray error");
+                                $(this).trigger("focusout");
+                                return;
+                            }
+
+                            if (!_dataContainer.some(function (item) { return item.ContainerNum === cells[2]; })) {
+                                _container = {
+                                    Id: 0, MasterId: $("#hdfApplicationMasterId").val(), VendorId: 0, TaxCode: cells[0], CompanyName: cells[1], ContainerNum: cells[2],
+                                    FromDate: kendo.parseDate(cells[3], _dateFormatKendo), ToDate: kendo.parseDate(cells[4], _dateFormatKendo), IsImport: cells[5] === "Import", IsImportName: ""
+                                };
+
+                                if (_container.FromDate === null || _container.ToDate === null) {
+                                    showNotification("Hyosung Portal", "Please check information about From Date & To Date of row " + (i + 1) + " again", "gray error");
+                                    $(this).trigger("focusout");
+                                    return;
+                                }
+                                if (_container.FromDate.getTime() < _applicationMaster.FromDate.getTime()) {
+                                    showNotification("Hyosung Portal", "From Date must be greater than information was registered. Please check row " + (i + 1) + " again", "gray error");
+                                    $(this).trigger("focusout");
+                                    return;
+                                }
+                                if (_container.ToDate.getTime() > _applicationMaster.ToDate.getTime()) {
+                                    showNotification("Hyosung Portal", "To Date must be smaller than information was registered. Please check row " + (i + 1) + " again", "gray error");
+                                    $(this).trigger("focusout");
+                                    return;
+                                }
+                                _dataContainer.push(_container);
+                                newContainer.push(_container);
+                            }
+                        };
+                        console.log(_dataContainer);
+                        if (newContainer.length !== 0)
+                            p._insertDataContainer(newContainer);
+                        textarea.val("");
+                    });
+                })
+                .on('focusout', function () {
+                    // remove the textarea when it loses focus
+                    //$(this).remove();
+                });
+            // focus the textarea
+            setTimeout(function () {
+                textarea.focus();
+            });
+        });
+
+        $("#grdContainerList").on("click", function () {
+            $("#grdContainerList").trigger("focusin");
+        });
+        $("#btnTabVisitorRefresh").on("click", function () {
+
+            var grid = $("#divVehicle").is(":visible") ? $("#grdVehicleList").data("kendoGrid") : $("#grdContainerList").data("kendoGrid");
+            _dataVehicle = grid.dataSource.data();
+            var listId = [];
+            $.each(_dataVehicle, function (index, item) {
+                listId.push(item.Id);
+            });
+            if (!$("#divVehicle").is(":visible"))
+                p._deleteContainer(listId);
+            else
+                p._deleteVehicle(listId);
+
+        })
+        $("#btnTabVisitorDelete").on("click", function () {
+            var grid = $("#divVehicle").is(":visible") ? $("#grdVehicleList").data("kendoGrid") : $("#grdContainerList").data("kendoGrid");
+            var rows = $(grid.select());
+            var listId = [];
+            rows.each(function (index, item) {
+                var dataItem = grid.dataItem(this);
+                listId.push(dataItem.Id);
+            });
+            if (!$("#divVehicle").is(":visible"))
+                p._deleteContainer(listId);
+            else
+                p._deleteVehicle(listId);
+        })
+        $("#btnVisitorAdd").on("click", function () {
+            if (!p._getDataContainer())
+                return;
+
+            p._insertDataContainer(_dataContainer);
+        })
+        $("#btnVisitorUpdate").on("click", function () {
+            if (!p._getDataContainer())
+                return;
+            if (_container.Id === 0)
+                return;
+            p._updateDataContainer(_container);
+        })
+        $("#btnVisitorDelete").on("click", function () {
+            if (!p._getDataContainer())
+                return;
+            if (_container.Id === 0)
+                return;
+            var listId = [];
+            listId.push(_container.Id);
+            p._deleteContainer(listId);
+        })
+        $("#grdContainerList").on("dblclick", "tbody > tr", function () {
+            var grid = $("#grdContainerList").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+            console.log(dataItem);
+            p._resetDataContainer(dataItem);
+        })
+
+        //END FORM VISITOR
+
+
+        // =========================================================================
+        // FORM VEHICLE
+        // =========================================================================
+        var _vehicle = {
+            Id: 0, ApplicationMaster: 0, DriverPlate: "", VehicleType: "", VehicleTypeName: "", PhoneDriver: "", DriverName: "",
+            FromDate: _applicationMaster.FromDate, ToDate: _applicationMaster.ToDate
+        };
+        var _dataVehicle = [];
+        //GRID VEHICLE
+        p._gridVehicleInit = function () {
+            $("#grdVehicleList").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/GetDetailVehicle?applicationMasterId=" + $("#hdfApplicationMasterId").val(),
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                FromDate: { type: "date" },
+                                ToDate: { type: "date" },
+                                DriverPlate: { type: "string" },
+                                VehicleType: { type: "string" }
+                            }
+                        }
+                    }
+                },
+                //toolbar: ["create"],
+                height: $('footer').position().top - 349,
+                selectable: "row",
+                sortable: true,
+                resizable: true,
+                cache: false,
+                filterable: {
+                    mode: "row"
+                },
+                //persistSelection: true,
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                    var grid = this;
+                    var count = 0;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                        $($(this).children()[1]).html(++count);
+
+                        var model = grid.dataItem(this);
+                        if (model.OtherCode === null) {
+                            $(this).children().first().addClass("style-success");
+                            $(this).attr("title", "Data is valid");
+                        }
+                        else {
+                            $(this).children().first().addClass("style-danger");
+                            $(this).attr("title", "Data is invalid, same time with application code: " + model.OtherCode);
+                        }
+                    });
+
+                },
+                columns: [
+                    { title: "", template: "", width: 5 },
+                    { title: "#", width: 40, headerAttributes: _headerAttributes, attributes: { "class": "text-right" } },
+                    //{ field: "DriverName", title: "Driver Name", filterable: { cell: { showOperators: false } } },
+                    //{ field: "PhoneDriver", title: "Phone Driver", width: 100, filterable: { cell: { showOperators: false } } },
+                    { field: "DriverPlate", title: "Vehicle Plate", filterable: { cell: { showOperators: false } } },
+                    { field: "VehicleTypeName", title: "Vehicle Type", filterable: { cell: { showOperators: false } } },
+                    { field: "FromDate", title: "From Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "ToDate", title: "To Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false }
+                ]
+
+            });
+        }
+        $("#grdVehicleList").on('focusin', function (e) {
+            // get the grid position
+            var offset = $(this).offset();
+            // crete a textarea element which will act as a clipboard
+            var textarea = $("<textarea>").attr("id", "txtClipboard");
+            // position the textarea on top of the grid and make it transparent
+            textarea.css({
+                position: 'absolute',
+                opacity: 0,
+                top: offset.top,
+                left: offset.left,
+                border: 'none',
+                width: 0,
+                height: 0
+            })
+                .appendTo("#mdAppDetail")
+                .on('paste', function () {
+                    // handle the paste event
+                    setTimeout(function () {
+                        // the the pasted content
+                        var value = $.trim(textarea.val());
+                        // get instance to the grid
+                        var grid = $("#grdVehicleList").data("kendoGrid");
+                        // get the pasted rows - split the text by new line
+                        var rows = value.split('\n');
+
+                        if (rows.length === 0) {
+                            showNotification("Hyosung Portal", "Please check your data of excel file", "gray error");
+                            $(this).trigger("focusout");
+                            return;
+                        }
+                        _dataVehicle = $("#grdVehicleList").data("kendoGrid").dataSource.data();
+                        var newVehicle = [];
+                        for (var i = 0; i < rows.length; i++) {
+                            var cells = rows[i].split('\t');
+                            if (cells.length !== 5) {
+                                showNotification("Hyosung Portal", "The format is incorrect. Please check row " + (i + 1) + " again", "gray error");
+                                $(this).trigger("focusout");
+                                return;
+                            }
+                            var regExpr = /[^a-zA-Z0-9]/g;
+
+                            if (!_dataVehicle.some(function (item) { return item.DriverPlate === cells[2].replace(regExpr, ''); })) {
+                                _vehicle = {
+                                    Id: 0, ApplicationMaster: $("#hdfApplicationMasterId").val(), DriverPlate: cells[2].replace(regExpr, ''), VehicleType: cells[1], VehicleTypeName: cells[0],// PhoneDriver: cells[1], DriverName: cells[0],
+                                    FromDate: kendo.parseDate(cells[3], _dateFormatKendo), ToDate: kendo.parseDate(cells[4], _dateFormatKendo)
+                                };
+                                if (_vehicle.FromDate === null || _vehicle.ToDate === null) {
+                                    showNotification("Hyosung Portal", "Please check information about From Date & To Date of row " + (i + 1) + " again", "gray error");
+                                    $(this).trigger("focusout");
+                                    return;
+                                }
+                                if (_vehicle.FromDate.getTime() < _applicationMaster.FromDate.getTime()) {
+                                    showNotification("Hyosung Portal", "From Date must be greater than information was registered. Please check row " + (i + 1) + " again", "gray error");
+                                    $(this).trigger("focusout");
+                                    return;
+                                }
+                                if (_vehicle.ToDate.getTime() > _applicationMaster.ToDate.getTime()) {
+                                    showNotification("Hyosung Portal", "To Date must be smaller than information was registered. Please check row " + (i + 1) + " again", "gray error");
+                                    $(this).trigger("focusout");
+                                    return;
+                                }
+                                _dataVehicle.push(_vehicle);
+                                newVehicle.push(_vehicle);
+                            }
+                        };
+                        if (newVehicle.length !== 0)
+                            p._insertMultiDataVisitor(newVehicle);
+                        textarea.val("");
+                    });
+                })
+                .on('focusout', function () {
+                    // remove the textarea when it loses focus
+                    $(this).remove();
+                });
+            // focus the textarea
+            setTimeout(function () {
+                textarea.focus();
+            });
+        });
+        $("#grdVehicleList").on("click", "tbody > tr", function () {
+            $("#grdVehicleList").trigger("focusin");
+        });
+        $("#grdVehicleList").on("click", function () {
+            $("#grdVehicleList").trigger("focusin");
+        });
+        p._getDataVehicle = function () {
+            _vehicle.Id = $("#hdfDetailVehicleId").val();
+            _vehicle.ApplicationMaster = $("#hdfApplicationMasterId").val();
+
+            //_vehicle.DriverName = $("#txtMdVendorDriverName").val();
+            //if (!_fnCheckEmpty($("#txtMdVendorDriverName"), "Please input to field: Driver Name"))
+            //    return false;
+
+            //_vehicle.PhoneDriver = $("#txtMdVendorPhoneDriver").val();
+            //if (!_fnCheckEmpty($("#txtMdVendorPhoneDriver"), "Please input to field: Phone Driver"))
+            //    return false;
+
+            _vehicle.VehicleType = $("#cbMdVisitorVehicleType").val();
+            if (!_fnCheckEmpty($("#cbMdVisitorVehicleType"), "Please select vehicle type"))
+                return false;
+            var regExpr = /[^a-zA-Z0-9]/g;
+            _vehicle.DriverPlate = $("#txtMdVendorDriverPlate").val().replace(regExpr, '');
+            if (!_fnCheckEmpty($("#txtMdVendorDriverPlate"), "Please input to field: Vehicle Plate"))
+                return false;
+
+            var dateRange = $("#txtMdVehicleVisitDateRange").find("input");
+            _vehicle.FromDate = _isValidDate($(dateRange[0]).val(), _minDate);
+            _vehicle.ToDate = _isValidDate($(dateRange[1]).val(), _minDate);
+
+            _vehicle.IsWorkHourOfficial = $("#cbMdVisitorIsWorkOfficial").prop("checked");
+            return true;
+        };
+        p._resetDataVehicle = function (ent) {
+            $("#hdfDetailVehicleId").val(ent.Id);
+
+            $("#txtMdVendorDriverPlate").val(ent.DriverPlate);
+            $("#cbMdVisitorVehicleType").val(ent.VehicleType);
+            //$("#txtMdVendorPhoneDriver").val(ent.PhoneDriver);
+            //$("#txtMdVendorDriverName").val(ent.DriverName);
+
+            var $date = $("#txtMdVehicleVisitDateRange").find("input");
+            $($date[0]).val(kendo.toString(ent.FromDate, _dateFormatKendo));
+            $($date[1]).val(kendo.toString(ent.ToDate, _dateFormatKendo));
+        };
+        p._insertDataVisitor = function (ent) {
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/DetailInsert",
+                data: JSON.stringify({ model: ent }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Insert success", "gray success");
+                        //reset cho thằng visitor
+                        o._gridContainerInit();
+                        _container = {
+                            Id: 0, MasterId: 0, VendorId: 0, TaxCode: "", CompanyName: "", ContainerNum: "", FromDate: new Date(), ToDate: new Date(), IsImport: true, IsImportName: ""
+                        };
+                        o._resetDataContainer(_container);
+                        //reset cho thằng vehicle
+                        o._gridVehicleInit();
+                        _vehicle = {
+                            Id: 0, ApplicationMaster: 0, DriverPlate: "", VehicleType: "", VehicleTypeName: "", PhoneDriver: "", DriverName: "",
+                            FromDate: _applicationMaster.FromDate, ToDate: _applicationMaster.ToDate
+                        };
+                        o._resetDataVehicle(_vehicle);
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        };
+        p._insertMultiDataVisitor = function (ent) {
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/DetailInsertMulti",
+                data: JSON.stringify({ model: ent }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Insert success", "gray success");
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                    //reset cho thằng visitor
+                    o._gridContainerInit();
+                    //reset cho thằng vehicle
+                    o._gridVehicleInit();
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        };
+        p._updateDataVisitor = function (ent) {
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/DetailUpdate",
+                data: JSON.stringify({ model: ent }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Update success", "gray success");
+                        //reset cho thằng visitor
+                        o._gridContainerInit();
+                        _container = {
+                            Id: 0, MasterId: 0, VendorId: 0, TaxCode: "", CompanyName: "", ContainerNum: "", FromDate: new Date(), ToDate: new Date(), IsImport: true, IsImportName: ""
+                        };
+                        o._resetDataContainer(_container);
+                        //reset cho thằng vehicle
+                        o._gridVehicleInit();
+                        _vehicle = {
+                            Id: 0, ApplicationMaster: 0, DriverPlate: "", VehicleType: "", VehicleTypeName: "", PhoneDriver: "", DriverName: "",
+                            FromDate: _applicationMaster.FromDate, ToDate: _applicationMaster.ToDate
+                        };
+                        o._resetDataVehicle(_vehicle);
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        };
+        p._deleteVehicle = function (list) {
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/DetailVehicleDelete",
+                data: JSON.stringify({ id: list }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Delete success", "gray success");
+                        o._gridVehicleInit();
+                        _vehicle = {
+                            Id: 0, ApplicationMaster: 0, DriverPlate: "", VehicleType: "", VehicleTypeName: "", PhoneDriver: "", DriverName: "",
+                            FromDate: _applicationMaster.FromDate, ToDate: _applicationMaster.ToDate
+                        };
+                        o._resetDataVehicle(_vehicle);
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        };
+
+        $("#btnVehicleAdd").on("click", function () {
+            if (!p._getDataVehicle())
+                return;
+
+            p._insertDataVisitor(_vehicle);
+        })
+        $("#btnVehicleUpdate").on("click", function () {
+            if (!p._getDataVehicle())
+                return;
+            if (_vehicle.Id === 0)
+                return;
+            p._updateDataVisitor(_vehicle);
+        })
+        $("#btnVehicleDelete").on("click", function () {
+            if (!p._getDataVehicle())
+                return;
+            if (_vehicle.Id === 0)
+                return;
+            var listId = [];
+            listId.push(_vehicle.Id);
+            p._deleteVehicle(listId);
+        })
+        $("#grdVehicleList").on("dblclick", "tbody > tr", function () {
+            var grid = $("#grdVehicleList").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+            p._resetDataVehicle(dataItem);
+        })
+        //END FORM VEHICLE
+
+
+        // =========================================================================
+        namespace.FormShortTerm = new FormShortTerm;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+
+    function fnGridEmpInforDblclick(data) {
+        _fnSetValueForElementEmployeeInfor($("input[name='EmployeeInfor']"), data);
+    }
+</script>

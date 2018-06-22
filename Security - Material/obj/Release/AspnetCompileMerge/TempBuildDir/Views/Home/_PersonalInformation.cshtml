@@ -1,0 +1,145 @@
+﻿@using SSO_Material.Utilities
+@using System.Security.Claims
+<form class="form-horizontal" role="form">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Mã nhân viên</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" id="lblEmpid" class="form-control input-sm" value="@User.GetClaimValue(ClaimTypes.Sid)" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Họ tên</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control input-sm" value="@User.GetClaimValue(ClaimTypes.Name)" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Chức vụ</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control input-sm" value="@User.GetClaimValue("Position")" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Công việc</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control input-sm" value="@User.GetClaimValue("JobTitle")" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Ngày vào</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control input-sm" value="@User.GetClaimValue("JoinDate")" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Bộ phận</label>
+                </div>
+                <div class="col-md-8">
+                    <textarea type="text" class="form-control input-sm" readonly rows="3">@User.GetClaimValue("DeptName")</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5" style="position:relative;height:254px">
+            <img id="txtImage" class="img-thumbnail border-white border-xl img-responsive auto-width" src="../../Content/assets/img/none-image.png" alt=""
+                 style="position:absolute; right:0; left:0;margin:auto; width:206px">
+            <div style="clear:both"></div>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-4">
+                <label for="PasswordOld">Mật khẩu hiện tại</label>
+            </div>
+            <div class="col-md-8">
+                <input type="password" class="form-control input-sm" id="PasswordOld">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="PasswordNew">Mật khẩu mới</label>
+            </div>
+            <div class="col-md-8">
+                <input type="password" class="form-control input-sm" id="PasswordNew">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="PasswordConfirm">Xác nhận lại mật khẩu</label>
+            </div>
+            <div class="col-md-8">
+                <input type="password" class="form-control input-sm" id="PasswordConfirm">
+            </div>
+        </div>
+    
+</form>
+<br />
+<div class="modal-footer">
+    <button type="button" onclick="_doOnChangePassword()" class="btn btn-primary">Cập nhật</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+</div>
+
+<script type="text/javascript">
+    var UserModel = {
+        LoginID: "", Password: "", PasswordOld: "", PasswordNew: "", PasswordRepeat: ""
+    };
+
+    function getDataChangePass() {
+        UserModel.LoginID = $("#lblEmpid").val();
+        UserModel.Password = $("#PasswordNew").val();
+        UserModel.PasswordOld = $("#PasswordOld").val();
+        if (!fnCheckEmpty($("#PasswordOld"), "Xin nhập vào mật khẩu hiện tại"))
+            return false;
+
+        UserModel.PasswordNew = $("#PasswordNew").val();
+        if (!fnCheckEmpty($("#PasswordNew"), "Xin nhập vào mật khẩu mới"))
+            return false;
+        UserModel.PasswordRepeat = $("#PasswordConfirm").val();
+        if (!fnCheckEmpty($("#PasswordConfirm"), "Xin nhập lại mật khẩu"))
+            return false;
+
+        if (UserModel.PasswordNew !== UserModel.PasswordRepeat) {
+            $("#PasswordRepeat").focus();
+            showNotification("Hyosung Portal", "Mật khẩu vừa nhập không trùng khớp", "gray error");
+            return false;
+        }
+        return true;
+    }
+
+    function _doOnChangePassword() {
+        if (!getDataChangePass())
+            return false;
+        $.ajax({
+            url: "/Anonymous/UpdatePass",
+            async: false,
+            type: "POST",
+            data: JSON.stringify(UserModel),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.result === "OK") {
+                    showNotification("Hyosung Portal", "Cập nhật mật khẩu thành công!", "gray success");
+                    $("#modalChangePass").modal("hide");
+                    $("#txtPassword").val("");
+                } else {
+                    showNotification("Hyosung Portal", data.mess, "gray error");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
+</script>

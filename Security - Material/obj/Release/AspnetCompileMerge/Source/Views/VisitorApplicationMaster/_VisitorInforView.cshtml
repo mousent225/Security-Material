@@ -1,0 +1,398 @@
+﻿@using SSO_Material.Utilities;
+@using System.Security.Claims;
+@model SSO_Material.ViewModels.SecurityApplication.VisitorApplicationDetailModel
+
+<style type="text/css">
+    #dropZone {
+        background: gray;
+        border: black dashed 3px;
+        width: 200px;
+        padding: 50px;
+        text-align: center;
+        color: white;
+    }
+
+    .dz-preview {
+        margin: 0 !important;
+    }
+
+    .background-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0);
+        transition: background 0.5s ease;
+    }
+
+    #divImage:hover .background-overlay {
+        display: block;
+        background: rgba(0, 0, 0, .3);
+    }
+
+    #divImage:hover .background-overlay {
+        display: block;
+        background: rgba(0, 0, 0, .3);
+    }
+
+    .background-button {
+        position: absolute;
+        width: 135px;
+        left: 41px;
+        top: 100px;
+        text-align: center;
+        opacity: 0;
+        transition: opacity .35s ease;
+    }
+
+        .background-button a {
+            width: 200px;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            border: solid 2px white;
+            z-index: 1;
+        }
+
+    #divImage:hover .background-button {
+        opacity: 1;
+    }
+</style>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Visitor's Information Detail</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-3" style="position:relative; height: 209px; display:none" id="divImage">
+                <div class="row">
+                    <div class="col-xs-12 background-image">
+                        <img id="txtImage" class="img-thumbnail border-white border-xl img-responsive auto-width" src="@Model.Image" alt=""
+                             style="position:absolute; right:0; left:0;margin:auto; height:209px">
+                    </div>
+                    <div class="background-overlay"></div>
+                    <div class="background-button"><a href="#" id="btnChangeImage"> Change Image </a></div>
+                </div>
+            </div>
+            <input type="hidden" id="hdfMdVisitorImage" value="@Model.Image" />
+            <div class="col-md-3" id="divUploadImage" style="display:none">
+                <!-- BEGIN FILE UPLOAD -->
+                <div class="row">
+                    <div class="col-lg-offset-1 col-md-12">
+                        <div class="card">
+                            <div class="card-body no-padding">
+                                <form class="dropzone" id="my-awesome-dropzone" action="SaveUploadedFile" style="height:195px">
+                                    <div class="dz-message">
+                                        <h3>Drop files here or click to upload.</h3>
+                                    </div>
+                                </form>
+                            </div><!--end .card-body -->
+                        </div><!--end .card -->
+                    </div><!--end .col -->
+                </div><!--end .row -->
+                <!-- END FILE UPLOAD -->
+            </div>
+            <div class="col-md-12">
+                <form id="frmMdVisitorInfor" role="form" class="form form-validate card card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtMdVisitorFullName" value="@Model.FullName" maxlength="200" required>
+                                <label for="txtMdVisitorFullName">Name</label>
+                                <input type="hidden" id="hdfMdVisitorInforId" value="@Model.Id" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtMdVisitorIdentityCard" value="@Model.IdentityCard" maxlength="15" data-rule-number="true" required>
+                                <label for="txtMdVisitorIdentityCard">Identity Card</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtMdVisitorPhone" value="@Model.PhoneNumber" maxlength="15" data-rule-number="true" required>
+                                <label for="txtMdVisitorPhone">Phone</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-daterange input-group" id="txtMdVisitorVisitDateRange">
+                                <div class="form-group" style="padding:0">
+                                    <div class="input-group-content">
+                                        <input type="text" class="form-control input-sm input-date" value="@string.Format("{0:yyyy.MM.dd}", Model.FromDate)" name="start" required />
+                                        <label>Visit Date</label>
+                                    </div>
+                                    <span class="input-group-addon">to</span>
+                                    <div class="input-group-content">
+                                        <input type="text" class="form-control input-sm input-date" value="@string.Format("{0:yyyy.MM.dd}", Model.ToDate)" name="end" required />
+                                        <div class="form-control-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select id="cbMdVisitorVehicleType" class="form-control input-sm">
+                                    <option value="">&nbsp;</option>
+                                </select>
+                                <label for="cbMdVisitorVehicleType">Vehicle Type</label>
+                                <input type="hidden" id="hdfMdVisitorVehicleTypeId" value="@Model.VehicleType" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtMdVendorDriverPlate" value="@Model.DriverPlate" maxlength="20" required>
+                                <label for="txtMdVendorDriverPlate">Driver Plate</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="checkbox checkbox-styled">
+                                    <label>
+                                        @if (Model.IsWorkHourOfficial)
+                                        {
+                                            <input id="cbMdVisitorIsWorkOfficial" type="checkbox" checked>
+                                        }
+                                        else
+                                        {
+                                            <input id="cbMdVisitorIsWorkOfficial" type="checkbox">
+                                        }
+                                        <span>Office Hours</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="btnMdVisitorSave" type="submit" class="btn btn-primary submit">Save</button>
+        <button id="btnMdVisitorDelete" type="submit" class="btn ink-reaction btn-danger submit">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</div><!-- /.modal-content -->
+
+<script type="text/javascript">
+    (function (namespace, $) {
+        "use strict";
+
+        var _entity = {
+            Id: 0, ApplicationMaster: 0, Image: "", FullName: "", IdentityCard: "", TemporaryCard: "", PhoneNumber: "",
+            FromDate: "", ToDate: "", DriverPlate: "", VehicleType: "", VehicleTypeName: "", IsWorkHourOfficial: true
+        };
+
+        var FormVisitorInfor = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+
+            $("#btnMdVisitorSave").on("click", function () {
+                if ($("#frmMdVisitorInfor").valid()) {
+                    if (o._getData())
+                        o._updateData();
+                }
+            })
+
+            $("#btnMdVisitorDelete").on("click", function () {
+                o._deleteData();
+            })
+        };
+        var p = FormVisitorInfor.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+
+            //KIỂM TRA NẾU LÀ ĐƠN SHORT TERM THÌ ẨN PHẦN UPLOAD HÌNH ẢNH ĐI
+            if ($("#hdfApplicationType").val() === "9") {
+                $("#divImage").show();
+                $("#divUploadImage").next().removeClass("col-md-12").addClass("col-md-9");
+                var imageUpload = $("#my-awesome-dropzone").dropzone({
+                    url: "SaveUploadedFile",
+                    uploadMultiple: false,
+                    addRemoveLinks: true,
+                    resizeWidth: "195px",
+                    maxFiles: 1,
+                    maxFilesize: 3,
+                    dictRemoveFile: 'Remove Image',
+                    acceptedFiles: 'image/jpeg, image/jpg, image/png',
+                    accept: function (file, done) {
+                        console.log(file);
+                        done();
+                    },
+                    removedfile: function (file) {
+                        $("#hdfMdVisitorImage").val("");
+                        file.previewElement.remove();
+                    },
+                    success: function (file, response) {
+                        $("#hdfMdVisitorImage").val(response.Message);
+                    }
+                });
+            }
+
+            $("#frmMdVisitorInfor").validate();
+
+            $("#txtMdVisitorVisitDateRange").datepicker({
+                autoclose: true,
+                todayHighlight: true, format: _dateFormat,
+                startDate: _applicationMaster.FromDate,
+                endDate: _applicationMaster.ToDate
+            });
+
+            fnGetCateValueViaCateId("AED27DE5-1310-4A02-997B-87A6EF9686BD", false, $("#cbMdVisitorVehicleType"), $("#hdfMdVisitorVehicleTypeId").val());
+
+        };
+
+        p._getData = function () {
+            _entity.Id = $("#hdfMdVisitorInforId").val();
+            _entity.ApplicationMaster = $("#hdfApplicationMasterId").val();
+            _entity.Image = $("#hdfMdVisitorImage").val();
+            _entity.FullName = $("#txtMdVisitorFullName").val();
+
+            _entity.IdentityCard = $("#txtMdVisitorIdentityCard").val();
+            if (!_fnCheckEmpty($("#txtMdVisitorIdentityCard"), "Please input to field: Identity Card"))
+                return false;
+            _entity.TemporaryCard = $("#txtMdVisitorTemporaryCard").val();
+            _entity.PhoneNumber = $("#txtMdVisitorPhone").val();
+            if (!_fnCheckEmpty($("#txtMdVisitorPhone"), "Please input to field: Phone"))
+                return false;
+
+            var dateRange = $("#txtMdVisitorVisitDateRange").find("input");
+            _entity.FromDate = _isValidDate($(dateRange[0]).val(), _minDate);
+            _entity.ToDate = _isValidDate($(dateRange[1]).val(), _minDate);
+
+            _entity.DriverPlate = $("#txtMdVendorDriverPlate").val();
+            _entity.VehicleType = $("#cbMdVisitorVehicleType").val();
+            _entity.IsWorkHourOfficial = $("#cbMdVisitorIsWorkOfficial").prop("checked");
+            return true
+        };
+        p._gridVisitorInit = function () {
+            $("#grdVisitorList").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/GetDetail?applicationMasterId=" + $("#hdfApplicationMasterId").val(),
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                FullName: { type: "string" },
+                                Image: { type: "string" },
+                                IdentifyNo: { type: "string" },
+                                TemporaryCard: { type: "string" },
+                                PhoneNumber: { type: "string" },
+                                FromDate: { type: "date" },
+                                ToDate: { type: "date" },
+                                DriverPlate: { type: "string" },
+                                VehicleType: { type: "string" },
+                                IsWorkHourOfficial: { type: "boolean" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                //toolbar: ["create"],
+                height: $('footer').position().top - 419,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                columns: [
+                    { template: '<img class="customer-photo" src="#: Image #" alt="" ><div class="customer-name">#: FullName #</div>', field: "Image", title: "Full Name", width: 240, hidden: $("#hdfApplicationType").val() === "8" },
+                    { field: "FullName", title: "Full Name", width: "180px", hidden: $("#hdfApplicationType").val() === "9" },
+                    { field: "IdentityCard", title: "Identity Card No", width: "135px" },
+                    { field: "TemporaryCard", title: "Temporary Card", width: "125px" },
+                    { field: "PhoneNumber", title: "Phone Number", width: "140px" },
+                    { field: "FromDate", title: "From Date", width: "105px", format: "{0:yyyy.MM.dd}" },
+                    { field: "ToDate", title: "To Date", width: "105px", format: "{0:yyyy.MM.dd}" },
+                    { field: "VehicleTypeName", title: "Vehicle Type", width: "110px" },
+                    { field: "DriverPlate", title: "Driver Plate", width: "120px" },
+                    //{ field: "IsContactPerson", title: "Contact Person", width: "115px" },
+                    { field: "IsWorkHourOfficial", title: "Office Hours", width: "150px" }
+                ]
+
+            });
+        }
+        p._updateData = function () {
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/DetailUpdate",
+                data: JSON.stringify({ model: _entity }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Update success", "gray success");
+                        p._gridVisitorInit();
+                        $("#mdVisitorInforView").modal("hide");
+                    } else {
+                        console.log(result);
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        };
+
+        p._deleteData = function () {
+            var o = this;
+            var result = confirmDelete("en");
+            if (result) {
+                $.ajax({
+                    type: "POST",
+                    url: "/VisitorApplicationMaster/DetailDelete",
+                    data: JSON.stringify({ id: $("#hdfMdVisitorInforId").val() }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "Delete success", "gray success");
+                            o._gridVisitorInit();
+                            $("#mdVisitorInforView").modal("hide");
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        };
+
+        $("#btnChangeImage").on("click", function () {
+            $("#divImage").hide();
+            $("#divUploadImage").show();
+        });
+
+        // =========================================================================
+        namespace.FormVisitorInfor = new FormVisitorInfor;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+
+
+
+
+</script>

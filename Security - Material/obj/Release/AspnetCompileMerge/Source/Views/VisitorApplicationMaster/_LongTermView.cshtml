@@ -1,0 +1,852 @@
+﻿@using SSO_Material.Utilities;
+@using System.Security.Claims;
+@model SSO_Material.ViewModels.SecurityApplication.VisitorApplicationMasterModel
+
+<style type="text/css">
+    .wizard-bg {
+        background: url('../../Content/img/top-bg-5.png') repeat-x #f5f5f5;
+    }
+
+    .wizard-bg-hd-left {
+        text-align: right;
+    }
+
+        .wizard-bg-hd-left p {
+            font-weight: 700;
+            margin: auto;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+    .wizard-bg-hd-right {
+        text-align: left;
+    }
+
+        .wizard-bg-hd-right p {
+            font-weight: 700;
+            margin: auto;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+    .glyphicon-top {
+        top: 2px;
+    }
+
+    .span-reject {
+        background-color: #f44336 !important;
+        border-color: #f44336 !important;
+    }
+
+    .customer-photo {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        border-radius: 10%;
+        background-size: 32px 35px;
+        background-position: center center;
+        vertical-align: middle;
+        line-height: 32px;
+        box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+        margin-left: 5px;
+    }
+
+    .customer-name {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 32px;
+        padding-left: 3px;
+    }
+</style>
+
+<link href="~/Content/assets/css/theme-1/libs/wizard/wizard.css" rel="stylesheet" />
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close close-modal" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Visitor Application Detail</h4>
+    </div>
+    <div class="modal-body">
+        <div id="wzShortTermView" class="form-wizard form-wizard-horizontal">
+            <form id="frmShortTermView" class="form form-validate card card-body">
+                <input type="hidden" id="hdfApplicationType" value="@Model.ApplicationType" />
+                <input type="hidden" id="hdfMasterId" value="@Model.Id" />
+                <input type="hidden" id="hdfNextApprover" value="@Model.NextApprover" />
+                <input type="hidden" id="hdfIdEncrypt" value="@Model.IdEncrypt" />
+                <div class="form-wizard-nav wizard-bg">
+                    <div class="row">
+                        @if (Model.ApprovalStatus.ToUpper() == "00F2EC64-CC9B-4FCA-AB4C-B37961EFAD53")
+                        {
+                            <div class="col-md-6 wizard-bg-hd-left">
+                                <p>Doc No</p>
+                                <p style="float:right">Status</p>
+                            </div>
+                            <div class="col-md-6 wizard-bg-hd-right">
+                                <p>@Model.Code</p>
+                                <p style="color:#7bc828; float:left">@Model.ApprovalStatusName</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-6 wizard-bg-hd-left">
+                                <p>Doc No</p>
+                                <p style="color:#7bc828; float:right">@Model.ApprovalStatusName</p><p style="float:right">Status &emsp; </p>
+                            </div>
+                            <div class="col-md-6 wizard-bg-hd-right">
+                                <p>@Model.Code</p>
+                                @if (Model.ApprovalStatus.ToUpper() == "9C817780-2079-4417-B87B-B7E537BBAE8A")
+                                {
+                                    <p style="color:red">You have to confirmed</p>
+                                }
+                                else
+                                {
+                                    <p style="float:left">Next Approver &emsp; </p><p style="color:#7bc828; float:left">@Model.NextApproverName</p>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="progress" style="top:77px"><div class="progress-bar progress-bar-primary"></div></div>
+                    <ul class="nav nav-justified"></ul>
+
+                    @if (Model.ApprovalLine.Split('|').Length == 5)
+                    {
+                        if (@Model.ApprovalLine.Split('|')[4] != "")
+                        {
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-1">
+                                        <label for="txtEmpId">Circulator</label>
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <input type="text" class="form-control input-sm change-data" value="@Model.ApprovalLine.Split('|')[4]" readonly>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="text-primary" style="border-bottom:1px dotted">Visitor's Information</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtVendor" name="VendorInformation" value="@Model.VendorName">
+                            <label for="txtVendor">Company name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtContactPerson" name="VendorInformation" value="@Model.ContactPerson" readonly>
+                            <label for="txtContactPerson">Contact Person</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtContactEmail" name="VendorInformation" value="@Model.ContactEmail" readonly>
+                            <label for="txtContactEmail">Email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtContactPhone" name="VendorInformation" value="@Model.ContactNumber" readonly>
+                            <label for="txtContactPhone">Phone</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtAddress" name="VendorInformation" value="@Model.VendorAddress" readonly>
+                            <label for="txtAddress">Address</label>
+                            <input type="hidden" id="hdfVendorId" name="VendorInformation" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-daterange input-group" id="txtVisitDateRange">
+                            <div class="form-group" style="padding:0">
+                                <div class="input-group-content">
+                                    <input type="text" class="form-control input-sm input-date" name="start" value="@string.Format("{0:yyyy.MM.dd}", Model.FromDate)" required readonly />
+                                    <label>Visit Date</label>
+                                </div>
+                                <span class="input-group-addon">to</span>
+                                <div class="input-group-content">
+                                    <input type="text" class="form-control input-sm input-date" name="end" value="@string.Format("{0:yyyy.MM.dd}", Model.ToDate)" required readonly />
+                                    <div class="form-control-line"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtLocation" value="@Model.LocationName" readonly>
+                            <label for="txtLocation">Visit Location</label>
+                            <input type="hidden" id="hdfLocation" name="VendorInformation" value="@Model.Location" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtLocationOther" value="@Model.LocationOther" readonly>
+                            <label for="txtLocationOther">Other Location</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" value="@Model.GateName" id="cbVisitGate" readonly>
+                            <label for="cbVisitGate">Gate</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" value="@Model.PurposeName" id="cbVisitPurpose" readonly>
+                            <label for="cbVisitPurpose">Purpose</label>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtRemake" value="@Model.Remark" readonly>
+                            <label for="txtRemake">Remark</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-primary" style="border-bottom:1px dotted">The List of Visitor</h4>
+                            </div>
+                        </div>
+                        <div id="grdVisitorList"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-primary" style="border-bottom:1px dotted">The List of Vehicle</h4>
+                            </div>
+                        </div>
+                        <div id="grdVehicleList"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="text-primary" style="border-bottom:1px dotted">Applicant's Information</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtEmpId" value="@Model.Applicant" name="EmployeeInfor" readonly>
+                            <label for="txtEmpId">EmpId/Name</label>
+                            <input type="hidden" id="hdfApplicationMasterId" value="@Model.Id" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtEmpName" value="@Model.ApplicantName" name="EmployeeInfor" readonly>
+                            <label for="txtEmpName">Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtPhone" value="@Model.PhoneNumber" readonly>
+                            <label for="txtMobilePhone">Phone</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" id="txtHandPhone" value="@Model.HandPhoneNumber" data-rule-number="true" readonly>
+                            <label for="txtHandPhone">Hand Phone</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtOrgName" value="@Model.OrgName" readonly>
+                            <label for="txtOrgName">Organize Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtPlantName" value="@Model.PlantName" readonly>
+                            <label for="txtPlantName">Plant Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtDeptName" value="@Model.DeptName" readonly>
+                            <label for="txtDeptName">Department Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm change-data" name="EmployeeInfor" id="txtSectName" value="@Model.SectionName" readonly>
+                            <label for="txtSectName">Section Name</label>
+                            <input type="hidden" id="hdfDeptId" name="EmployeeInfor" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div><!--end #rootwizard -->
+    </div>
+    <div class="modal-footer">
+        @*@if (ViewBag.IsCheckIn && Model.ApprovalStatus.ToUpper() == "00F2EC64-CC9B-4FCA-AB4C-B37961EFAD53")
+            {
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn ink-reaction btn-primary" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdCheckIn">
+                        <i class="fa fa-sign-in fa-fw" style="transform:rotate(180deg); font-size:15px"></i> Check In
+                    </label>
+                </div>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn ink-reaction btn-primary" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdCheckOut">
+                        <i class="fa fa-sign-out fa-fw"></i> Check Out
+                    </label>
+                </div>
+            }*@
+        @if (User.GetClaimValue(ClaimTypes.Sid).ToUpper() == Model.NextApprover.ToUpper() && Model.ApprovalStatus.ToString().ToUpper() == "C4FF5A2F-CD32-4785-9499-A26E5148D58D")
+        {
+            <button id="btnMdShortTermViewApprove" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdApprovalInfor" type="button" class="btn btn-primary btn-accent-dark">Approve</button>
+        }
+        @if (Model.IsRecall && Model.ApprovalLine.IndexOf(User.GetClaimValue(ClaimTypes.Sid)) != -1 && User.GetClaimValue(ClaimTypes.Sid) != Model.CreateUid)
+        {
+            <button id="btnMdShortTermViewRecallApprove" type="button" class="btn btn-primary btn-accent-dark">Recall</button>
+        }
+
+        @if (User.GetClaimValue(ClaimTypes.Sid) == Model.CreateUid)
+        {
+            if (Model.ApprovalStatus.ToString().ToUpper() == "9C817780-2079-4417-B87B-B7E537BBAE8A" && Model.ConfirmDate == null)
+            {
+                <button id="btnMdShortTermViewConfirm" type="button" class="btn btn-primary btn-accent-dark">Confirm</button>
+            }
+            if (Model.IsRecall)
+            {
+                <button id="btnMdShortTermViewRecall" type="button" class="btn btn-primary btn-accent-dark">Recall</button>
+            }
+            else if (!Model.IsRecall && Model.ApprovalStatus.ToString().ToUpper() == "9C817780-2079-4417-B87B-B7E537BBAE8A")
+            {
+                <button id="btnMdShortTermViewEdit" data-dismiss="modal" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdAppDetailEdit" type="button" class="btn btn-primary">Edit</button>
+
+            }
+            <button id="btnMdShortTermViewDelete" type="button" class="btn btn-primary btn-danger">Delete</button>
+        }
+        <button type="button" class="btn btn-default close-modal" data-dismiss="modal">Close</button>
+    </div>
+</div><!-- /.modal-content -->
+<!-- BEGIN FORM MODAL APPROVAL INFOR -->
+<div class="modal fade" id="mdApprovalInfor" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Approval History</h4>
+            </div>
+            <div class="modal-body">
+                <!-- BEGIN FIXED TIMELINE -->
+                <ul class="timeline collapse-lg timeline-hairline" id="divApprovelHistory"></ul>
+                @if (Model.NextApprover == User.GetClaimValue(ClaimTypes.Sid))
+                {
+                    <!-- END FIXED TIMELINE -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea style="resize:vertical" id="txtComment" class="form-control input-sm" rows="3" placeholder="Write a comment"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="modal-footer">
+                @if (Model.NextApprover == User.GetClaimValue(ClaimTypes.Sid))
+                {
+                    <button type="button" class="btn btn-primary" id="btnMdApprovalInforApprove">Approve</button>
+                    <button type="button" class="btn btn-primary btn-danger" id="btnMdApprovalInforReject">Reject</button>
+                }
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    (function (namespace, $) {
+        "use strict";
+
+        var _entityApprval = {
+            Id: 0, ApplicationId: 0, MasterId: 0, EmpId: "", EmpName: "", ApproverType: "", ApproverTypeName: "", IsApprove: null, Comment: "", Seq: 0, DateApprove: new Date()
+        };
+
+        var FormShortTermView = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+                setTimeout(function () {
+                    o._gridVisitorInit();
+                    o._gridVehicleInit();
+                }, 500);
+
+                $("#mdApprovalInfor .modal-body").css({ "max-height": $('footer').position().top - 130, overflow: "auto" });
+            });
+
+        };
+        var p = FormShortTermView.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+            this._getApprovalLine();
+            this._getApproveHistory();
+        };
+
+        p._reload = function () {
+            var link = '@Url.Action("ShowApplicationDetailView", "VisitorApplicationMaster", new { id = "vendorId" })';
+            $.get(link.replace('vendorId', $("#hdfIdEncrypt").val()), function (data) {
+                 $("#mdAppDetailView .modal-dialog").html(data);
+                 $("#mdAppDetailView .modal-body").css({ "max-height": $('footer').position().top - 130, overflow:"auto" });
+            });
+        }
+
+        p._gridVisitorInit = function () {
+            $("#grdVisitorList").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/GetDetail?applicationMasterId=" + $("#hdfApplicationMasterId").val(),
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                FullName: { type: "string"},
+                                Image: { type: "string" },
+                                IdentifyNo: { type: "string" },
+                                TemporaryCard: { type: "string" },
+                                PhoneNumber: { type: "string" },
+                                FromDate: { type: "date" },
+                                ToDate: { type: "date" },
+                                DriverPlate: { type: "string" },
+                                VehicleType: { type: "string" },
+                                //IsContactPerson: { type: "boolean" },
+                                IsWorkHourOfficial: { type: "boolean" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                dataBound: function (e) {
+                    var grid = this;
+                    var count = 0;
+
+                    grid.tbody.find("tr").each(function (e) {
+                        if (window.location.href.indexOf("ViewDetail") != -1) {
+                            $(this).find("img").first().attr("src", $(this).find("img").first().attr("src").replace("..", ""));
+                        }
+
+                        $(this).css("white-space", "nowrap");
+                        $($(this).children()[1]).html(++count);
+
+                        var model = grid.dataItem(this);
+                        if (model.OtherCode === null) {
+                            $(this).children().first().addClass("style-success");
+                            $(this).attr("title", "Data is valid");
+                        }
+                        else {
+                            $(this).children().first().addClass("style-danger");
+                            $(this).attr("title", "Data is invalid, same time with application code: " + model.OtherCode);
+                        }
+                    });
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                    if (grid.tbody.find("tr").length === 0) {
+                        $("#grdVisitorList").parent().hide();
+                        $("#grdVehicleList").parent().removeClass("col-md-6").addClass("col-md-12");
+                    }
+                },
+                height: $('footer').position().top - 349,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                filterable: {
+                    mode: "row"
+                },
+                columns: [
+                    { title: "", template: "", width: 5 },
+                    { title: "#", width: 40, headerAttributes: _headerAttributes, attributes: { "class": "text-right" } },
+                    { template: '<img class="customer-photo" src="#: Image #" alt="" >', field: "Image", title: "Contact Name", width: 128, filterable: false },
+                    { field: "FullName", title: "Full Name", width: 160, filterable: { cell: { showOperators: false } } },
+                    { field: "IdentityCard", title: "Identity Card No", width: "135px", filterable: { cell: { showOperators: false } } },
+                    { field: "PhoneNumber", title: "Phone Number", width: "140px", filterable: { cell: { showOperators: false } } },
+                    { field: "FromDate", title: "From Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "ToDate", title: "To Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "IsWorkHourOfficialName", title: "Office Hours", width: "100px", attributes: { "class": "text-center" }, filterable: { cell: { showOperators: false } } }
+                ]
+
+            });
+        }
+        p._gridVehicleInit = function () {
+            $("#grdVehicleList").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/GetDetailVehicle?applicationMasterId=" + $("#hdfApplicationMasterId").val(),
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                FromDate: { type: "date" },
+                                ToDate: { type: "date" },
+                                DriverPlate: { type: "string" },
+                                VehicleType: { type: "string" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                height: $('footer').position().top - 349,
+                selectable: "row",
+                sortable: true,
+                resizable: true,
+                pageable: true,
+                cache: false,
+                filterable: {
+                    mode: "row"
+                },
+                //persistSelection: true,
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                    var grid = this;
+                    var count = 0;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                        $($(this).children()[1]).html(++count);
+
+                        var model = grid.dataItem(this);
+                        if (model.OtherCode === null) {
+                            $(this).children().first().addClass("style-success");
+                            $(this).attr("title", "Data is valid");
+                        }
+                        else {
+                            $(this).children().first().addClass("style-danger");
+                            $(this).attr("title", "Data is invalid, same time with application code: " + model.OtherCode);
+                        }
+                    });
+
+                    if (grid.tbody.find("tr").length === 0) {
+                        $("#grdVehicleList").parent().hide();
+                        $("#grdVisitorList").parent().removeClass("col-md-6").addClass("col-md-12");
+                    }
+                },
+                columns: [
+                    { title: "", template: "", width: 5 },
+                    { title: "#", width: 40, headerAttributes: _headerAttributes, attributes: { "class": "text-right" } },
+                    //{ field: "DriverName", title: "Driver Name", filterable: { cell: { showOperators: false } } },
+                    //{ field: "PhoneDriver", title: "Phone Driver", width: 100, filterable: { cell: { showOperators: false } } },
+                    { field: "DriverPlate", title: "Vehicle Plate", filterable: { cell: { showOperators: false } } },
+                    { field: "VehicleTypeName", title: "Vehicle Type", filterable: { cell: { showOperators: false } } },
+                    { field: "FromDate", title: "From Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "ToDate", title: "To Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false }
+                ]
+
+            });
+        }
+        p._confirm = function (isConfirm) {
+
+            var _dataVisitor = $("#grdVisitorList").data("kendoGrid").dataSource.data();
+            var _dataVehicle = $("#grdVehicleList").data("kendoGrid").dataSource.data();
+
+            var mess = "";
+            if (_dataVisitor.length !== 0) {
+                $.each(_dataVisitor, function (index, item) {
+                    if (item.OtherCode !== null)
+                        mess = (mess === "" ? item.IdentityCard : (mess + ", " + item.IdentityCard));
+                });
+            }
+
+            if (_dataVehicle.length !== 0) {
+                $.each(_dataVehicle, function (index, item) {
+                    if (item.OtherCode !== null)
+                        mess = (mess === "" ? item.DriverPlate : (mess + ", " + item.DriverPlate));
+                });
+            }
+            if (mess !== "") {
+                showNotification("Hyosung Portal", "Please check data again: " + mess, "gray error");
+                return;
+            }
+
+            if (confirm("Do you realy want to " + (isConfirm ? "confirm" : "recall")+" this document?")) {
+                var _entity = { id: $("#hdfMasterId").val(), isConfirm: isConfirm, linkApplication: $(location).attr('origin') + "/VisitorApplicationMaster/ViewDetail/" + $("#hdfIdEncrypt").val() };
+                var o = this;
+                $.ajax({
+                    type: "POST",
+                    url: "/VisitorApplicationMaster/Confirm",
+                    data: JSON.stringify(_entity),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "The operation was successfull", "gray success");
+                            $("#mdAppDetailView").modal("hide");
+                            fnGridInitial();
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                            console.log(result);
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        };
+        p._approve = function (isApprove) {
+            if (confirm("Do you realy want to " + (isApprove ? "approve" : "reject")+" this document?")) {
+                var _entity = {
+                    MasterId: $("#hdfMasterId").val(),
+                    ApplicationId: $("#hdfApplicationType").val(),
+                    EmpId: $("#hdfLogInId").val(),
+                    IsApprove: isApprove,
+                    linkApplication: $(location).attr('origin') + "/VisitorApplicationMaster/ViewDetail/" + $("#hdfIdEncrypt").val(),
+                    Comment: $("#txtComment").val()
+                };
+                if (!isApprove && _entity.Comment === "") {
+                    showNotification("Hyosung Portal", "Please write some comment", "gray error");
+                    $("#txtComment").focus();
+                    return false;
+                }
+                var o = this;
+                $.ajax({
+                    type: "POST",
+                    url: "/VisitorApplicationMaster/Approve",
+                    data: JSON.stringify({ model: _entity }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "The operation was successfull", "gray success");
+                            fnGridInitial();
+                            $("#mdAppDetailView").modal("hide");
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                            console.log(result);
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        };
+        p.recall = function () {
+            if (confirm("Do you realy want to recall this document?")) {
+                var o = this;
+                $.ajax({
+                    type: "POST",
+                    url: "/VisitorApplicationMaster/Recall",
+                    data: JSON.stringify({ masterId: $("#hdfMasterId").val(), applicationid: $("#hdfApplicationType").val() }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "The operation was successfull", "gray success");
+                            $("#mdAppDetailView").modal("hide");
+                            fnGridInitial();
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                            console.log(result);
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        };
+        p._delete = function () {
+            if (confirmDelete("en", "delete")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/VisitorApplicationMaster/ApplicationMasterDeleteUpdate",
+                    data: JSON.stringify({ id: $("#hdfMasterId").val() }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "The operation was successfull", "gray success");
+                            $("#mdAppDetailView").modal("hide");
+                            fnGridInitial();
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                            console.log(result);
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        }
+
+
+        // =========================================================================
+        // GET DATA
+        // =========================================================================
+
+        p._getApprovalLine = function () {
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/GetApproveHistory",
+                data: JSON.stringify({ applicationId: $("#hdfApplicationType").val(), masterId: $("#hdfMasterId").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    //console.log(result);
+                    var count = 0;
+                    $.each(result, function (index, item) { if (item.IsApprove !== null) count++ });
+                    //console.log(count);
+                    $.each(result, function (index, item) {
+                        $("#frmShortTermView .form-wizard-nav").find("ul")
+                            .append($("<li>")
+                                .append($("<a>").attr("href", "#tab" + item.Seq)
+                                    .attr("data-toggle", "tab")
+                                    .append($("<span>").addClass("step")
+                                        .append($("<span>").addClass("glyphicon-top glyphicon " + (item.IsApprove === null ? "" : (item.IsApprove === true ? "glyphicon-ok" : "glyphicon-ban-circle")))))
+                                        //.append(item.Seq))
+                                    .append($("<span>").css({ "white-space": "nowrap", "text-overflow": "ellipsis", "overflow": "hidden" }).addClass("title").append(item.EmpName))
+                                    .append($("<span>").css({ "white-space": "nowrap", "text-overflow": "ellipsis", "overflow": "hidden", "top": "-10px", "text-transform": "capitalize" }).addClass("title").append(item.JobTitle))
+                                    //.append($("<p>").css({ "margin": "auto" }).append(item.DateApproveFormat))
+                                )
+                            );
+                    })
+                    $('#wzShortTermView').bootstrapWizard({
+                        onTabShow: function (tab, navigation, index) {
+                            _handleTabShow(tab, navigation, count - 1, $('#wzShortTermView'));
+
+                            var total = navigation.find('li').length;
+                            var percent = ((count) / (total - 1)) * 100;
+                            $('#wzShortTermView').find('.progress-bar').css({ width: percent + '%' });
+
+                            $($("#frmShortTermView").find("ul").find("li")[count]).addClass("active");
+                            $("#frmShortTermView").find("ul").find("li.active").prevAll().addClass('done');
+                        },
+                        onTabClick: function (tab, navigation, index) {
+                            $("#mdApprovalInfor").modal("show");
+                            return false;
+                        }
+                    });
+
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+        p._getApproveHistory = function () {
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/GetApproveHistory",
+                data: JSON.stringify({ applicationId: $("#hdfApplicationType").val(), masterId: $("#hdfMasterId").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    $.each(result, function (index, item) {
+                        if (item.IsApprove !== null) {
+                            $("#divApprovelHistory")
+                                .append($("<li>").addClass("timeline-inverted")
+                                    .append($("<div>").addClass("timeline-circ circ-xl style-primary").css({ "background-color": item.IsApprove === true ? "#2196f3" : "red"})
+                                        .append($("<span>").addClass("glyphicon-top glyphicon " + (item.IsApprove === null ? "" : (item.IsApprove === true ? "glyphicon-ok" : "glyphicon-ban-circle")))))
+                                    .append($("<div>").addClass("timeline-entry")
+                                        .append($("<div>").addClass("card style-default-bright")
+                                            .append($("<div>").addClass("card-body small-padding").attr("id", "divApprovelHistory" + '_line' + item.Seq)
+                                                .append($("<img>").addClass("img-circle img-responsive pull-left width-1").attr("src", "/Content/assets/img/avatar1.jpg").attr("alt", ""))
+                                                .append($("<span>").addClass("text-medium")
+                                                    .append(item.EmpName)
+                                                    .append($("<span>").addClass(item.IsApprove === true ? "text-primary" : "text-danger")
+                                                        .append(index === 0 ? " has confirmed" : (item.IsApprove === true ? " has approved" : " has rejected")))
+                                                    .append($("<br>")))
+                                                .append($("<span>").addClass("opacity-50")
+                                                    .append(item.DateApproveFormat))
+                                            ))));
+
+                            if (item.Comment !== "") {
+                                $("#divApprovelHistory" + '_line' + item.Seq)
+                                    .append($("<div>").addClass("form-group")
+                                        .append($("<div>").addClass("col-sm-12")
+                                            .append($("<textarea>").addClass("form-control input-sm").attr("readonly", true)
+                                                .append(item.Comment))));
+                            }
+                        }
+                    })
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+
+        $("#btnMdShortTermViewConfirm").on("click", function () {
+            p._confirm(true);
+        })
+        $("#btnMdShortTermViewRecall").on("click", function () {
+            p._confirm(false);
+        })
+
+        $("#btnMdApprovalInforApprove").on("click", function () {
+            p._approve(true);
+        })
+
+        $("#btnMdApprovalInforReject").on("click", function () {
+            p._approve(false);
+        })
+
+        $("#btnMdShortTermViewRecallApprove").on("click", function () {
+            p.recall();
+        })
+
+        $("#btnMdShortTermViewDelete").on("click", function () {
+            p._delete();
+        })
+
+
+        // =========================================================================
+        namespace.FormShortTermView = new FormShortTermView;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+</script>

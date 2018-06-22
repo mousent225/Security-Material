@@ -1,0 +1,855 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main-body" style="height:100%;">
+
+    <div id="toolbar" class="card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+        <form class="form" role="form">
+            <div class="input-daterange input-group" id="txtCreateDateRange" style="float:left; padding-right:10px" name="divHide">
+                <div class="form-group" style="padding:0">
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="start" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1))" />
+                        <label>Create Date</label>
+                    </div>
+                    <span class="input-group-addon">to</span>
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="end" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1))" />
+                        <div class="form-control-line"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="float:left;width:130px;padding-right:10px" name="divHide">
+                <div class="form-group">
+                    <select id="cbApplicationType" class="form-control input-sm">
+                        <option value="">&nbsp;</option>
+                        <option value="8">Short Term</option>
+                        <option value="9">Long Term</option>
+                    </select>
+                    <label for="cbApplicationType">Application Type</label>
+                </div>
+            </div>
+
+            <div style="float:left;width:130px">
+                <div class="form-group">
+                    <select id="cbStatus" class="form-control input-sm">
+                        <option value="">&nbsp;</option>
+                    </select>
+                    <label for="cbStatus">Status</label>
+                </div>
+            </div>
+
+            <div style="float: right; padding-top:10px">
+                <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                <button id="btnExport" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Export</button>
+                <button id="btnCopy" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary" name="divHide">Copy</button>
+                <div class="btn-group">
+                    <button type="button" class="btn ink-reaction btn-primary btn-sm">New</button>
+                    <button type="button" class="btn ink-reaction btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a href="#ShotTerm" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdAppDetail" data-id="8" name="btnNewVisitorApplication">Short Term</a></li>
+                        <li><a href="#LongTerm" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdAppDetail" data-id="9" name="btnNewVisitorApplication">Long Term</a></li>
+                    </ul>
+                </div><!--end .btn-group -->
+            </div>
+        </form>
+    </div>
+    <div style="clear:both"></div>
+    <div class="card card-underline">
+        <div class="card-head">
+            <ul class="nav nav-tabs pull-left" data-toggle="tabs">
+                <li class="active"><a href="#divApplications" name="tabVisitorMain">Applications</a></li>
+                <li><a href="#divVisitorMain" name="tabVisitorMain">Visitor</a></li>
+                <li><a href="#divVehicleMain" name="tabVisitorMain">Vehicle</a></li>
+            </ul>
+        </div><!--end .card-head -->
+        <div class="card-body tab-content">
+            <div class="tab-pane active" id="divApplications" name="tabVisitorMainContent" style="padding:3px">
+
+                <div id="grdApplicationMaster"></div>
+                <input type="hidden" id="hdfIsView" />
+            </div>
+            <div class="tab-pane" id="divVisitorMain" name="tabVisitorMainContent" style="padding:3px">
+                <div id="grdVisitorListChecking"></div>
+            </div>
+            <div class="tab-pane" id="divVehicleMain" name="tabVisitorMainContent" style="padding:3px">
+                <div id="grdVehicleListChecking"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+
+    <!-- BEGIN FORM MODAL APPLICATION DETAIL -->
+    <div class="modal fade" id="mdAppDetail" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:80%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="lblMdApplicationHeader">Application Detail</h4>
+                </div>
+                <div class="modal-body">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnMdAppDetailSave">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- BEGIN FORM MODAL APPLICATION DETAIL -->
+    <div class="modal fade" id="mdAppDetailEdit" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:80%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="lblMdApplicationHeader">Application Detail</h4>
+                </div>
+                <div class="modal-body">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnMdAppDetailEditSave">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- BEGIN FORM MODAL APPLICATION DETAIL -->
+    <div class="modal fade close-modal" id="mdAppDetailView" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:80%">
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END FORM MODAL APPLICATION DETAIL -->
+    <!-- BEGIN FORM MODAL VENDOR LIST -->
+    <div class="modal fade" id="mdVendorList" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:60%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">List of Vendor</h4>
+                    <input type="hidden" id="hdfVendorType" value="44ac3638-10bb-4b9a-af30-b3cb9fd6aaaa" />
+                </div>
+                <div class="modal-body">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button id="btnMdVendorListSelect" type="submit" class="btn btn-primary">Select</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END FORM MODAL VENDOR LIST-->
+    <!-- BEGIN FORM MODAL VENDOR -->
+    <div class="modal fade" id="mdVendor" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:50%">
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END FORM MODAL VENDOR -->
+    <!-- BEGIN FORM MODAL VENDOR VIEW -->
+    <div class="modal fade" id="mdVendorView" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:50%">
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END FORM MODAL VENDOR VIEW-->
+    <!-- BEGIN FORM MODAL EMPLOYEE INFOR -->
+    <div class="modal fade" id="mdEmpInfor" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:90%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Employee's Information</h4>
+                    <input type="hidden" id="hdfMdEmpInforEmpId" />
+                </div>
+                <div class="modal-body">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button id="btnMdEmpSelect" class="btn btn-primary">Select</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END FORM MODAL EMPLOYEE INFOR -->
+    <!-- BEGIN FORM MODAL APPROVALLINE -->
+    <div class="modal fade" id="mdApprovalLine" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:95%">
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END FORM MODAL APPROVALLINE-->
+    <!-- BEGIN FORM MODAL VISITOR INFOR -->
+    <div class="modal fade" id="mdVisitorInfor" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:816px">
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END FORM MODAL VISITOR INFOR-->
+    <!-- BEGIN FORM MODAL VISITOR INFOR VIEW -->
+    <div class="modal fade" id="mdVisitorInforView" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:816px">
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END FORM MODAL VISITOR INFOR VIEW-->
+
+</div>
+
+
+<script type="text/javascript">
+
+    //DateTime fromDate, DateTime toDate, string applicationType, string userId, string approvalStatus
+    var _minDate = new Date(2000, 01, 01);
+    var _maxDate = new Date(2990, 01, 01);
+    var _para = { fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString(), applicationType: "", userId: "", approvalStatus: "" };
+    var _localHref = window.location.href;
+    $(document).ready(function () {
+        fnInit();
+        var id
+    });
+
+    function fnInit() {
+        $('#txtCreateDateRange').datepicker({ todayHighlight: true, format: _dateFormat });
+
+        var d = new Date();
+        var firstDayIn = new Date(d.getFullYear(), d.getMonth(), 1);
+        var lastDayInMonth = new Date(new Date(d.getFullYear(), d.getMonth() + 1, 1) - 1);
+
+        fnGetCateValueViaParent("054E0F62-4EFE-41E1-A18D-5C28A6531539", false, $("#cbStatus"), 'EAF964F0-F557-40C7-AD06-F0B4A6571A4F');
+        //fnGetCateValueViaCateId("6169EBED-0F4A-4688-9991-4777D53CB4FE", false, $("#cbApplicationType"));
+
+        _para.fromDate = _minDate.toISOString();
+        _para.toDate = _maxDate.toISOString();
+
+        fnGridInitial(_para);
+    }
+
+    function fnGridInitial(para) {
+
+        var dateRange = $("#txtCreateDateRange").find("input");
+        _para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+        _para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+        _para.applicationType = $("#cbApplicationType").val();
+        _para.approvalStatus = $("#cbStatus").val();
+        _para.userId = $("#hdfLogInId").val();
+
+        $("#grdApplicationMaster").kendoGrid({
+            excel: {
+                fileName: "VisitorApplicationList_" + (new Date()).toLocaleDateString() + ".xlsx",
+                filterable: true,
+                allPages: true
+            },
+            dataSource: {
+                transport: {
+                    read: "/VisitorApplicationMaster/GetAll?fromDate=" + _para.fromDate + "&toDate=" + _para.toDate + "&applicationType=" + _para.applicationType + "&userId=" + _para.userId + "&approvalStatus=" + _para.approvalStatus,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            Id: { type: "int" }, IdEncypt: { type: "string" }, Code: { type: "string" }, Vendor: { type: "string" }, VendorName: { type: "string" },
+                            Applicant: { type: "string" }, ApplicantName: { type: "string" }, Purpose: { type: "string" },
+                            PurposeName: { type: "string" }, Gate: { type: "string" }, GateName: { type: "string" }, ApplicationType: { type: "string" }, ApplicationTypeName: { type: "string" },
+                            ApprovalLineJson: { type: "string" }, ApprovalLine: { type: "string" }, ApprovalStatus: { type: "string" }, ApprovalStatusName: { type: "string" },
+                            LocationOther: { type: "string" }, ApprovalKind: { type: "string" }, ApprovalKindName: { type: "string" }, FromDate: { type: "date" }, ToDate: { type: "date" },
+                            Location: { type: "string" }, ContactPerson: { type: "string" }, ContactNumber: { type: "string" },
+                            OrgName: { type: "string" }, PlantName: { type: "string" }, DeptName: { type: "string" }, SectionName: { type: "string" }, ConfirmDate: { type: "date" },
+                            NextApprover: { type: "string" }, NextApproverName: { type: "string" }, CreateUid: { type: "string" }, CreateName: { type: "string" }, CreateDate: { type: "date" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 178 - 45,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                var grid = this;
+                grid.tbody.find("tr").each(function (e) {
+                    $(this).css("white-space", "nowrap");
+                    var model = grid.dataItem(this);
+                    switch (model.ApprovalStatus.toUpperCase()) {
+                        case "9C817780-2079-4417-B87B-B7E537BBAE8A"://temporary
+                            $(this).children().first().addClass("style-warning");
+                            break;
+                        case "C4FF5A2F-CD32-4785-9499-A26E5148D58D"://process
+                            $(this).children().first().addClass("style-info");
+                            break;
+                        case "00F2EC64-CC9B-4FCA-AB4C-B37961EFAD53"://approve
+                            $(this).children().first().addClass("style-success");
+                            break;
+                        case "9A96D85B-8189-46BA-84CD-3389FDC501B7"://reject
+                            $(this).children().first().addClass("style-danger");
+                            break;
+                        default:
+                    }
+
+                    if (!model.IsView)
+                        $(this).css("font-weight", "bold");
+                });
+            },
+            selectable: "row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            navigatable: true,
+            dataBinding: function () {
+            },
+            columns: [
+                { title: "", template: "", width: 5 },
+                { field: "Code", title: "Doc No", width: "171px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "VendorName", title: "Company Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "PurposeName", title: "Purpose", width: "165px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "LocationName", title: "Location", width: "270px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "LocationOther", title: "Location Other", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                {
+                    title: "Visit Date",
+                    columns: [
+                        { field: "FromDate", title: "From", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" }  },
+                        { field: "ToDate", title: "To", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" }  }
+                    ], headerAttributes: _headerAttributes
+                },
+                {
+                    title: "Contact Point",
+                    columns: [
+                        { field: "ContactPerson", title: "Person", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "ContactNumber", title: "Telephone", width: "113px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    ], headerAttributes: _headerAttributes
+                },
+                {
+                    title: "Approval",
+                    columns: [
+                        { field: "ConfirmDate", title: "Confirm Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" }  },
+                        { field: "ApprovalStatusName", title: "Status", width: "116px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "NextApproverName", title: "Next Approver", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    ], headerAttributes: _headerAttributes
+                },
+                {
+                    title: "Person in Charge",
+                    columns: [
+                        { field: "Applicant", title: "Emp Id", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" }  },
+                        { field: "ApplicantName", title: "Name", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "OrgName", title: "Org Name", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "PlantName", title: "Plant", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "DeptName", title: "Department", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "SectionName", title: "Section", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                    ], headerAttributes: _headerAttributes
+                },
+                { field: "CreateUid", title: "Create Uid", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" }  },
+                { field: "CreateName", title: "Create Name", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, lockable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" }  }
+            ]
+        });
+    }
+    //GRID VISITOR
+    function fnGridVisitorInit() {
+        $("#grdVisitorListChecking").html("");
+
+        $("#grdVisitorListChecking").kendoGrid({
+            excel: {
+                fileName: "VisitorList_" + (new Date()).toLocaleDateString() + ".xlsx",
+                filterable: true,
+                allPages: true
+            },
+            dataSource: {
+                transport: {
+                    read: "/VisitorApplicationMaster/VisitorGetList?apprStatus=" + $("#cbStatus").val(),
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            FromDate: { type: "date" },
+                            ToDate: { type: "date" },
+                            WorkHourOfficle: { type: "bool" },
+                            WorkDate: { type: "date" },
+                            CreateDate: { type: "date" },
+                            NumCheck: { type: "number" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                var grid = this;
+                grid.tbody.find("tr").each(function (e) {
+                    $(this).css("white-space", "nowrap");
+
+                    var model = grid.dataItem(this);
+                    var now = new Date();
+                    if (model.FromDate <= now && now <= model.ToDate)
+                        $($(this).children()[2]).addClass("style-success");
+                    else
+                        $($(this).children()[2]).addClass("style-danger");
+                });
+
+
+            },
+            height: $('footer').position().top - 224,
+            selectable: "multiple row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            detailInit: _detailInit,
+            columns: [
+                { title: "", template: "", width: 5 },
+                { title: "", template: "", width: 5 },
+                { field: "NumCheck", title: "Check Num", width: "90px", attributes: { "class": "text-right" }, filterable: { cell: { showOperators: false } } },
+                { field: "Code", title: "Doc No", width: "171px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "VendorName", title: "Company Name", width: "232px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "IdentityCard", title: "Identity Card", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "VisitorName", title: "Visitor Name", width: "170px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "VisitorCard", title: "Visitor Card", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "PhoneNumber", title: "Phone", width: "130px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "FromDate", title: "From Date", width: "120px", format: "{0:yyyy.MM.dd}", filterable: false },
+                { field: "ToDate", title: "To Date", width: "120px", format: "{0:yyyy.MM.dd}", filterable: false },
+                { field: "GateNameRegis", title: "Gate", width: "168px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "WorkHourOfficleName", title: "Office Hours", width: "133px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } }
+            ]
+
+        });
+    }
+
+    function _detailInit(e) {
+        $("<div/>").appendTo(e.detailCell).kendoGrid({
+            dataSource: {
+                transport: {
+                    read: "/VisitorApplicationMaster/VisitorDetail?visitorId=" + e.data.VisitorId,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            WorkDate: { type: "date" }
+                        }
+                    }
+                },
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                pageSize: 20,
+                //filter: { field: "EmployeeID", operator: "eq", value: e.data.EmployeeID }
+            },
+            scrollable: false,
+            sortable: true,
+            pageable: true,
+            columns: [
+                { field: "GateName", title: "Gate", width: "135px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "WorkDate", title: "Work Date", width: "120px", format: "{0:yyyy.MM.dd}", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "ScanTime", title: "Scan Time", width: "90px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "IsCheckInName", title: "Scan Type", width: "90px", filterable: { cell: { showOperators: false, operator: "contains" }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } } },
+                { field: "VisitorCard", title: "Visitor Card", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "Remark", title: "Remark", width: "160px" }
+            ]
+        });
+    }
+    //GRID VEHICLE
+    function fnGridVehicleInit() {
+        $("#grdVehicleListChecking").html("");
+
+        $("#grdVehicleListChecking").kendoGrid({
+            excel: {
+                fileName: "VehicleList_" + (new Date()).toLocaleDateString() + ".xlsx",
+                filterable: true,
+                allPages: true
+            },
+            dataSource: {
+                transport: {
+                    read: "/VisitorApplicationMaster/VehicleGetList?apprStatus=" + $("#cbStatus").val(),
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            FromDate: { type: "date" },
+                            ToDate: { type: "date" },
+                            WorkDate: { type: "date" },
+                            CreateDate: { type: "date" },
+                            NumCheck: { type: "number" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+                var grid = this;
+                grid.tbody.find("tr").each(function (e) {
+                    $(this).css("white-space", "nowrap");
+
+                    var model = grid.dataItem(this);
+                    var now = new Date();
+                    if (model.FromDate <= now && now <= model.ToDate)
+                        $($(this).children()[2]).addClass("style-success");
+                    else
+                        $($(this).children()[2]).addClass("style-danger");
+                });
+            },
+            height: $('footer').position().top - 224,
+            selectable: "multiple row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            detailInit: _detailVehicleInit,
+            columns: [
+                { title: "", template: "", width: 5 },
+                { title: "", template: "", width: 5 },
+                { field: "NumCheck", title: "Num Check", width: "90px", attributes: { "class": "text-right" }, filterable: { cell: { showOperators: false } } },
+                { field: "Code", title: "Doc No", width: "171px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "VendorName", title: "Company Name", width: "232px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                //{ field: "DriverName", title: "Tên tài xế", width: "170px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                //{ field: "PhoneDriver", title: "Điện thoại", width: "170px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "DriverPlate", title: "Vehicle Plate", width: "100px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "VehicleTypeName", title: "Vehicle Type", width: "170px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+
+                { field: "FromDate", title: "From Date", width: "120px", format: "{0:yyyy.MM.dd}", filterable: false },
+                { field: "ToDate", title: "To Date", width: "120px", format: "{0:yyyy.MM.dd}", filterable: false },
+                { field: "GateNameRegis", title: "Gate", filterable: { cell: { showOperators: false, operator: "contains" } } },
+
+            ]
+
+        });
+    }
+    function _detailVehicleInit(e) {
+        $("<div/>").appendTo(e.detailCell).kendoGrid({
+            dataSource: {
+                transport: {
+                    read: "/VisitorWorkingDaily/VehicleDetail?visitorId=" + e.data.VehicleId,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            WorkDate: { type: "date" }
+                        }
+                    }
+                },
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                pageSize: 20,
+                //filter: { field: "EmployeeID", operator: "eq", value: e.data.EmployeeID }
+            },
+            scrollable: false,
+            sortable: true,
+            pageable: true,
+            columns: [
+                { field: "GateName", title: "Gate", width: "135px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "WorkDate", title: "Work Date", width: "120px", format: "{0:yyyy.MM.dd}", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "ScanTime", title: "Scan Time", width: "90px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "IsCheckInName", title: "Scan Type", width: "90px", filterable: { cell: { showOperators: false, operator: "contains" }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } } },
+                { field: "VehicleCard", title: "Vihicle Card", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "ChangeDriver", title: "Driver", width: "160px" },
+                { field: "Remark", title: "Remark", width: "160px" }
+            ]
+        });
+    }
+
+    var idEncrypt, applicationType;
+    $("#grdApplicationMaster").on("dblclick", "tbody > tr", function () {
+        var grid = $("#grdApplicationMaster").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+
+        idEncrypt = dataItem.IdEncrypt;
+        applicationType = dataItem.ApplicationType;
+        $("#hdfIsView").val(dataItem.IsView);
+        $("#mdAppDetailView").modal("show");
+        var link = '@Url.Action("ShowApplicationDetailView", "VisitorApplicationMaster", new { id = "vendorId" })';
+        $.get(link.replace('vendorId', dataItem.IdEncrypt + "_" + dataItem.ApplicationType + "_visitorapplication"), function (data) {
+                $("#mdAppDetailView .modal-dialog").html(data);
+                $("#mdAppDetailView .modal-body").css({ "max-height": $('footer').position().top - 130, overflow:"auto" });
+        });
+    })
+    $("#mdAppDetailView").on('hide.bs.modal', function (e) {
+        $("#mdAppDetailView .modal-dialog").html("");
+        if ($("#hdfIsView").val() === "false") {
+            fnGridInitial(_para);
+        }
+    });
+
+    $("#mdEmpInfor").on('shown.bs.modal', function () {
+        var empId = $("#hdfMdEmpInforEmpId").val();
+        var link = '@Url.Action("ShowModalEmployeeInfor", "Common", new { id = "empId" })';
+        $.get(link.replace('empId', empId), function (data) {
+            $("#mdEmpInfor .modal-body").html(data);
+            $("#mdEmpInfor .modal-body").css({ "max-height": $('footer').position().top - 175, overflow: "auto" });
+        });
+    });
+
+    function fnMdEmpInforClose() {
+        var grid = $("#gridEmpInfor").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null)
+            var dataItem = { LoginID: "", Name: "", OrganizeName: "", PlantName: "", DeptName: "", SectionName: "", DeptId: 0 };
+        _fnSetValueForElementEmployeeInfor(_employeeInfor, dataItem);
+    }
+
+    $("#mdVendorList").on('shown.bs.modal', function () {
+        var link = '@Url.Action("ShowVendorList", "VisitorApplicationMaster")';
+        $.get(link, function (data) {
+            $("#mdVendorList .modal-body").html(data);
+            $("#mdVendorList .modal-body").css({ "max-height": $('footer').position().top - 175, overflow: "auto" });
+        });
+    });
+
+    function fnMdVendorClose() {
+        var grid = $("#grdVendor").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null) {
+            var dataItem = { Id: 0, CompanyName: "", ContactPerson: "", Email: "", PhoneNumber: "", Address: "" };
+        }
+        _fnSetValueForElementVendorInformation($("input[name='VendorInformation']"), dataItem);
+    }
+
+    function fnShowDetailView(masterId, applicationType) {
+
+        var url = window.location.origin + "/VisitorApplicationMaster/ViewDetail/" + masterId;
+        var myWindow = window.open(url, "", "scrollbars=yes, top=20, left=50, width=1350, height=600")
+
+        @*$("#mdAppDetailView").modal("show");
+        var link = '@Url.Action("ShowApplicationDetailView", "VisitorApplicationMaster", new { id = "vendorId" })';
+        $.get(link.replace('vendorId', masterId + "_" + applicationType + "_visitorapplication"), function (data) {
+                $("#mdAppDetailView .modal-dialog").html(data);
+                $("#mdAppDetailView .modal-body").css({ "max-height": $('footer').position().top - 130, overflow:"auto" });
+        });*@
+    }
+
+
+    $("a[name='btnNewVisitorApplication']").unbind().on("click", function () {
+        var applicationId = $(this).attr("data-id");
+        var link = '@Url.Action("ShowApplicationDetail", "VisitorApplicationMaster", new { id = "applicationId"})';
+        _$preloader.show();
+        $.get(link.replace("applicationId", applicationId), function (data) {
+            $("#mdAppDetail .modal-body").html(data);
+            $("#mdAppDetail .modal-body").css({ "max-height": $('footer').position().top - 145, overflow: "auto" });
+        });
+        _$preloader.hide();
+    })
+
+    @*$("#mdAppDetail").on('shown.bs.modal', function () {
+        var link = '@Url.Action("ShowApplicationDetail", "VisitorApplicationMaster")';
+        $.get(link, function (data) {
+            $("#mdAppDetail .modal-body").html(data);
+            $("#mdAppDetail .modal-body").css({ "max-height": $('footer').position().top - 145, overflow: "auto" });
+        });
+    });*@
+
+    $("#mdAppDetailEdit").unbind().on('shown.bs.modal', function () {
+        //var grid = $("#grdApplicationMaster").data("kendoGrid");
+        //var dataItem = grid.dataItem($(grid.select()));
+
+        $("#mdAppDetailEdit").modal("show");
+        var link = '@Url.Action("ShowApplicationDetailEdit", "VisitorApplicationMaster", new { id = "vendorId" })';
+        $.get(link.replace('vendorId', idEncrypt + "_" + applicationType), function (data) {
+            $("#mdAppDetailEdit .modal-body").html(data);
+            $("#mdAppDetailEdit .modal-body").css({ "max-height": $('footer').position().top - 130, overflow:"auto" });
+        });
+    });
+    $("#mdAppDetailEdit").on('hidden.bs.modal', function () {
+        $("#mdAppDetailEdit .modal-body").html("");
+    });
+
+     $("#mdAppDetail").on('hidden.bs.modal', function () {
+         $.ajax({
+             type: "POST",
+             url: "/VisitorApplicationMaster/ApplicationMasterDelete",
+             data: JSON.stringify({ id: $("#hdfApplicationMasterId").val() }),
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             async: true,
+             cache: false,
+             success: function (result) {
+                 $("#mdAppDetail .modal-body").html("");
+             },
+             error: function (mess) {
+                 console.log(mess);
+                 return false;
+             }
+         });
+    });
+
+    $("#mdVisitorInforView").on('shown.bs.modal', function () {
+        var grid = $("#grdVisitorList").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null) {
+            $("#mdVisitorInforView").modal("hide");
+            return;
+        }
+        var link = '@Url.Action("ShowVisitorDetailView", "VisitorApplicationMaster", new { id = "empId" })';
+        $.get(link.replace('empId', dataItem.Id), function (data) {
+            $("#mdVisitorInforView .modal-dialog").html(data);
+            $("#mdVisitorInforView .modal-body").css({ "max-height": $('footer').position().top - 175, overflow: "auto" });
+        });
+     });
+
+     $("#mdVisitorInfor").on('hidden.bs.modal', function () {
+         $("#mdVisitorInfor .modal-dialog").html("");
+     });
+     $("#mdVisitorInforView").on('hidden.bs.modal', function () {
+         $("#mdVisitorInfor .modal-dialog").html("");
+     });
+
+    $("#mdVisitorInfor").on('shown.bs.modal', function () {
+        var link = '@Url.Action("ShowVisitorDetail", "VisitorApplicationMaster")';
+        $.get(link, function (data) {
+            $("#mdVisitorInfor .modal-dialog").html(data);
+            $("#mdVisitorInfor .modal-body").css({ "max-height": $('footer').position().top - 175, overflow: "auto" });
+        });
+     });
+
+
+    $("#mdVendor").on('shown.bs.modal', function () {
+        var link = '@Url.Action("ShowVendorInformation", "VisitorApplicationMaster")';
+        $.get(link, function (data) {
+            $("#mdVendor .modal-dialog").html(data);
+            $("#mdVendor .modal-body").css({ "max-height": $('footer').position().top - 175, overflow: "auto" });
+        });
+    });
+
+    $("#mdVendor").on('hidden.bs.modal', function () {
+        $("#mdVendor .modal-dialog").html("");
+    });
+
+    $("#btnSearch").on("click", function () {
+        if ($("#divApplications").is(":visible")) {
+            var dateRange = $("#txtCreateDateRange").find("input");
+
+            _para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+            _para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+
+            fnGridInitial(_para);
+        }
+        if ($("#divVisitorMain").is(":visible")) {
+            fnGridVisitorInit();
+        }
+        if ($("#divVehicleMain").is(":visible")) {
+            fnGridVehicleInit();
+        }
+    })
+
+    $("#btnExport").on("click", function () {
+        var gridName = "";
+        if ($("#divApplications").is(":visible")) {
+            gridName = "#grdApplicationMaster";
+        }
+        if ($("#divVisitorMain").is(":visible")) {
+            gridName = "#grdVisitorListChecking";
+        }
+        if ($("#divVehicleMain").is(":visible")) {
+            gridName = "#grdVehicleListChecking";
+        }
+        var grid = $(gridName).data("kendoGrid");
+        grid.saveAsExcel();
+    })
+
+    $("#btnCopy").on("click", function () {
+        var grid = $("#grdApplicationMaster").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null)
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "/VisitorApplicationMaster/ApplicationMasterCopy",
+            data: JSON.stringify({
+                id: dataItem.Id, applicationType: dataItem.ApplicationType
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result === "Ok") {
+                    showNotification("Hyosung Portal", "Operator success", "gray success");
+                    fnGridInitial();
+                } else {
+                    showNotification("Hyosung Portal", result, "gray error");
+                    console.log(result);
+                }
+            },
+            error: function () {
+                return [];
+            }
+        });
+    })
+
+    $("a[name='tabVisitorMain']").on("click", function () {
+        $("div[name='tabVisitorMainContent']").hide();
+        $($(this).attr("href")).show();
+
+        $("a[name='tabVisitorMain']").each(function (index, item) {
+            $(this).parent().removeClass("active");
+        })
+
+        $("div[name='tabVisitorMainContent']").each(function (index, item) {
+            $(this).addClass("tab-pane");
+        })
+
+        $(this).parent().addClass("active");
+        $($(this).attr("href")).removeClass("tab-pane");
+
+
+        switch ($(this).attr("href")) {
+            case "#divApplications":
+                fnGridInitial();
+                $("[name='divHide']").show();
+                break;
+            case "#divVisitorMain":
+                fnGridVisitorInit();
+                $("[name='divHide']").hide();
+                break;
+            case "#divVehicleMain":
+                fnGridVehicleInit();
+                $("[name='divHide']").hide();
+                break;
+            default:
+                fnGridInitial();
+                break;
+        }
+    })
+</script>

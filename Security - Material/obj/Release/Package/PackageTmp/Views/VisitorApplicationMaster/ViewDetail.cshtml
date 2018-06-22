@@ -1,0 +1,99 @@
+﻿@using SSO_Material.Utilities;
+@using System.Security.Claims;
+@model SSO_Material.ViewModels.SecurityApplication.VisitorApplicationMasterModel
+@{
+    ViewBag.Title = "ViewDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="toolbar" class="card" style="background-color:white; height:48px; padding:5px; margin-bottom:10px !important">
+    <div class="col-md-12">
+        <div style="float:right">
+            <input type="hidden" id="hdfApplicationId" value="@ViewBag.ApplicationId" />
+            <input type="hidden" id="hdfApplicationType" value="@Model.ApplicationType" />
+            <input type="hidden" id="hdfApproveStatus" value="@Model.ApprovalStatus" />
+            @if (User.GetClaimValue(ClaimTypes.Sid).ToUpper() == Model.NextApprover.ToUpper() && Model.ApprovalStatus.ToString().ToUpper() == "C4FF5A2F-CD32-4785-9499-A26E5148D58D")
+            {
+                <button id="btnMdShortTermViewApprove" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdApprovalInfor" type="submit" class="btn btn-primary btn-accent-dark">Approve</button>
+            }
+            @if (Model.IsRecall && Model.ApprovalLine.IndexOf(User.GetClaimValue(ClaimTypes.Sid)) != -1 && User.GetClaimValue(ClaimTypes.Sid) != Model.CreateUid)
+            {
+                <button id="btnMdShortTermViewRecallApprove" type="button" class="btn btn-primary btn-accent-dark">Recall</button>
+            }
+
+            @if (User.GetClaimValue(ClaimTypes.Sid) == Model.CreateUid)
+            {
+                if (Model.ApprovalStatus.ToString().ToUpper() == "9C817780-2079-4417-B87B-B7E537BBAE8A" && Model.ConfirmDate == null)
+                {
+                    <button id="btnMdShortTermViewConfirm" type="button" class="btn btn-primary btn-accent-dark">Confirm</button>
+                }
+                if (Model.IsRecall)
+                {
+                    <button id="btnMdShortTermViewRecall" type="button" class="btn btn-primary btn-accent-dark">Recall</button>
+                }
+                @*else if (!Model.IsRecall && Model.ApprovalStatus.ToString().ToUpper() == "9C817780-2079-4417-B87B-B7E537BBAE8A")
+                    {
+                        <button id="btnMdShortTermViewEdit" data-dismiss="modal" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdAppDetailEdit" type="button" class="btn btn-primary">Edit</button>
+                        <button id="btnMdShortTermViewDelete" type="button" class="btn btn-primary btn-danger">Delete</button>
+                    }*@
+            }
+        </div>
+    </div>
+</div>
+
+<div id="divContent">
+
+</div>
+
+
+<script type="text/javascript">
+    (function (namespace, $) {
+        "use strict";
+
+        var ApplicationViewDetail = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+                if ($("#hdfApproveStatus").val().toLowerCase() === "00f2ec64-cc9b-4fca-ab4c-b37961efad53") {
+                    $("#toolbar").hide();
+                } else {
+                    $("#toolbar").show();
+                }
+            });
+
+        };
+        var p = ApplicationViewDetail.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+            if ($("#hdfApplicationType").val() === "13") {
+                var link = '@Url.Action("ShowApplicationDetailView", "ContainerTracking", new { id = "vendorId" })';
+                $.get(link.replace('vendorId', $("#hdfApplicationId").val()), function (data) {
+                    $("#divContent").html(data);
+                    var $body = $("#divContent").find(".modal-body").first();
+                    $("#divContent").find(".modal-content").first().html($body).removeClass("modal-content").addClass("row");
+                    $("#divContent").find(".modal-body").first().removeClass("modal-body").addClass("col-md-12");
+                });
+            } else {
+                var link = '@Url.Action("ShowApplicationDetailView", "VisitorApplicationMaster", new { id = "vendorId" })';
+                $.get(link.replace('vendorId', $("#hdfApplicationId").val() + "_" + $("#hdfApplicationType").val() + "_visitorapplication"), function (data) {
+                    $("#divContent").html(data);
+                    var $body = $("#divContent").find(".modal-body").first();
+                    $("#divContent").find(".modal-content").first().html($body).removeClass("modal-content").addClass("row");
+                    $("#divContent").find(".modal-body").first().removeClass("modal-body").addClass("col-md-12");
+                    //$("#mdAppDetailView .modal-body").css({ "max-height": $('footer').position().top - 130, overflow:"auto" });
+                });
+            }
+
+
+        };
+
+        // =========================================================================
+        namespace.ApplicationViewDetail = new ApplicationViewDetail;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+</script>

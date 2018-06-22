@@ -1,0 +1,232 @@
+﻿
+<div id="toolbar" class="card" style="background-color:white; height:58px; margin-bottom:10px">
+    <div class="form card-body row" role="form">
+        <div class="col-md-9">
+            <div class="form-group">
+                <input type="text" class="form-control input-sm change-data" value="@ViewBag.EmpId" id="txtMdEmpId">
+                <label for="txtMdEmpId">Emp Id/Emp Name</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <select id="cbMdNation" class="form-control input-sm">
+                    <option value="">&nbsp;</option>
+                    <option value="01">Vietnamese</option>
+                    <option value="02">Korean</option>
+                </select>
+                <label for="cbMdNation">Nation</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <select id="cbMdSex" class="form-control input-sm">
+                    <option value="">&nbsp;</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+                <label for="cbMdSex">Sex</label>
+            </div>
+        </div>
+        @*<div class="col-md-1">
+                <div class="form-group">
+                    <select id="cbMdStatus" class="form-control input-sm">
+                        <option value="">&nbsp;</option>
+                    </select>
+                    <label for="cbMdStatus">Status</label>
+                </div>
+            </div>*@
+        <div class="col-md-1" style="padding: 10px 0 0 55px">
+            <button id="btnMdEmpSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="form card card-body" role="form" style="margin-bottom:0 !important">
+            <div id="tvMdEmpPlant"></div>
+            <input id="hdfMdEmpPlant" type="hidden" value="0" />
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div id="gridEmpInfor"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var dataEmployee = [];
+    var empId = "";
+    var _dataEmpInfor = [
+        { name: 'OrganizeName', type: 'string' },
+        { name: 'PlantName', type: 'string' },
+        { name: 'DeptName', type: 'string' },
+        { name: 'SectionName', type: 'string' },
+        { name: 'ID', type: 'string' },
+        { name: 'LoginID', type: 'string' },
+        { name: 'Name', type: 'string' },
+        { name: 'Email', type: 'string' },
+        { name: 'DeptFullName', type: 'string' },
+        { name: 'DeptId', type: 'string' },
+        { name: 'CostCenter', type: 'string' }
+    ];
+
+    var _paraMdEmp = {
+        deptCode: $("#hdfMdEmpPlant").val(), userId: $("#txtMdEmpId").val(), userName: $("#txtMdEmpId").val(), status: $("#cbMdStatus").val(), nation: $("#cbMdNation").val(), sex: $("#cbMdSex").val(), hasEmail: null
+    };
+
+    $(document).ready(function () {
+        fnMdEmpGetPlant();
+        fnMdEmpGrid();
+        $("#tvMdEmpPlant").css({ "max-height": $('footer').position().top - 287, "overflow": "auto", height: $('footer').position().top - 287 });
+    });
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------
+    //Load data function-------------------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------
+    //load dữ liệu cho cây phòng ban
+    function fnMdEmpGetPlant() {
+        var durl = "../../Common/GetDeptTreeView";
+        var data = new kendo.data.HierarchicalDataSource({
+            transport: {
+                read: {
+                    url: durl,
+                    contentType: "application/json"
+                },
+                cache: "inmemory"
+            },
+            schema: {
+                model: {
+                    id: "DeptCode",
+                    children: "Children",
+                    hasChildren: "HasChildren"
+                }
+            }
+        });
+        $("#tvMdEmpPlant").kendoTreeView({
+            dataSource: data,
+            loadOnDemand: true,
+            dataTextField: "EnName",
+            select: treeviewSelect
+        });
+        function treeviewSelect(e) {
+            var data = this.dataItem(e.node);
+            $("#hdfMdEmpPlant").val(data.Id);
+            fnMdEmpGrid();
+        }
+    }
+
+    function fnMdEmpGrid() {
+        _paraMdEmp = {
+            deptCode: $("#hdfMdEmpPlant").val(), userId: $("#txtMdEmpId").val(), userName: $("#txtMdEmpId").val(), status: $("#cbMdStatus").val(), nation: $("#cbMdNation").val(), sex: $("#cbMdSex").val(), hasEmail: null
+        };
+        $("#gridEmpInfor").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: "/Common/GetEmployeeInfor?deptCode=" + _paraMdEmp.deptCode + "&userId="
+                    + _paraMdEmp.userId + "&userName=" + _paraMdEmp.userName + "&status=" + _paraMdEmp.status + "&nation="
+                    + _paraMdEmp.nation + "&sex=" + _paraMdEmp.sex + "&hasEmail=" + _paraMdEmp.hasEmail,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            ID: { type: "string" }, LoginID: { type: "string" }, Name: { type: "string" }, Email: { type: "string" }, DeptFullName: { type: "string" }, DeptId: { type: "string" }, CostCenter: { type: "string" },
+                            OrganizeName: { type: "string" }, PlantName: { type: "string" }, DeptName: { type: "string" }, SectionName: { type: "string" }, CreateName: { type: "string" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 277,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+            },
+            selectable: "row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            columns: [
+                { field: "LoginID", title: "Emp Id", width: "110px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "Name", title: "Emp Name", width: "190px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "Email", title: "Email", width: "150px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "OrganizeName", title: "Org Name", width: "144px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "PlantName", title: "Plant", width: "144px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "DeptName", title: "Department", width: "150px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "SectionName", title: "Section", width: "150px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+            ]
+        });
+    }
+
+    function fnMdEmpGridGetSelected() {
+        var grid = $("#gridEmpInfor").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        return dataItem;
+    }
+
+    function fnMdEmpSetValue(data, empId, empName, orgName, plantName, deptName, sectName, deptId) {
+        empId.val(data.LoginID);
+        empName.val(data.Name);
+        orgName.val(data.OrganizeName);
+        plantName.val(data.PlantName);
+        deptName.val(data.DeptName);
+        sectName.val(data.SectionName);
+        deptId.val(data.DeptId);
+    }
+
+    $("#btnMdEmpSearch").on("click", function () {
+        fnMdEmpGrid();
+    });
+
+    $("#txtMdEmpId").keyup(function (e) {
+        if (e.keyCode == 13) {
+            fnMdEmpGrid();
+        }
+    });
+
+    $("#btnMdEmployeeConfirm").on("click", function () {
+
+        var selectionMode = $("#gridEmpInfor").jqxGrid("selectionmode");
+        //alert(selectionMode);
+        var getselectedrowindexes = $('#gridEmpInfor').jqxGrid('getselectedrowindexes');
+        if (getselectedrowindexes.length > 0) {
+            if (selectionMode === "singlerow") {
+                var selectedRowData = $('#gridEmpInfor').jqxGrid('getrowdata', getselectedrowindexes[0]);
+                if ($("#hdfEmpInforAddition").val() === "") {
+                    $("#txtEmpId").val(selectedRowData.LoginID);
+                    $("#txtEmpName").val(selectedRowData.Name);
+                    $("#txtCostCenter").val(selectedRowData.CostCenter);
+                    $("#hdfDeptId").val(selectedRowData.DeptId);
+                    $("#txtDeptName").val(selectedRowData.DeptFullName);
+                } else if ($("#hdfEmpInforAddition").val() === "samerole") {
+                    fnUpdateSameRole(selectedRowData);
+                }
+            }
+            else if (selectionMode === "checkbox") {
+                var dataResult = [];
+                for (var i = 0; i < getselectedrowindexes.length; i++) {
+                    var selectedRowData = $('#gridEmpInfor').jqxGrid('getrowdata', getselectedrowindexes[i]);
+                    dataResult.push(selectedRowData);
+                }
+                fnAddToGridDetail(dataResult);
+            }
+        }
+        $("#mdEmployeeInfor").modal("hide");
+    })
+
+    $("#gridEmpInfor").on("dblclick", "tbody > tr", function () {
+        fnMdEmpInforClose();
+        $("#mdEmpInfor").modal("hide");
+    })
+    $("#btnMdVendorListSelect").on("click", function () {
+        fnMdEmpInforClose();
+        $("#mdEmpInfor").modal("hide");
+    });
+
+</script>

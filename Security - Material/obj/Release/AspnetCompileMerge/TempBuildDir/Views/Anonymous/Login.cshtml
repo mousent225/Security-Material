@@ -1,0 +1,228 @@
+﻿@model SSO_Material.ViewModels.LoginModel
+@{
+    Layout = null;
+}
+
+
+<style type="text/css">
+    table {
+        border-collapse: collapse;
+        border-spacing: 0px;
+    }
+
+        table td {
+            border-style: none !important;
+            padding: 0 !important;
+        }
+
+        table tr:nth-child(odd) td {
+            background: #EAEBED;
+        }
+
+        table tr:nth-child(even) td {
+            background: #EAEBED;
+        }
+
+    .overflow {
+        overflow: hidden;
+    }
+</style>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="description" content="K System & Solution Co., Ltd Platform" />
+    <meta name="keywords" content="ksystem, hrm , accouting , sale" />
+    <title>Login | Hyosung Viet Nam Portal </title>
+    <!-- Favicons-->
+    <link rel="icon" href="~/favicon.ico" sizes="32x32">
+
+    <link href="~/Content/bootstrap-modal.css" rel="stylesheet" />
+    <link href="~/Content/custom-style.min.css" rel="stylesheet" />
+    <link href="~/Content/freeow/freeow.css" rel="stylesheet" />
+</head>
+<body oncontextmenu="return false" style="height: 100%; width: 100%">
+    <!-- Start Page Loading -->
+    @using (Html.BeginForm("Login", "Anonymous", null, FormMethod.Post, new { @role = "form", @class = "overflow" }))
+    {
+        <!-- Freeown-Alert -->
+        <div id="freeow-tr" class="freeow freeow-top-right"></div>
+        @Html.Hidden("hdfStatusLogin", (string)ViewBag.Status)
+        @Html.Hidden("hdfPassword", Model.Password)
+        @Html.Hidden("hdfErrorMessage", (string)ViewBag.ErrorMessage)
+        <div class="wrap-login">
+            <table border="0" cellpadding="0" cellspacing="0" width="400" height="252" align="center">
+                <tr>
+                    <td colspan="3" height="150" style="background:white"></td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="left" style="background:white; text-align:left"><img src="~/Content/img/h_logo.png"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><img src="~/Content/img/login_top.png" border="0"></td>
+                </tr>
+                <tr>
+                    <td><img src="~/Content/img/login_left.gif"></td>
+                    <td align="center" valign="middle">
+                        <table border="0" cellpadding="0" cellspacing="0" width="334" bgcolor="#EAEBED">
+                            <tr>
+                                <td align="right" width="210" class="label" style="vertical-align:middle; text-align:right; padding-right:3px !important">ID</td>
+                                <td>
+                                    <div>
+                                        @Html.TextBoxFor(model => model.LoginID, new { @id = "txtLoginId", @class = "" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="line-height: 10%;">
+                                <td align="right" class="label" style="vertical-align:middle; text-align:right; padding-right:3px !important">Password</td>
+                                <td>
+                                    <div>
+                                        @Html.PasswordFor(model => model.Password, new { @id = "txtPassword", @class = "", @style = "width: 100%" })
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" height="5"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:right !important">
+                                    <div style="float:right">
+                                        <button class="login" style="background: url(/Content/img/login_btn.gif) no-repeat; width: 68px; height: 21px; cursor: pointer; border: 0"></button>
+                                    </div>
+                                    <div style="float:right">
+                                        @Html.CheckBoxFor(model => model.Remember, new { @id= "cRemember" })<label class="remember label" for="cRemember">ID remember</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td><img src="~/Content/img/login_right.gif" border="0"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <img src="~/Content/img/login_bottom.png" border="0">
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    }
+    <div id="modalChangePass" class="modal fade" tabindex="-1" data-width="480" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>
+                <label>Change password</label>
+            </h4>
+        </div>
+        <div class="modal-body">
+            @Url.Action("ChangePass", "Anonymous")
+        </div>
+        <div class="modal-footer">
+            <a class="Lbtn" href="javascript:;"> <input onclick="_doOnChangePassword()" type="button" value="Confirm"></a>
+            <a class="Lbtn" href="javascript:;"> <input data-dismiss="modal" type="button" value="Cancel"></a>
+        </div>
+    </div>
+</body>
+<script src="~/Scripts/common/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/common/bootstrap-modal.js"></script>
+<script src="~/Scripts/common/bootstrap-modalmanager.js"></script>
+<script src="~/Scripts/common/common.js"></script>
+<script src="~/Scripts/common/jquery.freeow.min.js"></script>
+<script type="text/javascript">
+    var LoginModel = {
+        LoginID: "",
+        Password: "",
+        Remember: false
+    }
+    var UserModel = {
+        LoginID: "",
+        Password:"",
+        PasswordOld: "",
+        PasswordNew: "",
+        PasswordRepeat:""
+    }
+    $('#modalChangePass').on('hidden.bs.modal', function () {
+        $("#modalChangePass .modal-dialog .modal-body").html("");
+    });
+
+    $('#modalChangePass').on('show', function () {
+        window.setTimeout(function () {
+            var link = '@Url.Action("ChangePass", "Anonymous")';
+            $.get(link, function (data) {
+                $("#modalChangePass .modal-body").html(data);
+            });
+        }, 500);
+    });
+    $(document).ready(function () {
+        var loginStatus = $("#hdfStatusLogin").val();
+        if (loginStatus !== "") {
+            var link = '@Url.Action("ChangePass", "Anonymous")';
+            $.get(link, function (data) {
+                $("#modalChangePass .modal-body").html(data);
+            });
+            $("#modalChangePass").css({ top: "30%" });
+            $("#modalChangePass").modal("show");
+        }
+        if ($("#hdfErrorMessage").val() !== "") {
+            showNotification("Hyosung Portal", $("#hdfErrorMessage").val(), "gray error");
+        }
+    });
+
+
+    function getData() {
+        UserModel.LoginID = $("#txtLoginId").val();
+        UserModel.Password = $("#hdfPassword").val();
+        UserModel.PasswordOld = $("#PasswordOld").val();
+        if (!fnCheckEmpty($("#PasswordOld"), "Xin nhập lại mật khẩu cũ"))
+            return false;
+
+        UserModel.PasswordNew = $("#PasswordNew").val();
+        if (!fnCheckEmpty($("#PasswordNew"), "Xin nhập vào mật khẩu mới"))
+            return false;
+
+        //if (UserModel.PasswordOld === UserModel.PasswordNew) {
+        //    $("#PasswordNew").focus();
+        //    showNotification("Hyosung Portal", "The new password must have different with old password", "gray error");
+        //    return false;
+        //}
+        UserModel.PasswordRepeat = $("#PasswordRepeat").val();
+        if (!fnCheckEmpty($("#PasswordRepeat"), "Xin xác nhận lại mật khẩu mới"))
+            return false;
+
+        if (UserModel.PasswordNew !== UserModel.PasswordRepeat) {
+            $("#PasswordRepeat").focus();
+            showNotification("Hyosung Portal", "Mật khẩu vừa nhập không trùng khớp", "gray error");
+            return false;
+        }
+        return true;
+    }
+
+    function _doOnChangePassword() {
+        if (!getData())
+            return false;
+        $.ajax({
+            url: "/Anonymous/UpdatePass",
+            async: false,
+            type: "POST",
+            data: JSON.stringify(UserModel),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.result === "OK") {
+                    showNotification("Hyosung Portal", "Cập nhật mật khẩu thành công!", "gray success");
+                    $("#modalChangePass").modal("hide");
+                    $("#txtPassword").val("");
+                } else {
+                    showNotification("Hyosung Portal", data.mess, "gray error");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
+
+</script>

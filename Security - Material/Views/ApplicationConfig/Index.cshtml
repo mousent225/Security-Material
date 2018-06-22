@@ -1,0 +1,190 @@
+﻿@using System.Security.Claims
+@using SSO_Material.Utilities
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main-body" class="row" style="height:100%;">
+    <div class="col-md-7">
+        <div id="toolbar" class="row card" style="background-color:white; height:45px; padding:5px; margin-bottom:10px">
+            <div style="float:left;width:223px">
+                <label for="txtFromDate">From date</label>
+                <input type="text" class="form-control input-sm" id="txtFromDate">
+            </div>
+            <div style="float:left;width:223px">
+                <label for="txtToDate">To date</label>
+                <input type="text" class="form-control input-sm" id="txtToDate">
+            </div>
+            <div>
+                <div style="float: right">
+                    <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="grdApplicationConfig"></div>
+        </div>
+    </div>
+    <div class="col-md-5">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    var _minDate = new Date(2000, 01, 01);
+    var _maxDate = new Date(2990, 01, 01);
+    var _para = { fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString() };
+    $(document).ready(function () {
+
+        var d = new Date();
+        var firstDayIn = new Date(d.getFullYear(), d.getMonth(), 1);
+        var lastDayInMonth = new Date(new Date(d.getFullYear(), d.getMonth() + 1, 1) - 1);
+
+        $("#txtFromDate").kendoDatePicker({ format: "yyyy.MM.dd", width: "110px" });
+        $("#txtToDate").kendoDatePicker({ format: "yyyy.MM.dd", width: "110px" });
+
+        $("#txtFromDate").parent().parent().css({ width: "115px" });
+        $("#txtToDate").parent().parent().css({ width: "115px" });
+
+        var fromDate = $("#txtFromDate").data("kendoDatePicker");
+        var toDate = $("#txtToDate").data("kendoDatePicker");
+
+        _para.fromDate = fromDate.value() == null ? _minDate.toISOString() : fromDate.value().toISOString();
+        _para.toDate = toDate.value() == null ? _maxDate.toISOString() : toDate.value().toISOString();
+
+        fnGridInitial(_para);
+    });
+    function fnGridInitial(para) {
+        $("#grdApplicationConfig").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: "/ApplicationConfig/GetAll?fromDate=" + para.fromDate + "&toDate=" + para.toDate,
+                    create: {
+                        /* omitted for brevity */
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            Code: { type: "string" },
+                            Name: { type: "string" },
+                            DeptId: { type: "int" },
+                            DeptName: { type: "string" },
+                            ApprovalLineDefault: { type: "string" },
+                            ApprovalLineJson: { type: "string" },
+                            ApprovalKind: { type: "string" },
+                            Description: { type: "date" },
+                            KindName: { type: "string" },
+                            CreateName: { type: "string" },
+                            CreateDate: { type: "date" },
+                            Active: { type: "bool" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 178,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+
+            },
+            selectable: "row",
+            //change: onChange,
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            columns: [{
+                field: "Code",
+                title: "Doc No",
+                width: "160px",
+                filterable: {
+                    cell: {
+                        showOperators: false,
+                        operator: "contains"
+                    }
+                }
+            },
+            {
+                field: "Name",
+                title: "Doc Name",
+                width: "360px",
+                filterable: {
+                    cell: {
+                        showOperators: false,
+                        operator: "contains"
+                    }
+                }
+            },
+            {
+                field: "DeptName",
+                title: "Depament Name",
+                width: "280px",
+                attributes: { style: 'white-space: nowrap ' },
+                filterable: {
+                    cell: {
+                        showOperators: false,
+                        operator: "contains"
+                    }
+                }
+            },
+
+            {
+                field: "ApprovalLineDefault",
+                title: "Approval Line",
+                width: "140px",
+                attributes: { style: 'white-space: nowrap ' },
+                filterable: {
+                    cell: {
+                        showOperators: false,
+                        operator: "contains"
+                    }
+                }
+            }, {
+                field: "KindName",
+                title: "Approval Kind",
+                width: "140px",
+                filterable: {
+                    cell: {
+                        showOperators: false,
+                        operator: "contains"
+                    }
+                }
+            },
+            {
+                field: "CreateName",
+                title: "Creators",
+                width: "180px",
+                filterable: {
+                    cell: {
+                        showOperators: false,
+                        operator: "contains"
+                    }
+                }
+            },
+            {
+                field: "CreateDate",
+                title: "Create Date",
+                format: "{0:yyyy.MM.dd}",
+                width: "150px",
+                filterable: false
+            }]
+        });
+    }
+
+    $("#btnSearch").on("click", function () {
+        var fromDate = $("#txtFromDate").data("kendoDatePicker");
+        var toDate = $("#txtToDate").data("kendoDatePicker");
+
+        _para.fromDate = fromDate.value() == null ? _minDate.toISOString() : fromDate.value().toISOString();
+        _para.toDate = toDate.value() == null ? _maxDate.toISOString() : toDate.value().toISOString();
+        fnGridInitial(_para);
+    })
+
+
+</script>

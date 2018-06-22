@@ -1,0 +1,350 @@
+﻿
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Passing Goods</h4>
+</div>
+<div class="modal-body">
+    <div id="wzShortTerm" class="form-wizard form-wizard-horizontal">
+        <div id="frmViolation" role="form" class="form card card-body font-awesome-minus">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtItemName" maxlength="200">
+                        <label for="txtItemName" class="label-require">Item Name</label>
+                        <input type="hidden" id="hdfPassingGoodsId" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtSerial" maxlength="50">
+                        <label for="txtSerial" class="label-require">Serial No</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <input type="number" class="form-control input-sm change-data" id="txtQuantity" min="1" value="1">
+                        <label for="txtQuantity" class="label-require">Quantity</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @*@if (ViewBag.ReImport)
+            {*@
+                @*<div class="col-md-2">
+                    <div class="form-group">
+                        <div class="checkbox checkbox-styled">
+                            <label>
+                                <input id="cbDetailReImport" type="checkbox">
+                                <span>ReImport</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>*@
+                <div class="col-md-2">
+                    <div class="form-group date" id="txtDetailReImportDate" style="padding-top:0">
+                        <div class="input-group-content">
+                            <input type="text" class="form-control input-sm">
+                            <label>ReImport Date</label>
+                        </div>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                @*}*@
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtItemLocation" maxlength="50">
+                        <label for="txtItemLocation">Item Location</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <textarea style="resize:vertical" id="txtDesc" class="form-control input-sm" rows="2" maxlength="500"></textarea>
+                        <label for="txtDesc">Description</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="text-primary" style="border-bottom:1px dotted">Image</h4>
+                </div>
+            </div>
+            <!-- BEGIN FILE UPLOAD -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body no-padding">
+                            <form class="dropzone" id="dzFileUpload" action="SaveUploadedFile">
+                                <div class="dz-message">
+                                    <h3>Drop files here or click to upload.</h3>
+                                </div>
+                            </form>
+                        </div><!--end .card-body -->
+                    </div><!--end .card -->
+                </div><!--end .col -->
+            </div><!--end .row -->
+            <!-- END FILE UPLOAD -->
+
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="form-group" style="float:left; margin-bottom:0px">
+        <div class="checkbox checkbox-styled">
+            <label>
+                <input id="cbMdVisitorContinuous" type="checkbox">
+                <span>Continuous</span>
+            </label>
+        </div>
+    </div>
+    <button id="btnDetailSave" type="submit" class="btn btn-primary submit">Save</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+
+
+
+<script type="text/javascript">
+    var _visitorList = [
+        //{ FullName: "", IdentifyNo: "", PhoneNumber: "", FromDate: new Date(), ToDate: new Date(), DriverPlate: "", VehicleType: "", IsContactPerson: false, IsWorkHourOfficial: false }
+    ];
+
+    var _visitPlant = [];
+
+    var _apprLine = [];
+    var _circulator;
+    var _apprLineDefault;
+    var _circulatorDefault;
+    var _apprLineRecent;
+    var _circulatorRecent;
+
+    (function (namespace, $) {
+        "use strict";
+        var _entityDetail = {
+            Id: 0, MasterId: 0, ItemName: "", Serial: "", Description: "", Quantity: 1, ItemLocation: "",
+            PassDate: new Date(), ImportDate: new Date(), IsAttachment: false, Remark: "", ReImport: false, ReImportDate: new Date()
+        };
+
+        var _attachmentFile = [];
+
+        var FormPassingGoods = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+        };
+        var p = FormPassingGoods.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+
+            $("#txtDetailReImportDate").datepicker({ autoclose: true, todayHighlight: true, format: _dateFormat, startDate: _entity.ApplicationDate, endDate: null });
+
+            var o = this;
+            $("#divMdApprovalLineSearch").css({ height: $("footer").position().top - 299, "max-height": $("footer").position().top - 299, overflow: "auto" });
+            fnGetCateValueViaCateId("C6820F36-56BB-4F92-A128-73BA0F45C436", false, $("#cbViolationType"));
+
+            var imageUpload = $("#dzFileUpload").dropzone({
+                url: "SaveUploadedFile",
+                addRemoveLinks: true,
+                resizeWidth: "195px",
+                maxFiles: 3,
+                maxFilesize: 3,
+                dictRemoveFile: 'Remove file',
+                acceptedFiles: 'image/*',
+                success: function (file, response) {
+                    var item = { Type: file.type, Size: file.size, Name: file.name, Path: response.Message, ModuleId: "8C0D1530-AB8F-40D0-922C-63C9A208778A", MasterId: 0 };
+                    _attachmentFile.push(item);
+                },
+            });
+
+        };
+
+        // =========================================================================
+        // SELECT DATA FROM DB
+        // =========================================================================
+        p._getGridDetail = function () {
+            $("#grdPassingGoodsDetail").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/PassingGoods/GetDetailViaMaster?id=" + 0 + "&masterId=" + $("#hdfMasterId").val(),
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                PassDate: { type: "date" },
+                                ImportDate: { type: "date" },
+                                ReImportDate: { type: "date" },
+                                ReImport: { type: "bool" },
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                //toolbar: ["create"],
+                height: $('footer').position().top - 455,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                dataBinding: function () {
+                    //record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+                    //console.log(record);
+                },
+                resizable: true,
+                cache: false,
+                editable: "inline",
+                columns: [
+                    { field: "ItemName", title: "Item Name", width: "135px" },
+                    { field: "Serial", title: "Serial", width: "90px" },
+                    { field: "Description", title: "Description" },
+                    { field: "Quantity", title: "Quantity", width: "85px" },
+                    { field: "ReImportName", title: "ReImport", width: "85px" },
+                    { field: "ReImportDate", title: "ReImport Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false },
+                    { field: "ItemLocation", title: "ItemLocation", width: "135px" },
+                    { field: "Remark", title: "Remark", width: "135px" }
+                ]
+
+            });
+        }
+
+
+        // =========================================================================
+        // ACTION CRUD
+        // =========================================================================
+        p._getData = function () {
+
+            _entityDetail.MasterId = $("#hdfMasterId").val();
+            _entityDetail.ItemName = $("#txtItemName").val();
+            _entityDetail.Serial = $("#txtSerial").val();
+
+            if (!_fnCheckEmpty($("#txtItemName").find("input"), "Please input into Item Name"))
+                return false;
+            
+            //_entityDetail.ReImport = $("#cbDetailReImport").prop("checked");
+            _entityDetail.ReImportDate = $("#txtDetailReImportDate").datepicker("getDate");
+
+            //if ($("#txtDetailReImportDate").find("input").val() === "" && $("#cbDetailReImport").prop("checked")) {
+            //    showNotification("Hyosung Portal", "Please select the reimport date", "gray error");
+            //    return false;
+            //}
+            
+            _entityDetail.ItemLocation = $("#txtItemLocation").val();
+            _entityDetail.Description = $("#txtDesc").val();
+            _entityDetail.Quantity = $("#txtQuantity").val();
+
+            _entityDetail.IsAttachment = _attachmentFile.length !== 0;
+
+            if (_entityDetail.Serial === "" && _attachmentFile.length === 0) {
+                showNotification("Hyosung Portal", "Please input the serial or attachment image", "gray error");
+                return false;
+            }
+            console.log(_entityDetail);
+            return true;
+        };
+        p._resetData = function (ent) {
+            $("#txtItemName").val(ent.ItemName);
+            $("#txtSerial").val(ent.Serial);
+            $("#txtQuantity").val(ent.Quantity);
+            //$("#cbDetailReImport").prop("checked", ent.ReImport);
+            $("#txtDetailReImportDate").find("input").val(kendo.toString(ent.ReImportDate, _dateFormatKendo));
+            $("#txtItemLocation").val(ent.ItemLocation);
+            $("#txtDesc").val(ent.Description);
+            Dropzone.forElement("#dzFileUpload").removeAllFiles(true);
+        }
+        p._insertData = function () {
+            if (!this._getData())
+                return false;
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/PassingGoods/DetailInsert",
+                data: JSON.stringify({ model: _entityDetail }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result !== 0) {
+                        showNotification("Hyosung Portal", "Operator success", "gray success");
+
+                        _entityDetail = {
+                            Id: 0, MasterId: 0, ItemName: "", Serial: "", Description: "", Quantity: 1, ItemLocation: "",
+                            PassDate: new Date(), ImportDate: new Date(), IsAttachment: false, Remark: "", ReImport: false, ReImportDate: null//new Date()
+                        };
+                        p._resetData(_entityDetail);
+
+                        if (!$("#cbMdVisitorContinuous").prop("checked"))
+                            $("#mdPassingGoodsDetail").modal("hide");
+                        if (_attachmentFile.length >= 1) {
+                            for (var i = 0; i < _attachmentFile.length; i++) {
+                                _attachmentFile[i].MasterId = result;
+                            }
+                            o._insertAttachment();
+                        }
+                        p._getGridDetail();
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+
+        }
+
+        p._insertAttachment = function () {
+            $.ajax({
+                type: "POST",
+                url: "/Common/AttachmentInsert",
+                data: JSON.stringify({ model: _attachmentFile }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    //alert(result);
+                    console.log(result);
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+
+
+        // =========================================================================
+        // ACTION
+        // =========================================================================
+        $("#btnDetailSave").on("click", function () {
+            p._insertData();
+        })
+
+        $("#grdPassingGoodsDetail").on("dblclick", "tbody > tr", function () {
+            var grid = $("#grdPassingGoodsDetail").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+
+            $("#mdPassingGoodsDetailView").modal("show");
+            var link = '@Url.Action("ShowPopupDetailView", "PassingGoods", new { id = "vendorId" })';
+            $.get(link.replace('vendorId', dataItem.Id), function (data) {
+                $("#mdPassingGoodsDetailView .modal-content").html(data);
+                $("#mdPassingGoodsDetailView .modal-body").css({ "max-height": $('footer').position().top - 130, overflow:"auto" });
+            });
+        })
+
+        // =========================================================================
+        namespace.FormPassingGoods = new FormPassingGoods;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+
+    //function fnGridEmpInforDblclick(data) {
+    //    _fnSetValueForElementEmployeeInfor($("input[name='EmployeeInfor']"), data);
+    //}
+</script>

@@ -1,0 +1,757 @@
+﻿@using SSO_Material.Utilities;
+@using System.Security.Claims;
+@model SSO_Material.ViewModels.SecurityApplication.PassingGoodsMasterModel
+<link href="~/Content/assets/css/theme-1/libs/wizard/wizard.css" rel="stylesheet" />
+<style type="text/css">
+    .wizard-bg {
+        background: url('../../Content/img/top-bg-5.png') repeat-x #f5f5f5;
+    }
+
+    .wizard-bg-hd-left {
+        text-align: right;
+    }
+
+        .wizard-bg-hd-left p {
+            font-weight: 700;
+            margin: auto;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+    .wizard-bg-hd-right {
+        text-align: left;
+    }
+
+        .wizard-bg-hd-right p {
+            font-weight: 700;
+            margin: auto;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+    .glyphicon-top {
+        top: 2px;
+    }
+
+    .span-reject {
+        background-color: #f44336 !important;
+        border-color: #f44336 !important;
+    }
+</style>
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Passing Goods</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="wzShortTerm" class="form-wizard form-wizard-horizontal">
+                    <form id="frmShortTermView" role="form" class="form card card-body font-awesome-minus">
+
+                        <input type="hidden" id="hdfApplicationType" value="12" />
+                        <input type="hidden" id="hdfMasterId" value="@Model.Id" />
+                        <input type="hidden" id="hdfNextApprover" value="@Model.NextApprover" />
+                        <input type="hidden" id="hdfIdEncrypt" value="@Model.IdEncrypt" />
+                        <div class="form-wizard-nav wizard-bg">
+                            <div class="row">
+                                @if (Model.ApprovalStatus.ToUpper() == "00F2EC64-CC9B-4FCA-AB4C-B37961EFAD53")
+                                {
+                                    <div class="col-md-6 wizard-bg-hd-left">
+                                        <p>Doc No</p>
+                                        <p style="float:right">Status</p>
+                                    </div>
+                                    <div class="col-md-6 wizard-bg-hd-right">
+                                        <p>@Model.Code</p>
+                                        <p style="color:#7bc828; float:left">@Model.ApprovalStatusName</p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-6 wizard-bg-hd-left">
+                                        <p>Doc No</p>
+                                        <p style="color:#7bc828; float:right">@Model.ApprovalStatusName</p><p style="float:right">Status &emsp; </p>
+                                    </div>
+                                    <div class="col-md-6 wizard-bg-hd-right">
+                                        <p>@Model.Code</p>
+                                        @if (Model.ApprovalStatus.ToUpper() == "9C817780-2079-4417-B87B-B7E537BBAE8A")
+                                        {
+                                            <p style="color:red">You have to confirmed</p>
+                                        }
+                                        else
+                                        {
+                                            <p style="float:left">Next Approver &emsp; </p><p style="color:#7bc828; float:left">@Model.NextApproverName</p>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="progress" style="top:88px"><div class="progress-bar progress-bar-primary"></div></div>
+                            <ul class="nav nav-justified" style="padding-top:10px"></ul>
+
+                            @if (Model.ApprovalLine.Split('|').Length == 5)
+                            {
+                                if (@Model.ApprovalLine.Split('|')[4] != "")
+                                {
+                                    <div class="row">
+                                        <div class="form-group">
+                                            @*<div class="col-md-1">
+                                                    <label for="txtEmpId">Circulator</label>
+                                                </div>*@
+                                            <div class="col-md-12">
+
+                                                <input type="text" class="form-control input-sm change-data" value="@Model.ApprovalLine.Split('|')[4]" readonly>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                @if (!string.IsNullOrEmpty(Model.ExportUid))
+                                {
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4 class="text-primary" style="border-bottom:1px dotted">Export Information</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group has-feedback">
+                                                <input type="text" class="form-control input-sm change-data" id="txtExportUid" value="@Model.ExportUid" readonly>
+                                                <label for="txtExportUid">Guard Id</label>
+                                                <span class="glyphicon glyphicon-search form-control-feedback" style="cursor:pointer"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group has-feedback">
+                                                <input type="text" class="form-control input-sm change-data" id="txtExportName" value="@Model.ExportName" readonly>
+                                                <label for="txtExportName">Guard Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group date" id="txtExportDate" style="padding-top:0">
+                                                <div class="input-group-content">
+                                                    <input type="text" class="form-control input-sm" value="@string.Format("{0:yyyy.MM.dd}", Model.ExportDate)" readonly>
+                                                    <label>Export Date</label>
+                                                </div>
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group has-feedback">
+                                                <input type="text" class="form-control input-sm change-data" id="txtExportGate" value="@Model.ExportGate" readonly>
+                                                <label for="txtExportGate">Export Gate</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="text-primary" style="border-bottom:1px dotted">Person in charge</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group date" id="txtApplicationDate" style="padding-top:0">
+                                            <div class="input-group-content">
+                                                <input type="text" class="form-control input-sm" value="@string.Format("{0:yyyy.MM.dd}", Model.ApplicationDate)" readonly>
+                                                <label>Application Date</label>
+                                            </div>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group has-feedback">
+                                            <input type="text" class="form-control input-sm change-data" id="txtPicEmpId" value="@Model.Applicant" name="PicEmployeeInfor" maxlength="20" readonly>
+                                            <label for="txtPicEmpId">Emp Id/Name</label>
+                                            <span class="glyphicon glyphicon-search form-control-feedback" style="cursor:pointer"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control input-sm change-data" id="PictxtPicEmpName" value="@Model.ApplicantName" name="PicEmployeeInfor" readonly>
+                                            <label for="txtPicEmpName">Name</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="hidden" name="PicEmployeeInfor" />
+                                            <input type="hidden" name="PicEmployeeInfor" />
+                                            <input type="text" class="form-control input-sm change-data" name="PicEmployeeInfor" value="@Model.OrgName" id="txtPicOrgName" readonly>
+                                            <label for="txtPicOrgName">Organization</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control input-sm change-data" name="PicEmployeeInfor" value="@Model.PlantName" id="txtPicPlantName" readonly>
+                                            <label for="txtPicPlantName">Plant</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control input-sm change-data" name="PicEmployeeInfor" value="@Model.DeptName" id="txPictDeptName" readonly>
+                                            <label for="txtPicDeptName">Department</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control input-sm change-data" name="PicEmployeeInfor" value="@Model.SectionName" id="txtPicSectName" readonly>
+                                            <label for="txtPicSectName">Section</label>
+                                            <input type="hidden" id="hdfPicDeptId" name="PicEmployeeInfor" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-sm change-data" id="txtReason" value="@Model.Reason" readonly>
+                                    <label for="txtReason">Reason</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-primary" style="border-bottom:1px dotted">List of Goods</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="grdPassingGoodsDetail"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!--end #rootwizard -->
+        </div>
+    </div>
+    <div class="modal-footer">
+        @if (ViewBag.IsCheckOut && Model.ApprovalStatus.ToUpper() == "00F2EC64-CC9B-4FCA-AB4C-B37961EFAD53" && Model.ExportUid == null)
+        {
+            @*<div class="btn-group" data-toggle="buttons" id="btnCheckIn">
+                    <label class="btn ink-reaction btn-primary" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdCheckIn">
+                        <i class="fa fa-sign-in-alt" style="transform:rotate(180deg); font-size:15px"></i> Check In
+                    </label>
+                </div>*@
+            <div class="btn-group" data-toggle="buttons" id="btnCheckOut">
+                <label class="btn ink-reaction btn-primary" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdCheckOut">
+                    <i class="fa fa-sign-out-alt"></i> Check Out
+                </label>
+            </div>
+        }
+        @if (!ViewBag.IsCheckOut && User.GetClaimValue(ClaimTypes.Sid).ToUpper() == Model.NextApprover.ToUpper() && Model.ApprovalStatus.ToString().ToUpper() == "C4FF5A2F-CD32-4785-9499-A26E5148D58D")
+        {
+            <button id="btnMdShortTermViewApprove" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdApprovalInfor" type="button" class="btn btn-primary btn-accent-dark">Approve</button>
+        }
+        @if (!ViewBag.IsCheckOut && Model.IsRecall && Model.ApprovalLine.IndexOf(User.GetClaimValue(ClaimTypes.Sid)) != -1)
+        {
+            <button id="btnMdShortTermViewRecallApprove" type="button" class="btn btn-primary btn-accent-dark">Recall</button>
+        }
+
+        @if (!ViewBag.IsCheckOut && User.GetClaimValue(ClaimTypes.Sid) == Model.CreateUid)
+        {
+            if (Model.ApprovalStatus.ToString().ToUpper() == "9C817780-2079-4417-B87B-B7E537BBAE8A" && Model.ConfirmDate == null)
+            {
+                <button id="btnMdShortTermViewConfirm" type="button" class="btn btn-primary btn-accent-dark">Confirm</button>
+            }
+            if (Model.IsRecall)
+            {
+                <button id="btnMdShortTermViewRecall" type="button" class="btn btn-primary btn-accent-dark">Recall</button>
+            }
+            else if (!Model.IsRecall && Model.ApprovalStatus.ToString().ToUpper() == "9C817780-2079-4417-B87B-B7E537BBAE8A")
+            {
+                <button id="btnMdShortTermViewEdit" data-dismiss="modal" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdAppDetailEdit" type="button" class="btn btn-primary">Edit</button>
+                <button id="btnMdShortTermViewDelete" type="button" class="btn btn-primary btn-danger">Delete</button>
+            }
+        }
+        @if (!ViewBag.IsCheckOut && Model.ApprovalStatus.ToString().ToUpper() == "00F2EC64-CC9B-4FCA-AB4C-B37961EFAD53")
+        {
+            <button id="btnPrint" type="button" class="btn btn-primary">Print</button>
+        }
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</div>
+<!-- BEGIN FORM MODAL APPROVAL INFOR -->
+<div class="modal fade" id="mdApprovalInfor" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Approval History</h4>
+            </div>
+            <div class="modal-body">
+                <!-- BEGIN FIXED TIMELINE -->
+                <ul class="timeline collapse-lg timeline-hairline" id="divApprovelHistory"></ul>
+                @if (Model.NextApprover == User.GetClaimValue(ClaimTypes.Sid))
+                {
+                    <!-- END FIXED TIMELINE -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea style="resize:vertical" id="txtComment" class="form-control input-sm" rows="3" placeholder="Write a comment"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="modal-footer">
+                @if (Model.NextApprover == User.GetClaimValue(ClaimTypes.Sid))
+                {
+                    <button type="button" class="btn btn-primary" id="btnMdApprovalInforApprove">Approve</button>
+                    <button type="button" class="btn btn-primary btn-danger" id="btnMdApprovalInforReject">Reject</button>
+                }
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+    var _visitorList = [
+        //{ FullName: "", IdentifyNo: "", PhoneNumber: "", FromDate: new Date(), ToDate: new Date(), DriverPlate: "", VehicleType: "", IsContactPerson: false, IsWorkHourOfficial: false }
+    ];
+
+    var _entity = {
+        Id: 0, Applicant: "", DeptId: 0, ApplicationDate: new Date(), ReImport: false, ReImportDate: new Date(), Reason: "", FinishApplication: false, FinishReason: "", FinishDate: new Date(),
+        DeptId: 0, ViolateDate: new Date(), ViolateType: "", ViolationTypeName: "", ReasonDetail: "", IsBlackList: true, PersonInCharge: "", IsAttachment: true,
+        ApprovalKind: "", ApprovalKindName: "", ApprovalLine: "", ApprovalLineJson: "", ApprovalStatus: "", ApprovalStatusName: "", NextApprover: "",
+    };
+
+    var _passingGoodsDetail = [];
+
+    var _visitPlant = [];
+
+    var _apprLine = [];
+    var _circulator;
+    var _apprLineDefault;
+    var _circulatorDefault;
+    var _apprLineRecent;
+    var _circulatorRecent;
+    var _day = 86400000;
+
+    (function (namespace, $) {
+        "use strict";
+
+        var _paraMdEmp = {
+            deptCode: 0, userId: "vn551", userName: "", status: "", nation: "", sex: "", hasEmail: null
+        };
+
+        var _entityApproval = {
+            EmpId: "", Name: "", DeptFullName: "", ApproverType: "", ApproverTypeName: "", Seq: 0
+        };
+        var _attachmentFile = [];
+
+        var FormPassinGoodsDetailView = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+        };
+        var p = FormPassinGoodsDetailView.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+            this._getApprovalLine();
+            this._getApproveHistory();
+            this._getGridDetail();
+        };
+
+        // =========================================================================
+        // SELECT DATA FROM DB
+        // =========================================================================
+        p._reload = function () {
+            var link = '@Url.Action("ShowPopupView", "PassingGoods", new { id = "vendorId" })';
+            $.get(link.replace('vendorId', $("#hdfIdEncrypt").val()), function (data) {
+                 $("#mdAppDetailView .modal-dialog").html(data);
+                 $("#mdAppDetailView .modal-body").css({ "max-height": $('footer').position().top - 130, overflow:"auto" });
+            });
+        }
+        p._getApprovalLine = function () {
+            $.ajax({
+                type: "POST",
+                url: "/PassingGoods/GetApproveHistory",
+                data: JSON.stringify({ applicationId: $("#hdfApplicationType").val(), masterId: $("#hdfMasterId").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    //console.log(result);
+                    var count = 0;
+                    $.each(result, function (index, item) { if (item.IsApprove !== null) count++ });
+                    //console.log(count);
+                    $.each(result, function (index, item) {
+                        $("#frmShortTermView .form-wizard-nav").find("ul")
+                            .append($("<li>")
+                                .append($("<a>").attr("href", "#tab" + item.Seq)
+                                    .attr("data-toggle", "tab")
+                                    .append($("<span>").addClass("step")
+                                        .append($("<span>").addClass("glyphicon-top glyphicon " + (item.IsApprove === null ? "" : (item.IsApprove === true ? "glyphicon-ok" : "glyphicon-ban-circle")))))
+                                    //.append(item.Seq))
+                                    .append($("<span>").css({ "white-space": "nowrap", "text-overflow": "ellipsis", "overflow": "hidden" }).addClass("title").append(item.EmpName))
+                                    .append($("<span>").css({ "white-space": "nowrap", "text-overflow": "ellipsis", "overflow": "hidden", "top": "-10px", "text-transform": "capitalize" }).addClass("title").append(item.JobTitle))
+                                //.append($("<p>").css({ "margin": "auto" }).append(item.DateApproveFormat))
+                                )
+                        );
+                    })
+
+                    $('#wzShortTerm').bootstrapWizard({
+                        onTabShow: function (tab, navigation, index) {
+                            _handleTabShow(tab, navigation, count - 1, $('#wzShortTerm'));
+
+                            var total = navigation.find('li').length;
+                            var percent = ((count) / (total - 1)) * 100;
+
+                            $('#wzShortTerm').find('.progress-bar').css({ width: percent + '%' });
+
+                            $($("#frmShortTermView").find("ul").find("li")[count]).addClass("active");
+                            $("#frmShortTermView").find("ul").find("li.active").prevAll().addClass('done');
+                        },
+                        onTabClick: function (tab, navigation, index) {
+                            $("#mdApprovalInfor").modal("show");
+                            return false;
+                        }
+                    });
+
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+        p._getApproveHistory = function () {
+            $.ajax({
+                type: "POST",
+                url: "/PassingGoods/GetApproveHistory",
+                data: JSON.stringify({ applicationId: $("#hdfApplicationType").val(), masterId: $("#hdfMasterId").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    $.each(result, function (index, item) {
+                        if (item.IsApprove !== null) {
+                            $("#divApprovelHistory")
+                                .append($("<li>").addClass("timeline-inverted")
+                                    .append($("<div>").addClass("timeline-circ circ-xl style-primary").css({ "background-color": item.IsApprove === true ? "#2196f3" : "red" })
+                                        .append($("<span>").addClass("glyphicon-top glyphicon " + (item.IsApprove === null ? "" : (item.IsApprove === true ? "glyphicon-ok" : "glyphicon-ban-circle")))))
+                                    .append($("<div>").addClass("timeline-entry")
+                                        .append($("<div>").addClass("card style-default-bright")
+                                            .append($("<div>").addClass("card-body small-padding").attr("id", "divApprovelHistory" + '_line' + item.Seq)
+                                                .append($("<img>").addClass("img-circle img-responsive pull-left width-1").attr("src", "/Content/assets/img/avatar1.jpg").attr("alt", ""))
+                                                .append($("<span>").addClass("text-medium")
+                                                    .append(item.EmpName)
+                                                    .append($("<span>").addClass(item.IsApprove === true ? "text-primary" : "text-danger")
+                                                        .append(index === 0 ? " has confirmed" : (item.IsApprove === true ? " has approved" : " has rejected")))
+                                                    .append($("<br>")))
+                                                .append($("<span>").addClass("opacity-50")
+                                                    .append(item.DateApproveFormat))
+                                            ))));
+
+                            if (item.Comment !== "") {
+                                $("#divApprovelHistory" + '_line' + item.Seq)
+                                    .append($("<div>").addClass("form-group")
+                                        .append($("<div>").addClass("col-sm-12")
+                                            .append($("<textarea>").addClass("form-control input-sm").attr("readonly", true)
+                                                .append(item.Comment))));
+                            }
+                        }
+                    })
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+
+        p._confirm = function (isConfirm) {
+            if (confirm("Do you realy want to " + (isConfirm ? "confirm" : "recall")+" this document?")) {
+                var _entity = { id: $("#hdfMasterId").val(), isConfirm: isConfirm, linkApplication: $(location).attr('origin') + "/PassingGoods/ViewDetail/" + $("#hdfIdEncrypt").val() };
+                var o = this;
+                $.ajax({
+                    type: "POST",
+                    url: "/PassingGoods/Confirm",
+                    data: JSON.stringify(_entity),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "The operation was successfull", "gray success");
+                            var href = window.location.href;
+                            if (href.toLowerCase().indexOf("viewdetail") != -1) {
+                                window.location = href;
+                            } else {
+                                $("#mdAppDetailView").modal("hide");
+                                _fnGridApplicationMaster();
+                            }
+
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                            console.log(result);
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        };
+        p._approve = function (isApprove) {
+            if (confirm("Do you realy want to " + (isApprove ? "approve" : "reject")+" this document?")) {
+                var _entity = {
+                    MasterId: $("#hdfMasterId").val(),
+                    ApplicationId: $("#hdfApplicationType").val(),
+                    EmpId: $("#hdfLogInId").val(),
+                    IsApprove: isApprove,
+                    linkApplication: $(location).attr('origin') + "/PassingGoods/ViewDetail/" + $("#hdfIdEncrypt").val(),
+                    Comment: $("#txtComment").val()
+                };
+                if (!isApprove && _entity.Comment === "") {
+                    showNotification("Hyosung Portal", "Please write some comment", "gray error");
+                    $("#txtComment").focus();
+                    return false;
+                }
+                var o = this;
+                $.ajax({
+                    type: "POST",
+                    url: "/PassingGoods/Approve",
+                    data: JSON.stringify({ model: _entity }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "The operation was successfull", "gray success");
+                            var href = window.location.href;
+                            if (href.toLowerCase().indexOf("viewdetail") != -1) {
+                                window.location = href;
+                            } else {
+                                $("#mdAppDetailView").modal("hide");
+                                _fnGridApplicationMaster();
+                            }
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                            console.log(result);
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        };
+        p._recall = function () {
+            if (confirm("Do you realy want to recall this document?")) {
+                var o = this;
+                $.ajax({
+                    type: "POST",
+                    url: "/PassingGoods/Recall",
+                    data: JSON.stringify({ masterId: $("#hdfMasterId").val(), applicationid: $("#hdfApplicationType").val() }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "The operation was successfull", "gray success");
+                            var href = window.location.href;
+                            if (href.toLowerCase().indexOf("viewdetail") != -1) {
+                                window.location = href;
+                            } else {
+                                $("#mdAppDetailView").modal("hide");
+                                _fnGridApplicationMaster();
+                            }
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                            console.log(result);
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        };
+        p._delete = function () {
+            if (confirmDelete("en", "delete")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/PassingGoods/ApplicationMasterDeleteUpdate",
+                    data: JSON.stringify({ id: $("#hdfMasterId").val() }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "The operation was successfull", "gray success");
+                            $("#mdAppDetailView").modal("hide");
+                            _fnGridApplicationMaster();
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                            console.log(result);
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        }
+        p._getGridDetail = function () {
+            $("#grdPassingGoodsDetail").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/PassingGoods/GetDetailViaMaster?id=" + 0 + "&masterId=" + $("#hdfMasterId").val(),
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                PassDate: { type: "date" },
+                                ImportDate: { type: "date" },
+                                ReImportDate: { type: "date" },
+                                ReImport: { type: "bool" },
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                //toolbar: ["create"],
+                //height: $('footer').position().top - 455,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                dataBinding: function () {
+                    //record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+                    //console.log(record);
+                },
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    var grid = this;
+                    grid.tbody.find("tr").each(function (e) {
+
+                        var model = grid.dataItem(this);
+                        if (!model.IsAttachment)
+                            $(this).find(".fa-picture-o").remove();
+                    });
+                },
+                resizable: true,
+                cache: false,
+                editable: "inline",
+                columns: [
+                    { field: "IsAttach", template: "<i class='fa fa-picture-o' data-id='#: Id #' style='padding-top:4px; cursor: pointer'></i>", title: " ", width: 47 },
+                    { field: "ItemName", title: "Item Name", width: "135px" },
+                    { field: "Serial", title: "Serial", width: "90px" },
+                    { field: "Description", title: "Description" },
+                    { field: "Quantity", title: "Quantity", width: "85px" },
+                    //{ field: "ReImportName", title: "ReImport", width: "85px", headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                    { field: "ReImportDate", title: "ReImport Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false },
+                    { field: "ItemLocation", title: "ItemLocation", width: "135px" }
+                ]
+
+            });
+        }
+
+        // =========================================================================
+        // ACTION
+        // =========================================================================
+        $("#grdPassingGoodsDetail").on("click", ".fa-picture-o", function (e) {
+            $("#mdImage").modal("show");
+
+            var row = $(e.target).closest("tr");
+            var grid = $("#grdPassingGoodsDetail").data("kendoGrid");
+            var dataItem = grid.dataItem(row);
+
+            var link = '@Url.Action("ShowPopupImage", "PassingGoods", new { id = "reimport" })';
+            $.get(link.replace('reimport', dataItem.Id), function (data) {
+                $("#mdImage .modal-body").html(data);
+                $("#mdImage .modal-body").css({ "max-height": $('footer').position().top - 145, overflow: "auto" });
+            });
+
+        });
+
+
+        $("#btnMdShortTermViewConfirm").on("click", function () {
+            p._confirm(true);
+        })
+        $("#btnMdShortTermViewRecall").on("click", function () {
+            p._confirm(false);
+        })
+
+        $("#btnMdApprovalInforApprove").on("click", function () {
+            p._approve(true);
+        })
+
+        $("#btnMdApprovalInforReject").on("click", function () {
+            p._approve(false);
+        })
+
+        $("#btnMdShortTermViewRecallApprove").on("click", function () {
+            p._recall();
+        })
+
+        $("#btnMdShortTermViewDelete").on("click", function () {
+            p._delete();
+        })
+
+        $("#btnPrint").on("click", function () {
+            var url = window.location.origin + "/PassingGoods/Print/" + $("#hdfIdEncrypt").val();
+            var myWindow = window.open(url, "", "scrollbars=yes, top=20, left=50, width=1350, height=600");
+
+        })
+
+        $("#btnCheckOut").on("click", function () {
+            if (!confirm("Are you sure to process this operator?"))
+                return;
+            $.ajax({
+                type: "POST",
+                url: "/PassingGoods/GoodsCheckOut",
+                data: JSON.stringify({ masterId: $("#hdfMasterId").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Operator success", "gray success");
+                        $("#mdAppDetailView").modal("hide");
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        })
+        // =========================================================================
+        // ACTION - APPROVAL
+        // =========================================================================
+
+
+        // =========================================================================
+        namespace.FormPassinGoodsDetailView = new FormPassinGoodsDetailView;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+</script>

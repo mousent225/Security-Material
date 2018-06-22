@@ -1,0 +1,250 @@
+﻿<link href="~/Content/assets/css/theme-1/materialadmin_print.css" rel="stylesheet" media="print" />
+
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Views/Shared/_Layout_Print_A4.cshtml";
+}
+
+@model SSO_Material.ViewModels.ForgetCardModel
+
+<style type="text/css">
+    body {
+        font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+    }
+
+    p {
+        font-size: 10pt;
+    }
+
+    .p-content {
+        margin: -4px 0;
+        font-weight: bold;
+    }
+
+    .p-content-value {
+        margin: -4px 0;
+    }
+
+    .p-content-en {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+        float: left;
+    }
+
+    .col-md-12 {
+        width: 100%;
+    }
+
+    .col-md-11 {
+        width: 91.66666666666666%;
+    }
+
+    .col-md-10 {
+        width: 83.33333333333334%;
+    }
+
+    .col-md-9 {
+        width: 75%;
+    }
+
+    .col-md-8 {
+        width: 66.66666666666666%;
+    }
+
+    .col-md-7 {
+        width: 58.333333333333336%;
+    }
+
+    .col-md-6 {
+        width: 50%;
+    }
+
+    .col-md-5 {
+        width: 41.66666666666667%;
+    }
+
+    .col-md-4 {
+        width: 33.33333333333333%;
+    }
+
+    .col-md-3 {
+        width: 25%;
+    }
+
+    .col-md-2 {
+        width: 16.666666666666664%;
+    }
+
+    .col-md-1 {
+        width: 8.333333333333332%;
+    }
+
+    section .style-default-bright {
+        background-color: #66CCFF !important;
+    }
+
+    .img-thumbnail {
+        border-color: #66CCFF !important;
+        background-color: #66CCFF !important;
+        border-width: 0px !important;
+    }
+</style>
+<!-- Set "A5", "A4" or "A3" for class name -->
+<!-- Set also "landscape" if you need -->
+<body class="A4">
+
+    <!-- Each sheet element should have the class "sheet" -->
+    <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
+    <section class="sheet padding-10mm">
+
+        <!-- Write HTML just like a web page -->
+        <article>
+            <div class="col-md-11" style="margin-left:20px; width: 700px">
+                <div class="card card-printable style-default-light">
+                    <div class="card-head" style="background-color:white; position:absolute; top:10px; right:-60px; z-index:9999">
+                        <div class="btn-group">
+                            <a class="btn btn-floating-action btn-primary" href="javascript:void(0);" onclick="javascript:window.print();"><i class="md md-print"></i></a>
+                        </div>
+                    </div><!--end .card-head -->
+
+
+
+                    @for (int i = 0; i < ViewBag.VisitorList.Count; i++)
+                    {
+
+                        <div class="count-card card-body style-default-bright " style="padding:0px; border: solid 2pt black; margin-top:1px; background-color: #66CCFF; -webkit-print-color-adjust: exact">
+                            <!-- BEGIN INVOICE HEADER -->
+
+                            <div class="col-md-6" style="border-right: solid 1pt black">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="font-size:20pt; margin:-2px 0; font-weight:bold; text-align:center">
+                                            ACCESS CARD
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3" style="position:relative; border: solid 1pt black;height:123px;border-left:none">
+                                        <img class="img-thumbnail border-white border-xl img-responsive auto-width" src="@ViewBag.VisitorList[i].Image" alt=""
+                                             style="position:absolute; right:0; left:0;margin:auto; max-width:100%">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-md-12" style="border-top: solid 1pt black;">
+                                                <p style="font-size:11pt; margin:-2px 0; text-align:center">
+                                                    @ViewBag.CompanyName
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="border-top: solid 1pt black;">
+                                                <p style="font-size:11pt; float:left; margin:-2px 0">
+                                                    Full Name: @ViewBag.VisitorList[i].FullName
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="border-top: solid 1pt black;">
+                                                <p style="font-size:11pt; float:left; margin:-2px 0">
+                                                    ID Number: @ViewBag.VisitorList[i].IdentityCard
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="border-top: solid 1pt black;">
+                                                <p style="font-size:11pt; float:left; margin:-2px 0">
+                                                    Card No.: @ViewBag.VisitorList[i].VisitorCard
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="border: solid 1pt black; border-left:none;border-right:none">
+                                                <p style="font-size:11pt; float:left; margin:-2px 0">
+                                                    Date: @string.Format("{0:dd.MM.yyyy} ~ {1: dd.MM.yyyy}", ViewBag.VisitorList[i].FromDate, ViewBag.VisitorList[i].ToDate)
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p style="font-size:11pt; float:left; margin:-2px 0">
+                                            **PROJECT
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img style="width:25px; float:left" src="~/Content/img/Hyosung_logo_11.png" />
+                                        <p style="font-size:11pt; float:left; margin:1px 0">
+                                            HYOSUNG VN
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <img style="width:25px; float:left; margin-left:40px" src="~/Content/img/Hyosung_logo_11.png" />
+                                        <p style="font-size:11pt; float:left; margin:1px 0">
+                                            RULES AND REGULATIONS
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="font-size:11pt; float:left; margin:-2px 0; color:blue; font-style: italic; -webkit-print-color-adjust: exact">
+                                            1. Access Card is used to be In and Out **site
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="font-size:11pt; float:left; margin:-2px 0">
+                                            Sử dụng thẻ này để ra vào công trường dự án **
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="font-size:11pt; float:left; margin:-2px 0; color:blue; font-style: italic; -webkit-print-color-adjust: exact">
+                                            2. Follow rules & regulation in Hyosung company
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="font-size:11pt; float:left; margin:-2px 0">
+                                            Tuân thủ nội quy trong công ty Hyosung
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="font-size:11pt; float:left; margin:-2px 0; color:blue; font-style: italic; -webkit-print-color-adjust: exact">
+                                            3. The cardholder shall not allow the Card to be used by any other
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="font-size:11pt; float:left; margin:-2px 0">
+                                            Không được phép cho người khác mượn thẻ
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--end .card-body -->
+                        if ((i + 1) % 5 == 0 && i != 0)
+                        {
+                            <div style="page-break-after:always"></div>
+                        }
+                    }
+                </div><!--end .card -->
+            </div><!--end .col -->
+        </article>
+
+    </section>
+
+</body>

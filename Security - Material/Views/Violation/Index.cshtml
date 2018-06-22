@@ -1,0 +1,312 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="main-body" style="height:100%;">
+    <div id="toolbar" class="row card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+        <form class="form" role="form">
+            <div class="input-daterange input-group" id="txtCreateDateRange" style="float:left; padding-right:10px">
+                <div class="form-group" style="padding:0">
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="start" />
+                        <label>Create Date</label>
+                    </div>
+                    <span class="input-group-addon">to</span>
+                    <div class="input-group-content" style="width:90px">
+                        <input type="text" class="form-control input-sm input-date" name="end" />
+                        <div class="form-control-line"></div>
+                    </div>
+                </div>
+            </div>
+            @*<div style="float:left;width:130px">
+                <div class="form-group">
+                    <select id="cbStatus" class="form-control input-sm">
+                        <option value="">&nbsp;</option>
+                    </select>
+                    <label for="cbStatus">Status</label>
+                </div>
+            </div>*@
+
+            <div style="float: right; padding-top:10px">
+                <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                <div class="btn-group">
+                    <button type="button" class="btn ink-reaction btn-primary btn-sm">New</button>
+                    <button type="button" class="btn ink-reaction btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a href="#Violation" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-id="10" data-target="#mdViolation" name="btnNewApplication">Violation</a></li>
+                        <li><a href="#BlackList" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-id="11" data-target="#mdViolation" name="btnNewApplication">Black List</a></li>
+                    </ul>
+                </div><!--end .btn-group -->
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div id="grdApplicationMaster"></div>
+    </div>
+</div>
+
+<!-- BEGIN FORM MODAL VIOLATION APPLICATION -->
+<div class="modal fade" id="mdViolation" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%">
+
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL VIOLATION APPLICATION-->
+<!-- BEGIN FORM MODAL VISITOR LIST -->
+<div class="modal fade" id="mdVisitorList" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">List of Visitor</h4>
+                <input type="hidden" id="hdfMdVisitorIdentityCard" />
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnMdVisitorSelect" class="btn btn-primary">Select</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL VISITOR LIST -->
+
+<!-- BEGIN FORM MODAL EMPLOYEE INFOR -->
+<div class="modal fade" id="mdEmpInfor" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Employee's Information</h4>
+                <input type="hidden" id="hdfMdEmpInforEmpId" />
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnMdEmpSelect" class="btn btn-primary">Select</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL EMPLOYEE INFOR -->
+
+<script type="text/javascript">
+    var _visitorInfor;
+    var _para = { fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString(), userId: "", approvalStatus: "" };
+    (function (namespace, $) {
+        "use strict";
+
+        var FormViolation = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+
+        };
+        var p = FormViolation.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+
+            $("#txtCreateDateRange").datepicker({
+                todayHighlight: true, format: _dateFormat,
+                //startDate: _applicationMaster.FromDate,
+                //endDate: _applicationMaster.ToDate
+            });
+
+            //fnGetCateValueViaParent("054E0F62-4EFE-41E1-A18D-5C28A6531539", false, $("#cbStatus"), 'EAF964F0-F557-40C7-AD06-F0B4A6571A4F');
+            _fnGridVisitorInit();
+        };
+
+        $("#grdApplicationMaster").on("dblclick", "tbody > tr", function () {
+            var grid = $("#grdApplicationMaster").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+
+            $("#mdAppDetailView").modal("show");
+            var link = '@Url.Action("ShowApplicationView", "Violation", new { id = "vendorId" })';
+            $("#mdViolation").modal("show");
+            $.get(link.replace('vendorId', dataItem.Id), function (data) {
+                $("#mdViolation .modal-dialog").html(data);
+                $("#mdViolation .modal-body").css({ "max-height": $('footer').position().top - 145, overflow:"auto" });
+            });
+        })
+
+        $("#btnSearch").on("click", function () {
+            _fnGridVisitorInit();
+        })
+
+        // =========================================================================
+        namespace.FormViolation = new FormViolation;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+
+   function  _fnGridVisitorInit() {
+        var dateRange = $("#txtCreateDateRange").find("input");
+        _para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+        _para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+        _para.approvalStatus = ""//$("#cbStatus").val();
+
+        $("#grdApplicationMaster").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: "/Violation/GetAll?fromDate=" + _para.fromDate + "&toDate=" + _para.toDate + "&approvalStatus=" + _para.approvalStatus,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            ViolateDate: { type: "date" }, CreateDate: { type: "date" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 178,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                var grid = this;
+                grid.tbody.find("tr").each(function (e) {
+                    $(this).css("white-space", "nowrap");
+                    var model = grid.dataItem(this);
+                    if (!model.IsView)
+                        $(this).css("font-weight", "bold");
+                });
+            },
+            selectable: "row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            navigatable: true,
+            dataBinding: function () {
+            },
+            columns: [
+                { title: "", template: "", width: 5 },
+                { field: "Code", title: "Doc No", width: "171px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                {
+                    title: "Visitor",
+                    columns: [
+                        { field: "VisitorName", title: "Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "VendorName", title: "Company Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    ], headerAttributes: _headerAttributes
+                },
+                {
+                    title: "Employee",
+                    columns: [
+                        { field: "EmpId", title: "Emp Id", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "EmpName", title: "Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "OrgName", title: "Organization", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "PlantName", title: "Plant", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "DeptName", title: "Department", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "SectionName", title: "Section", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                    ], headerAttributes: _headerAttributes
+                },
+                { field: "ViolateDate", title: "Violation Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "ViolationTypeName", title: "Violation", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                //{
+                //    title: "Approval",
+                //    columns: [
+                //        { field: "ConfirmDate", title: "Confirm Date", format: "{0:yyyy.MM.dd}", width: "150px", filterable: false },
+                //        { field: "ApprovalStatusName", title: "Status", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                //        { field: "NextApproverName", title: "Next Approver", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                //    ]
+                //},
+                {
+                    title: "Person in Charge",
+                    columns: [
+                        { field: "PersonInCharge", title: "Emp Id", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "PersonInChargeName", title: "Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    ], headerAttributes: _headerAttributes
+                },
+                { field: "CreateUid", title: "Create Uid", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "CreateName", title: "Create Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, lockable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } }
+            ]
+        });
+    }
+
+    // =========================================================================
+    // MODAL ACTION
+    // =========================================================================
+
+    $("a[name='btnNewApplication']").unbind().on("click", function () {
+        var applicationId = $(this).attr("data-id");
+        var link = '@Url.Action("ShowApplication", "Violation", new { id = "applicationId"})';
+        $.get(link.replace("applicationId", applicationId), function (data) {
+            $("#mdViolation .modal-dialog").html(data);
+            $("#mdViolation .modal-body").css({ "max-height": $('footer').position().top - 145, overflow: "auto" });
+        });
+    })
+    $("#mdViolation").on('hidden.bs.modal', function () {
+        $("#mdViolation .modal-body").html("");
+        _fnGridVisitorInit();
+    });
+    //MODAL EMPLOYEE INFORMATION
+    $("#mdEmpInfor").on('shown.bs.modal', function () {
+        var empId = $("#hdfMdEmpInforEmpId").val();
+        var link = '@Url.Action("ShowModalEmployeeInfor", "Common", new { id = "empId" })';
+        $.get(link.replace('empId', empId), function (data) {
+            $("#mdEmpInfor .modal-body").html(data);
+            $("#mdEmpInfor .modal-body").css({ "max-height": $('footer').position().top - 175, overflow: "auto" });
+        });
+    });
+
+    function fnMdEmpInforClose() {
+        var grid = $("#gridEmpInfor").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null)
+            var dataItem = { LoginID: "", Name: "", OrganizeName: "", PlantName: "", DeptName: "", SectionName: "", DeptId: 0 };
+        _fnSetValueForElementEmployeeInfor(_employeeInfor, dataItem);
+    }
+    $("#mdEmpInfor").on('hidden.bs.modal', function () {
+        $("#mdEmpInfor .modal-body").html("");
+    });
+    //END OF MODAL EMPLOYEE INFORMATION
+
+    //MODAL VISITOR LIST
+    $("#mdVisitorList").on('shown.bs.modal', function () {
+        var identityCard = $("#hdfMdVisitorIdentityCard").val();
+        var link = '@Url.Action("ShowVisitorList", "VisitorApplicationMaster", new { id = "empId" })';
+        $.get(link.replace('empId', identityCard), function (data) {
+            $("#mdVisitorList .modal-body").html(data);
+            $("#mdVisitorList .modal-body").css({ "max-height": $('footer').position().top - 175, overflow: "auto" });
+        });
+    });
+    function fnMdVisitorListClose() {
+        var grid = $("#grdMdVisitorList").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null)
+            var dataItem = { IdentityCard: $("#hdfMdVisitorIdentityCard").val(), Id: 0, FullName: "", VendorName: "", VehicleTypeName: "", DriverPlate: "" };
+        var elements = $("[name='VisitorInformation']");
+
+        $(elements[0]).val(dataItem.IdentityCard);
+        $(elements[1]).val(dataItem.Id);
+        $(elements[2]).val(dataItem.FullName);
+        $(elements[3]).val(dataItem.VendorName);
+        $(elements[4]).val(dataItem.VehicleTypeName);
+        $(elements[5]).val(dataItem.DriverPlate);
+    }
+    //MODAL VISITOR LIST
+</script>

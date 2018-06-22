@@ -1,0 +1,137 @@
+﻿
+<div id="toolbar" class="card" style="background-color:white; height:58px; margin-bottom:10px">
+    <form class="form card-body" role="form">
+        <div class="input-daterange input-group" id="txtMdVendorCreateDateRange" style="float:left; padding-right:10px">
+            <div class="form-group" style="padding:0">
+                <div class="input-group-content" style="width:90px">
+                    <input type="text" class="form-control input-sm input-date" name="start" />
+                    <label>Create Date</label>
+                </div>
+                <span class="input-group-addon">to</span>
+                <div class="input-group-content" style="width:90px">
+                    <input type="text" class="form-control input-sm input-date" name="end" />
+                    <div class="form-control-line"></div>
+                </div>
+            </div>
+        </div>
+        <div style="float: right; padding-top:10px">
+            <button id="btnMdVendorListDetail" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+            <button id="btnMdVendorListDetail" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdVendorView" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Detail</button>
+            <button id="btnMdVendorListNew" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdVendor" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">New</button>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="grdVendor"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var _paraMdVendorGrid = { fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString(), vendorType:"" };
+    $(document).ready(function () {
+        $('#txtMdVendorCreateDateRange').datepicker({ todayHighlight: true, format: _dateFormat });
+        fnInitGridVendor();
+    })
+
+    function fnInitGridVendor() {
+        var dateRange = $("#txtMdVendorCreateDateRange").find("input");
+        _paraMdVendorGrid.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+        _paraMdVendorGrid.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+        _paraMdVendorGrid.vendorType = $("#hdfVendorType").val();
+
+        //_paraMdVendorGrid = { fromDate: _isValidDate($($("#txtMdVendorCreateDateRange").find("input")[0]).val(), _minDate).toISOString(), toDate: _isValidDate($($("#txtMdVendorCreateDateRange").find("input")[1]).val(), _maxDate).toISOString() };
+        $("#grdVendor").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: "/VisitorApplicationMaster/GetListVendor?id=null&fromDate=" + _paraMdVendorGrid.fromDate + "&toDate=" + _paraMdVendorGrid.toDate + "&vendorType=" + _paraMdVendorGrid.vendorType,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            Id: { type: "int" }, CompanyName: { type: "string" }, Address: { type: "string" }, DeptId: { type: "string" }, PersonInCharge: { type: "string" }, PersonInChargeName: { type: "string" },
+                            ContactPerson: { type: "string" }, IdentityCard: { type: "string" }, PhoneNumber: { type: "string" }, Email: { type: "string" }, IsActive: { type: "boolean" }, CreateUid: { type: "string" },
+                            CreateDate: { type: "date" }, ContactPersonName: { type: "string" }, ApprovalStatus: { type: "string" }, ApprovalStatusName: { type: "string" }, OrgName: { type: "string" },
+                            PlantName: { type: "string" }, DeptName: { type: "string" }, SectionName: { type: "string" }, CreateName: { type: "string" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 277,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+            },
+            selectable: "row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: true,
+            columns: [
+                { field: "TaxCode", title: "Tax Code", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "CompanyName", title: "Company Name", width: "260px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "Address", title: "Address", width: "360px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                {
+                    title: "Contact Point",
+                    columns: [
+                        { field: "ContactPerson", title: "Person", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },                        
+                        { field: "PhoneNumber", title: "Phone", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "Email", title: "Email", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                    ]
+                },
+                {
+                    title: "Person in Charge",
+                    columns: [
+                        { field: "PersonInCharge", title: "Emp Id", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "PersonInChargeName", title: "Emp Name", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "OrgName", title: "Org Name", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "PlantName", title: "Plant", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "DeptName", title: "Department", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "SectionName", title: "Section", width: "150px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                    ]
+                },
+                { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "150px", filterable: false },
+                { field: "CreateUid", title: "Create Id", width: "150px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "CreateName", title: "Create Name", width: "150px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+            ]
+        });
+    }
+
+    $("#mdVendorView").on('shown.bs.modal', function () {
+        var grid = $("#grdVendor").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null) {
+            $("#mdVendorView").modal("hide");
+            return false;
+        }
+        var link = '@Url.Action("ShowVendorInformationView", "VisitorApplicationMaster", new { id = "vendorId" })';
+         $.get(link.replace('vendorId', dataItem.Id), function (data) {
+             $("#mdVendorView .modal-dialog").html(data);
+             $("#mdVendorView .modal-body").css({ "max-height": $('footer').position().top - 175, overflow:"auto" });
+        });
+    });
+
+    $("#mdVendorView").on('hidden.bs.modal', function () {
+        $("#mdVendorView .modal-dialog").html("");
+    });    
+
+    $("#btnMdVendorListDetail").on("click", function () {
+        fnInitGridVendor();
+    })
+
+    $("#grdVendor").on("dblclick", "tbody > tr", function () {
+        fnMdVendorClose();
+        $("#mdVendorList").modal("hide");
+    })
+
+    $("#btnMdVendorListSelect").on("click", function () {
+        fnMdVendorClose();
+        $("#mdVendorList").modal("hide");
+    })
+</script>

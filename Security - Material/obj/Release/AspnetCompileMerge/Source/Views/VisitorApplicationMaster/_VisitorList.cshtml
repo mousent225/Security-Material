@@ -1,0 +1,143 @@
+﻿
+<div id="toolbar" class="card" style="background-color:white; height:58px; margin-bottom:10px">
+    <form class="form card-body" role="form">
+        <div class="input-daterange input-group" id="txtMdVisitorListCreateDateRange" style="float:left; padding-right:10px">
+            <div class="form-group" style="padding:0">
+                <div class="input-group-content" style="width:90px">
+                    <input type="text" class="form-control input-sm input-date" name="start" />
+                    <label>Create Date</label>
+                </div>
+                <span class="input-group-addon">to</span>
+                <div class="input-group-content" style="width:90px">
+                    <input type="text" class="form-control input-sm input-date" name="end" />
+                    <div class="form-control-line"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="width:90px; float:left; padding-right:10px">
+            <input type="text" class="form-control input-sm change-data" id="txtMdVisitorListIdentityCard" value="@ViewBag.IdentityCard">
+            <label for="txtMdVisitorListIdentityCard">Identity Card</label>
+        </div>
+        <div class="form-group" style="width:215px; float:left">
+            <select id="cbMdVisitorListVendor" class="form-control input-sm" required>
+                <option value="">&nbsp;</option>
+            </select>
+            <label for="cbMdVisitorListVendor">Company</label>
+        </div>
+        <div style="float: right; padding-top:10px">
+            <button id="btnMdVisitorListListDetail" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="grdMdVisitorList"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function (namespace, $) {
+        "use strict";
+        
+        var FormVisitorList = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+
+        };
+        var p = FormVisitorList.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+           
+            $("#txtMdVisitorListCreateDateRange").datepicker({
+                todayHighlight: true, format: _dateFormat,
+            });
+            this._cbGetData($("#cbMdVisitorListVendor"));
+            this._gridVisitorInit();
+        };
+
+        p._cbGetData = function (control) {
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/GetListVendor?id=null&fromDate=" + _minDate.toISOString() + "&toDate=" + _maxDate.toISOString(),                    
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    $.each(result, function (index, item) {
+                        control.append($("<option>", { value: item.Id, text: item.CompanyName }));
+                    });
+                },
+                error: function () {
+                    return [];
+                }
+            });
+        }
+        p._gridVisitorInit = function () {
+            var dateRange = $("#txtMdVisitorListCreateDateRange").find("input");
+            var fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+            var toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+            $("#grdMdVisitorList").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/GetListViaVendor?identityCard=" + $("#txtMdVisitorListIdentityCard").val() + "&vendorId=" + $("#cbMdVisitorListVendor").val() +
+                        "&fromDate=" + fromDate + "&toDate=" + toDate,
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                FromDate: { type: "date" }, ToDate: { type: "date" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                height: $('footer').position().top - 419,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                columns: [
+                    { field: "VendorName", title: "Company", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "FullName", title: "Full Name", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "IdentityCard", title: "Identity Card", width: "135px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "TemporaryCard", title: "Temporary Card", width: "125px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "PhoneNumber", title: "Phone Number", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "FromDate", title: "From Date", width: "105px", format: "{0:yyyy.MM.dd}" },
+                    { field: "ToDate", title: "To Date", width: "105px", format: "{0:yyyy.MM.dd}" },
+                    { field: "VehicleTypeName", title: "Vehicle Type", width: "110px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "DriverPlate", title: "Driver Plate", width: "120px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "IsWorkHourOfficial", title: "Office Hours", width: "150px" }
+                ]
+
+            });
+        }
+
+        $("#btnMdVisitorListListDetail").on("click", function () {
+            p._gridVisitorInit();
+        })
+
+        $("#grdMdVisitorList").on("dblclick", "tbody > tr", function () {
+            fnMdVisitorListClose();
+            $("#mdVisitorList").modal("hide");
+        })
+        $("#btnMdVisitorSelect").on("click", function () {
+            fnMdVisitorListClose();
+            $("#mdVisitorList").modal("hide");
+        });
+        // =========================================================================
+        namespace.FormVisitorList = new FormVisitorList;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+</script>

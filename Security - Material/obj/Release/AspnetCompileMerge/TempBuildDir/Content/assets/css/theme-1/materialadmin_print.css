@@ -1,0 +1,44 @@
+body {
+    display: table;
+    table-layout: fixed;
+    height: auto;
+    font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+    font-size: 10pt;
+    line-height: 1.846153846;
+    color: #313335;
+    background-color: #ffffff;
+    -webkit-print-color-adjust: exact;
+}
+
+#menubar,
+#header,
+#main-body .section-header, footer, .offcanvas-holder {
+    display: none;
+}
+
+#main-body,
+#main-body .section-body {
+    padding: 0;
+    margin-top:-100mm;
+}
+
+.card-printable {
+	display: block;
+}
+.card-printable .card-head {
+	display: none;
+}
+
+body,
+#main-body > section {
+    background-color: #ffffff;
+    border: 0;
+}
+
+.table td {
+    border: black solid 0.4pt !important;
+}
+
+.table th {
+    border: black solid 0.4pt !important;
+}

@@ -1,0 +1,125 @@
+﻿<link href="~/Content/assets/css/theme-1/materialadmin_print.css" rel="stylesheet" media="print" />
+
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Views/Shared/_Layout_Print_A4.cshtml";
+}
+
+@model SSO_Material.ViewModels.ForgetCardModel
+
+<style type="text/css">
+    body {
+        font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+        line-height:1;
+    }
+
+    p {
+        font-size: 10pt;
+        color: #000000;
+    }
+</style>
+<!-- Set "A5", "A4" or "A3" for class name -->
+<!-- Set also "landscape" if you need -->
+<body class="A4 landscape">
+
+    <!-- Each sheet element should have the class "sheet" -->
+    <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
+    <section class="sheet padding-10mm">
+
+        <!-- Write HTML just like a web page -->
+        <article>
+            <div class="row">
+                <div style="float:none; margin:auto; width: 260mm; height: 180mm">
+                    <div class="card card-printable style-default-light">
+                        <div class="card-head" style="background-color:white; position:absolute; top:10px; right:-57px; z-index:9999">
+                            <div class="btn-group">
+                                <a class="btn btn-floating-action btn-primary" href="javascript:void(0);" onclick="javascript:window.print();"><i class="md md-print"></i></a>
+                            </div>
+                        </div><!--end .card-head -->
+                        <div class="count-card card-body style-default-bright " style="padding:0px; margin-top:3px; -webkit-print-color-adjust: exact">
+
+                            <div style="float: left; width: 85mm; height: 141mm; background-color:#14ce2a !important; text-align:center; border: solid 1pt">
+                                <div>
+                                    <p style="font-size:340pt; font-weight:bold; color:blue !important; margin: 0; -webkit-print-color-adjust: exact">
+                                        P
+                                    </p>
+                                    <p style="font-size:46pt; font-weight:bold; color:blue; color:blue !important; text-align:right">
+                                        001
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="float:right; width: 175mm; border: solid 1pt; border-left:none">
+                                <div style="width: 100%; height: 60mm; background-color:#14ce2a !important; color:blue !important; text-align:center; border-bottom:solid 1pt black; -webkit-print-color-adjust: exact">
+                                    <p style="font-size:80pt; font-weight:bold">
+                                        SUPPORT
+                                    </p>
+                                    <p style="font-size:48pt">
+                                        HỖ TRỢ
+                                    </p>
+                                </div>
+                                <div style="width: 100%; height: 40mm; background-color:white; color:blue !important; border-bottom: solid 1pt black;padding-top:15px ; -webkit-print-color-adjust: exact">
+                                    <p class="pCompanyName" style="font-size:1pt; text-align: center">
+                                        CÔNG TY TNHH TM VÀ DV VẠN SƠN PHÁT VI NA  Read more: http://www.thongtincongty.com/comp
+                                    </p>
+                                </div>
+                                <div style="width: 100%; height: 40mm; background-color:white; color:blue !important; -webkit-print-color-adjust: exact">
+                                    <p style="font-size:47pt; text-align: center">
+                                        In-Out: GATE 1
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="clear:both">
+
+                            </div>
+                            <div style="float:left; width: 85mm; height: 40mm; background-color:#9ee28e; color:blue !important; border: solid 1pt black; border-top: none">
+                                <p style="font-size:26pt; font-weight:bold">
+                                    Car no: 51A - 733.86
+                                </p>
+                                <p style="font-size:26pt; font-weight:bold">
+                                    Driver tel:
+                                </p>
+                                <p style="font-size:31pt; font-weight:bold; margin:20px 4pt 0; text-align: center; border:solid 1pt red">
+                                    0903063189
+                                </p>
+                            </div>
+                            <div style="float:right; width: 175mm; height:40mm; background-color:white; color:blue !important; border-right: solid 1pt black; border-bottom: solid 1pt black; -webkit-print-color-adjust: exact">
+                                <p style="font-size:47pt; text-align: center">
+                                    PERIOD:
+                                </p>
+                                <p style="font-size:47pt; text-align: center">
+                                    01.11.2017 ~ 31.01.2018
+                                </p>
+                            </div>
+                        </div><!--end .card-body -->
+                    </div><!--end .card -->
+                </div><!--end .col -->
+            </div>
+
+        </article>
+
+    </section>
+
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        console.log($(".pCompanyName").height());
+
+        dynamicFontSize($(".pCompanyName"));
+    })
+
+    function dynamicFontSize($selector) {
+        var height = $selector.height();
+        var parentHeight = $selector.parent().height();
+        var fontInitial = 1;
+        console.log("height: " + height + "parent height: " + parentHeight);
+        while (height < parentHeight) {            
+            $selector.css("font-size", ++fontInitial);
+            console.log("height: " + height + "parent height: " + parentHeight + "font-size: " + fontInitial);
+            height = $selector.height();
+        }
+        $selector.css("font-size", fontInitial-2);
+    }
+
+
+</script>

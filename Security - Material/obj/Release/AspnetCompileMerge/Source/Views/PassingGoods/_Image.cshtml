@@ -1,0 +1,64 @@
+﻿
+<style type="text/css">
+
+    .background-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0);
+        transition: background 0.5s ease;
+    }
+
+    #divImage:hover .background-overlay {
+        display: block;
+        background: rgba(0, 0, 0, .3);
+    }
+
+    #divImage:hover .background-overlay {
+        display: block;
+        background: rgba(0, 0, 0, .3);
+    }
+
+    .background-button {
+        position: absolute;
+        width: 135px;
+        left: 34px;
+        top: 100px;
+        text-align: center;
+        opacity: 0;
+        transition: opacity .35s ease;
+    }
+
+        .background-button a {
+            width: 200px;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            border: solid 2px white;
+            z-index: 1;
+        }
+
+    #divImage:hover .background-button {
+        opacity: 1;
+    }
+</style>
+<div class="row">
+    @foreach (var item in ViewBag.ListAttachment)
+    {
+        <div class="col-md-3" style="position:relative; height: 229px" id="divImage" data-id="@item.AttachId">
+            <div class="row">
+                <div class="col-xs-12 background-image">
+                    <img class="img-thumbnail border-white border-xl img-responsive auto-width" src="@item.Path.Replace("..","")" alt=""
+                         style="position:absolute; right:0; left:0;margin:auto; height:229px">
+                </div>
+                <div class="background-overlay"></div>
+                <div class="background-button"><a href="@item.Path.Replace("..","")" target="_blank" name="view-image" data-id="@item.AttachId">View</a></div>
+            </div>
+            <div class="row">
+
+            </div>
+        </div>
+    }
+</div>

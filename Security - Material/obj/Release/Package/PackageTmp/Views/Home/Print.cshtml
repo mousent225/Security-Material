@@ -1,0 +1,361 @@
+﻿<link href="~/Content/assets/css/theme-1/materialadmin_print.css" rel="stylesheet" media="print" />
+
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Views/Shared/_Layout_Print.cshtml";
+}
+
+@model SSO_Material.ViewModels.ForgetCardModel
+
+<style type="text/css">
+    body {
+        font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+    }
+    p {
+        font-size:10pt;
+    }
+    .p-content {
+        margin: -4px 0;
+        font-weight: bold;
+    }
+
+    .p-content-value {
+        margin: -4px 0;
+    }
+
+    .p-content-en {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 0;
+    }
+
+    .table thead {
+        opacity: 1;
+    }
+
+    .table td {
+        border: black solid 0.4pt !important;
+    }
+
+    .table th {
+        border: black solid 0.4pt !important;
+    }
+</style>
+
+<div class="col-md-12">
+    <div class="card card-printable style-default-light">
+        <div class="card-head" style="background-color:white; position:absolute; top:10px; right:30px; z-index:9999">
+            <div class="btn-group">
+                <a class="btn btn-floating-action btn-primary" href="javascript:void(0);" onclick="javascript:window.print();"><i class="md md-print"></i></a>
+            </div>
+        </div><!--end .card-head -->
+        <div class="card-body style-default-bright" style="padding:20px">
+            <!-- BEGIN INVOICE HEADER -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <img style="width:25px; float:left" src="~/Content/img/Hyosung_logo_11.png" />
+                    @if (Model.Org == 185)
+                    {
+                        <p style="font-size:12pt; float:left; margin:-2px 0; font-weight:bold">
+                            CÔNG TY TNHH HYOSUNG VIỆT NAM
+                        </p>
+                    }
+                    else
+                    {
+                        <p style="font-size:12pt; float:left; margin:-2px 0; font-weight:bold">
+                            CÔNG TY TNHH HYOSUNG ĐỒNG NAI
+                        </p>
+                    }
+
+                    <div style="clear:both"></div>
+                </div>
+            </div><!--end .row -->
+            <div class="row" style="text-align:center">
+                <p style="font-size:14pt;margin:0; font-weight:bold">GIẤY XÁC NHẬN</p>
+                <h4 style="font-size:11pt;margin:4px; font-weight:bold">(QUÊN BẤM THẺ/MẤT THẺ/QUÊN THẺ)</h4>
+                <h4 style="font-size:10pt;margin:4px; font-style:italic">Confirmation of employee card problem</h4>
+            </div>
+            <!-- END INVOICE HEADER -->
+            <!-- BEGIN INVOICE PRODUCTS -->
+            <div class="row" style="padding:0 10px">
+                <div style="float:left; width:16.6%">
+                    <p class="p-content-value">
+                        Main Office&nbsp;
+                        @if (Model.DeptId == 10 || Model.DeptId == 217)
+                        {
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        }
+                    </p>
+                </div>
+                <div style="float:left; width:16.6%">
+                    <p class="p-content-value">
+                        Tire Cord&nbsp;
+                        @if (Model.DeptId == 66 || Model.DeptId == 247)
+                        {
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        }
+                    </p>
+                </div>
+                <div style="float:left; width:16.6%">
+                    <p class="p-content-value">
+                        Spandex&nbsp;
+                        @if (Model.DeptId == 11 || Model.DeptId == 219)
+                        {
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        }
+                    </p>
+                </div>
+                <div style="float:left; width:16.6%">
+                    <p class="p-content-value">
+                        Steel Cord&nbsp;
+                        @if (Model.DeptId == 12)
+                        {
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        }
+                    </p>
+                </div>
+                <div style="float:left; width:16.6%">
+                    <p class="p-content-value">
+                        Product Support&nbsp;
+                        @if (Model.DeptId == 85 || Model.DeptId == 218)
+                        {
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        }
+                    </p>
+                </div>
+                <div style="float:left; width:16.6%">
+                    <p class="p-content-value">
+                        Technical Yarn&nbsp;
+                        @if (Model.DeptId == 184 || Model.DeptId == 292)
+                        {
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        }
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width:160px; vertical-align:middle" class="text-center" rowspan="2">
+                                    <p class="p-content">Họ và tên</p>
+                                    <p class="p-content p-content-en">Full name</p>
+                                </th>
+                                <th style="vertical-align:middle; width:170px" class="text-center" rowspan="2">
+                                    <p class="p-content">Bộ phận</p>
+                                    <p class="p-content p-content-en">Department</p>
+                                </th>
+                                <th style="width:110px; vertical-align:middle" class="text-center" rowspan="2">
+                                    <p class="p-content">Mã số nhân viên</p>
+                                    <p class="p-content p-content-en">Employee's ID</p>
+                                </th>
+                                <th style="vertical-align:middle" class="text-center" colspan="3">
+                                    <p class="p-content">Thời gian</p>
+                                    <p class="p-content p-content-en">Time</p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="vertical-align:middle; width:80px">
+                                    <p class="p-content">Ngày</p>
+                                    <p class="p-content p-content-en">Date</p>
+                                </th>
+                                <th class="text-center" style="vertical-align:middle; width:80px">
+                                    <p class="p-content">Giờ</p>
+                                    <p class="p-content p-content-en">Hour</p>
+                                </th>
+                                <th class="text-center" style="vertical-align:middle">
+                                    <p class="p-content">Ca làm</p>
+                                    <p class="p-content p-content-en">Shift</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="vertical-align:middle" class="text-center" rowspan="2"><p id="pEmpName" class="p-content-value">@Model.EmpName</p></td>
+                                <td style="vertical-align:middle" class="text-center" rowspan="2"><p id="pDeptName" class="p-content-value">@Model.DeptPrint</p></td>
+                                <td style="vertical-align:middle" class="text-center" rowspan="2"><p id="pEmpId" class="p-content-value">@Model.EmpId</p></td>
+                                <td style="vertical-align:middle" class="text-center" rowspan="2"><p id="pWorkDate" class="p-content-value">@string.Format("{0: yyyy.MM.dd}", Model.WorkDate)</p></td>
+                                <td style="vertical-align:middle" class="text-center"><p id="pTimeIn" class="p-content-value">Vào: @Model.TimeIn</p></td>
+                                <td style="vertical-align:middle" class="text-center" rowspan="2"><p id="pShift" class="p-content-value"></p></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:middle" class="text-center">
+                                    @if (string.IsNullOrEmpty(Model.TimeOut))
+                                    {
+                                        <p id="pTimeOut" class="p-content-value">&nbsp;</p>
+                                    }
+                                    else
+                                    {
+                                        <p id="pTimeOut" class="p-content-value">Ra: @Model.TimeOut </p>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:middle" colspan="6">
+                                    <div class="row" style="padding:0 18px">
+                                        <div style="float:left; width:12%">
+                                            <div style="float:left"><p class="p-content">Lý do</p></div>
+                                            <div style="float:left"><p class="p-content p-content-en">/Reason:</p></div>
+                                            <div style="clear:both"></div>
+                                        </div>
+                                        <div style="float:left; width:20%">
+                                            <p class="p-content-value">
+                                                Quên thẻ(Forgot)&nbsp;
+                                                @if (Model.Reason.ToUpper() == "9F5FCDFC-CC91-4E93-B5FA-C73F9EB66CCB")
+                                                {
+                                                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-square-o" aria-hidden="true"></i>
+                                                }
+                                            </p>
+                                        </div>
+                                        <div style="float:left; width:26%">
+                                            <p class="p-content-value">
+                                                Quên quẹt thẻ(Forget scan)&nbsp;
+                                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                                            </p>
+                                        </div>
+                                        <div style="float:left; width:20%">
+                                            <p class="p-content-value">Máy hư(Broken)&nbsp;<i class="fa fa-square-o" aria-hidden="true"></i></p>
+                                        </div>
+                                        <div style="float:left; width:20%">
+                                            <p class="p-content-value">
+                                                Mất thẻ(Lost)&nbsp;
+                                                @if (Model.Reason.ToUpper() == "E9E06360-6517-4936-97D4-B05DF388807E")
+                                                {
+                                                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-square-o" aria-hidden="true"></i>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding:0 18px">
+                                        @if (Model.Reason.ToUpper() == "0F5E6657-5E46-4D2A-9376-217682CB8EAC")
+                                        {
+                                            <p class="p-content-value">
+                                                Lý do khác(Others)&nbsp;
+                                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                            </p>
+                                            <div class="row" style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px">
+                                                @Model.ReasonName
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <p class="p-content-value">
+                                                Lý do khác(Others)&nbsp;
+                                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                                            </p>
+                                            <div class="row" style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px">
+                                                &nbsp;
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    @*<p class="p-content-value">&nbsp;&nbsp;Lý do: @Model.ReasonName</p>*@
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="vertical-align:middle; width:139px" class="text-center" rowspan="2">
+                                    <p class="p-content-value">Xác nhận của người bảo lãnh</p>
+                                    <p class="p-content p-content-en">Confirmed by Guarantor</p>
+                                </th>
+                                <th style=" vertical-align:middle; width:126px" class="text-center" rowspan="2">
+                                    <p class="p-content-value">Người làm đơn</p>
+                                    <p class="p-content p-content-en">Employee</p>
+                                </th>
+                                <th style="vertical-align:middle;" class="text-center" colspan="2">
+                                    <div style="margin:auto; display:table">
+                                        <div style="float:left"><p class="p-content-value">Xác nhận</p></div>
+                                        <div style="float:left"><p class="p-content p-content-en">/Confirm</p></div>
+                                        <div style="clear:both"></div>
+                                    </div>
+                                </th>
+                                <th style=" vertical-align:middle; width:127px" class="text-center" rowspan="2">
+                                    <p class="p-content-value">Phê duyệt</p>
+                                    <p class="p-content p-content-en">Approved by Department Leader</p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th style=" vertical-align:middle; width:127px" class="text-center">
+                                    <p class="p-content-value">Quản lý trực tiếp</p>
+                                    <p class="p-content p-content-en">Immediate manager</p>
+                                </th>
+                                <th style=" vertical-align:middle; width:130px" class="text-center">
+                                    <p class="p-content-value">Quản lý gián tiếp</p>
+                                    <p class="p-content p-content-en">Indirect manager</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="height:80px">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div><!--end .col -->
+            </div><!--end .row -->
+            <div class="row" style="padding: 0 13px">
+                <div style="float:left">
+                    <p>A5(210x148.5mm) Quá trình quản lý giờ công lao động ø (P1-V30-1A-02-F03) 2016.07.11, Rev.6</p>
+                </div>
+                <div style="float:right">
+                    <p>Retention time: 01 year</p>
+                </div>
+            </div>
+            <!-- END INVOICE PRODUCTS -->
+
+        </div><!--end .card-body -->
+    </div><!--end .card -->
+</div><!--end .col -->
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    })
+    //window.onfocus = function () { setTimeout(function () { alert(1); window.close(); }, 1); }
+</script>

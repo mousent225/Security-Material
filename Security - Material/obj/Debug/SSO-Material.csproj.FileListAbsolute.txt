@@ -1,0 +1,248 @@
+E:\Hyosung System\Security - Material\Security - Material\obj\Debug\SSO-Material.csprojResolveAssemblyReference.cache
+E:\Hyosung System\Security - Material\Security - Material\obj\Debug\SSO-Material.csproj.CoreCompileInputs.cache
+E:\Hyosung System\Security - Material\Security - Material\bin\ApplicationInsights.config
+E:\Hyosung System\Security - Material\Security - Material\bin\Security - Material.dll.config
+E:\Hyosung System\Security - Material\Security - Material\bin\Security - Material.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Security - Material.pdb
+E:\Hyosung System\Security - Material\Security - Material\bin\Antlr3.Runtime.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\EntityFramework.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\EntityFramework.SqlServer.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\log4net.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.Agent.Intercept.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.DependencyCollector.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.PerfCounterCollector.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.ServerTelemetryChannel.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.Web.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.WindowsServer.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.ApplicationInsights.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AspNet.Identity.Core.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.Security.Cookies.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.Security.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.Security.OAuth.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Web.Infrastructure.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Newtonsoft.Json.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Owin.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Net.Http.Formatting.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Helpers.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Http.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Http.Owin.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Mvc.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Optimization.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Razor.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.WebPages.Deployment.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.WebPages.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.WebPages.Razor.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\WebGrease.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\EntityFramework.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\EntityFramework.SqlServer.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\log4net.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AspNet.Identity.Core.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.Security.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.Security.Cookies.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.Owin.Security.OAuth.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Net.Http.Formatting.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Http.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Http.Owin.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Helpers.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Mvc.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Optimization.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.Razor.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.WebPages.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.WebPages.Deployment.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Web.WebPages.Razor.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Antlr3.Runtime.pdb
+E:\Hyosung System\Security - Material\Security - Material\bin\Newtonsoft.Json.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.DependencyCollector.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.WindowsServer.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AI.Web.xml
+E:\Hyosung System\Security - Material\Security - Material\obj\Debug\Security - Material.dll
+E:\Hyosung System\Security - Material\Security - Material\obj\Debug\Security - Material.pdb
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\csc.exe
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\csc.exe.config
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\csc.rsp
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\csi.exe
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\csi.exe.config
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\csi.rsp
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\Microsoft.Win32.Primitives.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.AppContext.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Collections.Immutable.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Console.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Diagnostics.Process.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Diagnostics.StackTrace.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.IO.Compression.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.IO.FileSystem.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.IO.FileSystem.DriveInfo.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.IO.FileSystem.Primitives.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.IO.Pipes.AccessControl.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.IO.Pipes.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Reflection.Metadata.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Security.AccessControl.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Security.Claims.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Security.Cryptography.Encoding.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Security.Cryptography.Primitives.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Security.Principal.Windows.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Text.Encoding.CodePages.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Threading.Thread.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.ValueTuple.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Xml.ReaderWriter.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Xml.XmlDocument.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Xml.XPath.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\System.Xml.XPath.XDocument.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\vbc.exe
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\vbc.exe.config
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\vbc.rsp
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\VBCSCompiler.exe
+E:\Hyosung System\Security - Material\Security - Material\bin\roslyn\VBCSCompiler.exe.config
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Diagnostics.DiagnosticSource.dll
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+E:\Hyosung System\Security - Material\Security - Material\bin\System.Diagnostics.DiagnosticSource.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\ApplicationInsights.config
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Security - Material.dll.config
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Security - Material.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Security - Material.pdb
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\csc.exe
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\csc.exe.config
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\csc.rsp
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\csi.exe
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\csi.exe.config
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\csi.rsp
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\Microsoft.Win32.Primitives.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.AppContext.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Collections.Immutable.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Console.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Diagnostics.Process.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Diagnostics.StackTrace.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.IO.Compression.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.IO.FileSystem.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.IO.FileSystem.DriveInfo.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.IO.FileSystem.Primitives.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.IO.Pipes.AccessControl.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.IO.Pipes.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Reflection.Metadata.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Security.AccessControl.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Security.Claims.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Security.Cryptography.Encoding.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Security.Cryptography.Primitives.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Security.Principal.Windows.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Text.Encoding.CodePages.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Threading.Thread.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.ValueTuple.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Xml.ReaderWriter.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Xml.XmlDocument.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Xml.XPath.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\System.Xml.XPath.XDocument.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\vbc.exe
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\vbc.exe.config
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\vbc.rsp
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\VBCSCompiler.exe
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\roslyn\VBCSCompiler.exe.config
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Antlr3.Runtime.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\EntityFramework.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\EntityFramework.SqlServer.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\log4net.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.Agent.Intercept.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.DependencyCollector.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.PerfCounterCollector.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.ServerTelemetryChannel.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.Web.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.WindowsServer.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.ApplicationInsights.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.Identity.Core.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.Security.Cookies.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.Security.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.Security.OAuth.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Web.Infrastructure.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Newtonsoft.Json.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Owin.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Diagnostics.DiagnosticSource.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Net.Http.Formatting.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Helpers.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Http.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Http.Owin.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Mvc.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Optimization.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Razor.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.WebPages.Deployment.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.WebPages.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.WebPages.Razor.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\WebGrease.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Antlr3.Runtime.pdb
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\EntityFramework.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\EntityFramework.SqlServer.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\log4net.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.DependencyCollector.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.Web.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AI.WindowsServer.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.Identity.Core.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.Security.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.Security.Cookies.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.Owin.Security.OAuth.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Newtonsoft.Json.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Diagnostics.DiagnosticSource.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Net.Http.Formatting.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Helpers.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Http.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Http.Owin.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Mvc.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Razor.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.WebPages.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.WebPages.Deployment.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.WebPages.Razor.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\System.Web.Optimization.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\obj\Debug\SSO-Material.csprojResolveAssemblyReference.cache
+E:\Hyosung System\SVN\Security-Material\Security - Material\obj\Debug\SSO-Material.csproj.CoreCompileInputs.cache
+E:\Hyosung System\SVN\Security-Material\Security - Material\obj\Debug\Security - Material.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\obj\Debug\Security - Material.pdb
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.SignalR.Core.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.SignalR.Core.xml
+E:\Hyosung System\SVN\Security-Material\Security - Material\bin\Microsoft.AspNet.SignalR.SystemWeb.xml

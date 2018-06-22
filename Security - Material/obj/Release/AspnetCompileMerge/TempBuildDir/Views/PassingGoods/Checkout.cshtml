@@ -1,0 +1,547 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main-body" style="height:100%;">
+    <div class="card card-underline">
+        <div class="card-head">
+            <ul class="nav nav-tabs pull-left" data-toggle="tabs">
+                <li class="active"><a href="#divExport" name="tabVisitor">Export</a></li>
+                <li><a href="#divImport" name="tabVisitor">Import</a></li>
+            </ul>
+        </div><!--end .card-head -->
+        <div class="card-body tab-content">
+            <div class="tab-pane active" id="divExport" name="tabVisitorContent" style="padding:3px">
+                <div id="toolbar" class="card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+                    <form class="form" role="form">
+                        <div class="input-daterange input-group" id="txtCreateDateRange" style="float:left; padding-right:10px">
+                            <div class="form-group" style="padding:0">
+                                <div class="input-group-content" style="width:90px">
+                                    <input type="text" class="form-control input-sm input-date" name="start" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1))" />
+                                    <label>Create Date</label>
+                                </div>
+                                <span class="input-group-addon">to</span>
+                                <div class="input-group-content" style="width:90px">
+                                    <input type="text" class="form-control input-sm input-date" name="end" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1))" />
+                                    <div class="form-control-line"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="float:left;width:130px">
+                            <div class="form-group">
+                                <select id="cbStatus" class="form-control input-sm">
+                                    <option value="">&nbsp;</option>
+                                </select>
+                                <label for="cbStatus">Status</label>
+                            </div>
+                        </div>
+
+                        <div style="float: right; padding-top:10px">
+                            <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="">
+                    <div id="grdApplicationMaster"></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="divImport" name="tabVisitorContent" style="padding:3px">
+                <div id="toolbar" class="card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+                    <form class="form" role="form">
+                        <div class="input-daterange input-group" id="txtCreateDateRangeImport" style="float:left; padding-right:10px">
+                            <div class="form-group" style="padding:0">
+                                <div class="input-group-content" style="width:90px">
+                                    <input type="text" class="form-control input-sm input-date" name="start" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1))" />
+                                    <label>Create Date</label>
+                                </div>
+                                <span class="input-group-addon">to</span>
+                                <div class="input-group-content" style="width:90px">
+                                    <input type="text" class="form-control input-sm input-date" name="end" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1))" />
+                                    <div class="form-control-line"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="float: right; padding-top:10px">
+                            <button id="btnSearchImport" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                            <button id="btnImport" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Import</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="grdImport"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BEGIN FORM MODAL APPLICATION DETAIL -->
+<div class="modal fade" id="mdAppDetail" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="mdAppDetailView" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%">
+
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="mdAppDetailEdit" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- BEGIN FORM MODAL EMPLOYEE INFOR -->
+<div class="modal fade" id="mdEmpInfor" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Employee's Information</h4>
+                <input type="hidden" id="hdfMdEmpInforEmpId" />
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnMdEmpSelect" class="btn btn-primary">Select</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL EMPLOYEE INFOR -->
+<!-- BEGIN FORM MODAL APPROVALLINE -->
+<div class="modal fade" id="mdApprovalLine" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:95%">
+
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL APPROVALLINE-->
+<!-- BEGIN FORM MODAL PASSING GOODS DETAIL -->
+<div class="modal fade" id="mdPassingGoodsDetail" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:55%">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL PASSING GOODS DETAIL-->
+<!-- BEGIN FORM MODAL PASSING GOODS DETAIL -->
+<div class="modal fade" id="mdPassingGoodsDetailView" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:55%">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END FORM MODAL PASSING GOODS DETAIL-->
+<!-- BEGIN FORM MODAL Image -->
+<div class="modal fade" id="mdImage" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:50%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Image</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    var _visitorInfor;
+    var idEncrypt;
+    var _para = { fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString(), userId: "", approvalStatus: "" };
+    (function (namespace, $) {
+        "use strict";
+
+        var FormViolation = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+
+        };
+        var p = FormViolation.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+
+            $('#txtCreateDateRange').datepicker({ todayHighlight: true, format: _dateFormat });
+
+            var d = new Date();
+            var firstDayIn = new Date(d.getFullYear(), d.getMonth(), 1);
+            var lastDayInMonth = new Date(new Date(d.getFullYear(), d.getMonth() + 1, 1) - 1);
+
+            //fnGetCateValueViaParent("054E0F62-4EFE-41E1-A18D-5C28A6531539", false, $("#cbStatus"), 'EAF964F0-F557-40C7-AD06-F0B4A6571A4F');
+            fnGetCateValueViaParent("054E0F62-4EFE-41E1-A18D-5C28A6531539", false, $("#cbStatus"), 'EAF964F0-F557-40C7-AD06-F0B4A6571A4F', "00f2ec64-cc9b-4fca-ab4c-b37961efad53");
+            //fnGetCateValueViaCateId("6169EBED-0F4A-4688-9991-4777D53CB4FE", false, $("#cbApplicationType"));
+
+            setTimeout(function () {
+                _fnGridApplicationMaster();
+            }, 500);                        
+        };
+
+        p._grdImportInit = function () {
+            var dateRange = $("#txtCreateDateRangeImport").find("input");
+            _para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+            _para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+
+            $("#grdImport").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/PassingGoods/GetDetailForSecurity?fromDate=" + _para.fromDate + "&toDate=" + _para.toDate,
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                FinishDate: { type: "date" }, ReImportDate: { type: "date" }, ConfirmDate: { type: "date" }, CreateDate: { type: "date" }, ExportDate: { type: "date" }, ApplicationDate: { type: "date" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                height: $('footer').position().top - 224,
+                filterable: {
+                    mode: "row"
+                },
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...");
+
+                    var grid = this;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                    });
+
+                },
+                selectable: "multiple row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                navigatable: true,
+                dataBinding: function () {
+                },
+                columns: [
+                    { title: "", template: "", width: 5 },
+                    { field: "Code", title: "Doc No", width: "125px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },                    
+                    { field: "ExportDate", title: "Export Date", format: "{0:yyyy.MM.dd HH:mm}", width: "154px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },                                                                 
+                    { field: "ReImportDate", title: "ReImport Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                    { field: "ItemName", title: "Item Name", width: "135px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "Serial", title: "Serial", width: "90px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "Description", title: "Description", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "Quantity", title: "Quantity", width: "85px", filterable: { cell: { showOperators: false, operator: "contains" } }, attributes: { "class": "text-right" } },
+                    {
+                        title: "Person in Charge",
+                        columns: [
+                            { field: "Applicant", title: "Emp Id", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "ApplicantName", title: "Name", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "OrgName", title: "Org Name", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "PlantName", title: "Plant", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "DeptName", title: "Department", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "SectionName", title: "Section", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                        ], headerAttributes: _headerAttributes
+                    },  
+                ]
+            });
+        }
+
+        $("#grdApplicationMaster").on("dblclick", "tbody > tr", function () {
+            var grid = $("#grdApplicationMaster").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+            idEncrypt = dataItem.IdEncrypt;
+
+            $("#mdAppDetailView").modal("show");
+            var link = '@Url.Action("ShowPopupView", "PassingGoods", new { id = "vendorId" })';
+
+            $.get(link.replace('vendorId', dataItem.IdEncrypt + "checkout"), function (data) {
+                $("#mdAppDetailView .modal-dialog").html(data);
+                $("#mdAppDetailView .modal-body").css({ "max-height": $('footer').position().top - 145, overflow:"auto" });
+            });
+        })
+
+        $("#btnSearch").on("click", function () {
+            _fnGridApplicationMaster();
+        })
+        $("#btnSearchImport").on("click", function () {
+            p._grdImportInit();
+        })
+        $("#btnImport").on("click", function () {
+            var grid = $("#grdImport").data("kendoGrid");
+
+            var ent = [];
+            var rows = $(grid.select());
+            rows.each(function (index, item) {
+                var dataItem = grid.dataItem(this);
+                if (dataItem.TimeIn == null)
+                    ent.push({ Id: dataItem.Id });
+            });
+            if (ent.length === 0) {
+                showNotification("Hyosung Portal", "Please select some goods to import", "gray error");
+                return;
+            } else {
+                if (!confirm("Are you sure to process this operator?"))
+                    return;
+                $.ajax({
+                    type: "POST",
+                    url: "/PassingGoods/Import",
+                    data: JSON.stringify({ list: ent }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        if (result === "Ok") {
+                            showNotification("Hyosung Portal", "Operator success", "gray success");
+                            //reset cho thằng Vehicle
+                            p._grdImportInit();
+                        } else {
+                            showNotification("Hyosung Portal", result, "gray error");
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                        return false;
+                    }
+                });
+            }
+        })
+
+        $("a[name='tabVisitor']").on("click", function () {
+            $("div[name='tabVisitorContent']").hide();
+            $($(this).attr("href")).show();
+
+            $("a[name='tabVisitor']").each(function (index, item) {
+                $(this).parent().removeClass("active");
+            })
+
+            $("div[name='tabVisitorContent']").each(function (index, item) {
+                $(this).addClass("tab-pane");
+            })
+
+            $(this).parent().addClass("active");
+            $($(this).attr("href")).removeClass("tab-pane");
+
+
+            switch ($(this).attr("href")) {
+                case "#divExport":
+                    _fnGridApplicationMaster();
+                    break;
+                case "#divImport":
+                    p._grdImportInit();
+                    break;
+                default:
+                    _fnGridApplicationMaster();
+                    break;
+            }
+        })
+
+        // =========================================================================
+        namespace.FormViolation = new FormViolation;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+
+   function  _fnGridApplicationMaster() {
+        var dateRange = $("#txtCreateDateRange").find("input");
+        _para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+        _para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+        _para.approvalStatus = $("#cbStatus").val();
+        $("#grdApplicationMaster").kendoGrid({
+            excel: {
+                fileName: "PassingGoodsApplicationList_" + (new Date()).toLocaleDateString() + ".xlsx",
+                filterable: true,
+                allPages: true
+            },
+            dataSource: {
+                transport: {
+                    read: "/PassingGoods/GetForSecurity?fromDate=" + _para.fromDate + "&toDate=" + _para.toDate + "&approvalStatus=" + _para.approvalStatus,
+                    create: {
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            FinishDate: { type: "date" }, ReImportDate: { type: "date" }, ConfirmDate: { type: "date" }, CreateDate: { type: "date" }, ExportDate: { type: "date" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 224,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...");
+
+                var grid = this;
+                grid.tbody.find("tr").each(function (e) {
+                    $(this).css("white-space", "nowrap");
+                    var model = grid.dataItem(this);
+                    switch (model.ApprovalStatus.toUpperCase()) {
+                        case "9C817780-2079-4417-B87B-B7E537BBAE8A"://temporary
+                            $(this).children().first().addClass("style-warning");
+                            break;
+                        case "C4FF5A2F-CD32-4785-9499-A26E5148D58D"://process
+                            $(this).children().first().addClass("style-info");
+                            break;
+                        case "00F2EC64-CC9B-4FCA-AB4C-B37961EFAD53"://approve
+                            $(this).children().first().addClass("style-success");
+                            break;
+                        case "9A96D85B-8189-46BA-84CD-3389FDC501B7"://reject
+                            $(this).children().first().addClass("style-danger");
+                            break;
+                        default:
+                    }
+                    if (!model.IsView)
+                        $(this).css("font-weight", "bold");
+                });
+            },
+            selectable: "row",
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            navigatable: true,
+            dataBinding: function () {
+            },
+            columns: [
+                { title: "", template: "", width: 5 },
+                { field: "Code", title: "Doc No", width: "125px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                {
+                    title: "Export",
+                    columns: [
+                        { field: "ExportDate", title: "Date", format: "{0:yyyy.MM.dd HH:mm}", width: "154px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "ExportGate", title: "Gate", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "ExportName", title: "Name", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "ExportUid", title: "Emp Id", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    ], headerAttributes: _headerAttributes
+                },
+                {
+                    title: "Person in Charge",
+                    columns: [
+                        { field: "Applicant", title: "Emp Id", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "ApplicantName", title: "Name", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "OrgName", title: "Org Name", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "PlantName", title: "Plant", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "DeptName", title: "Department", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "SectionName", title: "Section", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                    ], headerAttributes: _headerAttributes
+                },
+                { field: "ReImport", title: "Reimport", width: "70px", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "ReImportDate", title: "ReImport Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                {
+                    title: "Approval",
+                    columns: [
+                        { field: "ConfirmDate", title: "Confirm Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                        { field: "ApprovalStatusName", title: "Status", width: "116px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        { field: "NextApproverName", title: "Next Approver", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    ], headerAttributes: _headerAttributes
+                },
+
+                { field: "CreateUid", title: "Create Uid", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "CreateName", title: "Create Name", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } }
+            ]
+        });
+    }
+
+    // =========================================================================
+    // MODAL ACTION
+    // =========================================================================
+
+    $("#mdAppDetail").on('shown.bs.modal', function () {
+        var link = '@Url.Action("ShowPopup", "PassingGoods")';
+        $.get(link, function (data) {
+            $("#mdAppDetail .modal-content").html(data);
+            $("#mdAppDetail .modal-body").css({ "max-height": $('footer').position().top - 145, overflow: "auto" });
+        });
+    });
+
+    $("#mdAppDetail").on('hidden.bs.modal', function () {
+        $("#mdAppDetail .modal-content").html("");
+    });
+
+    $("#mdAppDetailView").on('hidden.bs.modal', function () {
+        $("#mdAppDetailView .modal-dialog").html("");
+        if ($("#hdfIsView").val() === "false") {
+            _fnGridApplicationMaster();
+        }
+    })
+    $("#mdAppDetailEdit").on('shown.bs.modal', function () {
+        var link = '@Url.Action("ShowPopupEdit", "PassingGoods", new { id = "vendorId" })';
+        $.get(link.replace('vendorId', idEncrypt), function (data) {
+            $("#mdAppDetailEdit .modal-content").html(data);
+            $("#mdAppDetailEdit .modal-body").css({ "max-height": $('footer').position().top - 130, overflow:"auto" });
+        });
+    });
+    $("#mdAppDetailEdit").on('hidden.bs.modal', function () {
+        $("#mdAppDetailEdit .modal-content").html("");
+    });
+    $("#mdPassingGoodsDetail").on('shown.bs.modal', function () {
+        var link = '@Url.Action("ShowPopupDetail", "PassingGoods", new { id = "reimport" })';
+        var reimport = $("#cbReImport").prop("checked") ? 1 : 0;
+        $.get(link.replace('reimport', reimport), function (data) {
+            $("#mdPassingGoodsDetail .modal-content").html(data);
+            $("#mdPassingGoodsDetail .modal-body").css({ "max-height": $('footer').position().top - 145, overflow: "auto" });
+        });
+    });
+
+     $("#mdPassingGoodsDetail").on('hidden.bs.modal', function () {
+         $("#mdPassingGoodsDetail .modal-content").html("");
+    });
+
+     $("#mdImage").on('hidden.bs.modal', function () {
+         $("#mdImage .modal-body").html("");
+     });
+
+    //MODAL EMPLOYEE INFORMATION
+    $("#mdEmpInfor").on('shown.bs.modal', function () {
+        var empId = $("#hdfMdEmpInforEmpId").val();
+        var link = '@Url.Action("ShowModalEmployeeInfor", "Common", new { id = "empId" })';
+        $.get(link.replace('empId', empId), function (data) {
+            $("#mdEmpInfor .modal-body").html(data);
+            $("#mdEmpInfor .modal-body").css({ "max-height": $('footer').position().top - 145, overflow: "auto" });
+        });
+     });
+
+    function fnMdEmpInforClose() {
+        var grid = $("#gridEmpInfor").data("kendoGrid");
+        var dataItem = grid.dataItem($(grid.select()));
+        if (dataItem === null)
+            var dataItem = { LoginID: "", Name: "", OrganizeName: "", PlantName: "", DeptName: "", SectionName: "", DeptId: 0 };
+        _fnSetValueForElementEmployeeInfor(_employeeInfor, dataItem);
+    }
+    $("#mdEmpInfor").on('hidden.bs.modal', function () {
+        $("#mdEmpInfor .modal-body").html("");
+    });
+    //END OF MODAL EMPLOYEE INFORMATION
+
+    $("#btnExport").on("click", function () {
+        var grid = $("#grdApplicationMaster").data("kendoGrid");
+        grid.saveAsExcel();
+    })
+</script>

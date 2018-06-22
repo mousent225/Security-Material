@@ -1,0 +1,434 @@
+﻿<link href="~/Content/assets/css/theme-1/materialadmin_print.css" rel="stylesheet" media="print" />
+
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Views/Shared/_Layout_Print.cshtml";
+}
+
+@model SSO_Material.ViewModels.SecurityApplication.PassingGoodsMasterModel
+
+<style type="text/css">
+    body {
+        font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+    }
+
+    .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+        float: left;
+    }
+
+    .col-md-12 {
+        width: 100%;
+    }
+
+    .col-md-11 {
+        width: 91.66666666666666%;
+    }
+
+    .col-md-10 {
+        width: 83.33333333333334%;
+    }
+
+    .col-md-9 {
+        width: 75%;
+    }
+
+    .col-md-8 {
+        width: 66.66666666666666%;
+    }
+
+    .col-md-7 {
+        width: 58.333333333333336%;
+    }
+
+    .col-md-6 {
+        width: 50%;
+    }
+
+    .col-md-5 {
+        width: 41.66666666666667%;
+    }
+
+    .col-md-4 {
+        width: 33.33333333333333%;
+    }
+
+    .col-md-3 {
+        width: 25%;
+    }
+
+    .col-md-2 {
+        width: 16.666666666666664%;
+    }
+
+    .col-md-1 {
+        width: 8.333333333333332%;
+    }
+
+    p {
+        font-size: 10pt;
+    }
+
+    .p-content {
+        margin: -4px 0;
+        font-weight: bold;
+    }
+
+    .p-content-value {
+        margin: -4px 0;
+    }
+
+    .p-content-en {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 0 3px;
+    }
+
+    .table thead {
+        opacity: 1;
+    }
+
+    .table td {
+        border: black solid 0.4pt !important;
+    }
+
+    .table th {
+        border: black solid 0.4pt !important;
+    }
+</style>
+
+
+
+<div class="col-md-12">
+    <div class="card-printable style-default-light">
+        <div class="card-head" style="background-color:white; position:absolute; top:10px; right:30px; z-index:9999">
+            <div class="btn-group">
+                <a class="btn btn-floating-action btn-primary" href="javascript:void(0);" onclick="javascript:window.print();"><i class="md md-print"></i></a>
+            </div>
+        </div><!--end .card-head -->
+        <div class="card-body style-default-bright" style="padding:20px">
+            <!-- BEGIN INVOICE HEADER -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <img style="width:25px; float:left" src="~/Content/img/Hyosung_logo_11.png" />
+                    <p style="font-size:12pt; float:left; margin:-2px 0; font-weight:bold">
+                        CÔNG TY TNHH HYOSUNG VIỆT NAM
+                    </p>
+                    <div style="clear:both"></div>
+                </div>
+            </div><!--end .row -->
+            <div class="row" style="text-align:center">
+                <p style="font-size:14pt;margin:0; font-weight:bold">GIẤY MANG HÀNG HÓA RA CỔNG</p>
+                <h4 style="font-size:14pt;margin:4px; font-style:italic">(PASSING GOODS)</h4>
+            </div>
+            <br />
+            <!-- END INVOICE HEADER -->
+            <!-- BEGIN INVOICE PRODUCTS -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div style="float:left; width:130px">
+                        <div style="float:left"><p class="p-content">Mã đơn</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Doc No:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 130px)">
+                        <p class="p-content-value">@Model.Code</p>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div style="float:left; width:130px">
+                        <div style="float:left"><p class="p-content">Công ty</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Organization:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 130px)">
+                        <p class="p-content-value">@Model.OrgName</p>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="col-md-6">
+                    <div style="float:left; width:120px">
+                        <div style="float:left"><p class="p-content">Nhà máy</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Plant:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 120px)">
+                        <p class="p-content-value">@Model.PlantName</p>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div style="float:left; width:130px">
+                        <div style="float:left"><p class="p-content">Bộ phận</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Department:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 130px)">
+                        <p class="p-content-value">@Model.DeptName</p>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="col-md-6">
+                    <div style="float:left; width:120px">
+                        <div style="float:left"><p class="p-content">Nhóm</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Section:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 120px)">
+                        <p class="p-content-value">@Model.SectionName</p>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div style="float:left; width:130px">
+                        <div style="float:left"><p class="p-content">Mã nhân viên</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Emp Id:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 130px)">
+                        <p class="p-content-value">@Model.Applicant</p>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="col-md-6">
+                    <div style="float:left; width:120px">
+                        <div style="float:left"><p class="p-content">Họ và tên</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Full name:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 120px)">
+                        <p class="p-content-value">@Model.ApplicantName</p>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div style="float:left; width:188px">
+                        <div style="float:left"><p class="p-content">Ngày làm đơn</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Application Date:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 188px)">
+
+                        <p class="p-content-value">@string.Format("{0:yyyy.MM.dd}", Model.ApplicationDate)</p>
+
+                        <div style="clear:both"></div>
+                    </div>
+                </div>
+                @*<div class="col-md-3">
+                    <div style="float:left; width:130px">
+                        <div style="float:left"><p class="p-content">Nhập lại</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Reimport: </p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <p class="p-content-value" style="text-align:center">
+                        @if (Model.ReImport)
+                        {
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                        }
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <div style="float:left; width:70px">
+                        <div style="float:left"><p class="p-content">Ngày</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Date:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 70px)">
+                        @if (Model.ReImport)
+                        {
+                            <p class="p-content-value">@string.Format("{0:yyyy.MM.dd}", Model.ReImportDate)</p>
+                        }
+                        else
+                        {
+                            <p class="p-content-value">&nbsp;</p>
+                        }
+                    </div>
+                </div>*@
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div style="float:left; width:130px">
+                        <div style="float:left"><p class="p-content">Lý do</p></div>
+                        <div style="float:left"><p class="p-content p-content-en">/Reason:</p></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="border-bottom:dotted black 0.5pt; margin:auto; margin-bottom:3px; float:left; width:calc(100% - 130px)">
+                        <p class="p-content-value">
+                            &nbsp;@Model.Reason
+                        </p>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+            <br />
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="vertical-align:middle; width:30px" class="text-center">
+                            <p class="p-content">STT</p>
+                            <p class="p-content p-content-en">No</p>
+                        </th>
+                        <th style="vertical-align:middle; width:139px" class="text-center">
+                            <p class="p-content">Tên hàng</p>
+                            <p class="p-content p-content-en">Item Name</p>
+                        </th>
+                        <th style=" vertical-align:middle; width:70px" class="text-center">
+                            <p class="p-content">Số seri</p>
+                            <p class="p-content p-content-en">Serial</p>
+                        </th>
+                        <th style="vertical-align:middle;" class="text-center">
+                            <p class="p-content">Mô tả</p>
+                            <p class="p-content p-content-en">Description</p>
+                        </th>
+                        <th style=" vertical-align:middle; width:65px" class="text-center">
+                            <p class="p-content">Số lượng</p>
+                            <p class="p-content p-content-en">Quantity</p>
+                        </th>                       
+                        <th style=" vertical-align:middle; width:90px" class="text-center">
+                            <p class="p-content">Ngày nhập</p>
+                            <p class="p-content p-content-en">Reimport Date</p>
+                        </th>
+                        <th style=" vertical-align:middle; width:130px" class="text-center">
+                            <p class="p-content">Nơi gửi</p>
+                            <p class="p-content p-content-en">Item Location</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < ViewBag.Detail.Count; i++)
+                    {
+                        <tr>
+                            <td><p class="p-content-value" style="text-align:right">@(i + 1)</p></td>
+                            <td><p class="p-content-value">@ViewBag.Detail[i].ItemName</p></td>
+                            <td><p class="p-content-value">@ViewBag.Detail[i].Serial</p></td>
+                            <td><p class="p-content-value">@ViewBag.Detail[i].Description</p></td>
+                            <td><p class="p-content-value" style="text-align:right">@ViewBag.Detail[i].Quantity</p></td>
+                            @*<td>
+                                @if (ViewBag.Detail[i].ReImport ?? false)
+                                {
+                                    <p class="p-content-value">
+                                        @if (Model.ReImport)
+                                        {
+                                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-square-o" aria-hidden="true"></i>
+                                        }
+                                    </p>
+                                }
+                            </td>*@
+                            <td>
+                               
+                                <p class="p-content-value" style="text-align:center">@string.Format("{0:yyyy.MM.dd}", Model.ReImportDate)</p>
+                               
+                            </td>
+                            <td><p class="p-content-value">@ViewBag.Detail[i].ItemLocation</p></td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="vertical-align:middle; width:30px" class="text-center">
+                            <p class="p-content">STT</p>
+                            <p class="p-content p-content-en">No</p>
+                        </th>
+                        <th style="vertical-align:middle; width:130px" class="text-center">
+                            <p class="p-content">Chức vụ</p>
+                            <p class="p-content p-content-en">Job Title</p>
+                        </th>
+                        <th style=" vertical-align:middle" class="text-left">
+                            <p class="p-content">Tên</p>
+                            <p class="p-content p-content-en">Name</p>
+                        </th>
+                        <th style=" vertical-align:middle; width:90px" class="text-center">
+                            <p class="p-content">Trạng thái</p>
+                            <p class="p-content p-content-en">Status</p>
+                        </th>
+
+                        <th style=" vertical-align:middle; width:60px" class="text-center">
+                            <p class="p-content">Ngày</p>
+                            <p class="p-content p-content-en">Date</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < ViewBag.Appr.Count; i++)
+                    {
+                        <tr>
+                            <td><p class="p-content-value" style="text-align:right">@(i + 1)</p></td>
+                            <td><p class="p-content-value">@ViewBag.Appr[i].JobTitle</p></td>
+                            <td><p class="p-content-value">@ViewBag.Appr[i].EmpName</p></td>
+                            <td style="text-align:center">
+
+                                @if (ViewBag.Appr[i].IsApprove ?? false)
+                                {
+                                    <p class="p-content-value">
+                                        Approve
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="p-content-value">
+                                        Reject
+                                    </p>
+                                }
+
+
+                            </td>
+                            <td><p class="p-content-value">@string.Format("{0:yyyy.MM.dd}", @ViewBag.Appr[i].DateApprove)</p></td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+
+            <div class="row">
+                @foreach (var item in ViewBag.ListAttachment)
+                {
+                    <div class="col-md-3" style="position:relative; height: 229px" id="divImage" data-id="@item.AttachId">
+                        <div class="row">
+                            <div class="col-xs-12 background-image">
+                                <img class="img-thumbnail border-white border-xl img-responsive auto-width" src="@item.Path" alt="@item.Name"
+                                     style="position:absolute; right:0; left:0;margin:auto; height:229px">
+                                <p class="p-content-value" style="position:absolute; right:0; left:0;top:224px; margin:auto; text-align:center">@item.Name</p>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                        </div>
+                    </div>
+                }
+            </div>
+            <!-- END INVOICE PRODUCTS -->
+
+        </div><!--end .card-body -->
+    </div><!--end .card -->
+</div><!--end .col -->
+<script type="text/javascript">
+    (function () {
+        document.body.className = "A4";
+    })();
+</script>

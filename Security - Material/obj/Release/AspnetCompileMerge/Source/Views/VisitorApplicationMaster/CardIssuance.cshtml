@@ -1,0 +1,547 @@
+﻿
+@{
+    ViewBag.Title = "CardIssuance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .customer-photo {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        border-radius: 10%;
+        background-size: 32px 35px;
+        background-position: center center;
+        vertical-align: middle;
+        line-height: 32px;
+        box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+        margin-left: 5px;
+    }
+
+    .customer-name {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 32px;
+        padding-left: 3px;
+    }
+</style>
+
+<div id="main-body" style="height:100%;">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="toolbar" class=" card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+                <form class="form" role="form">
+                    <div class="input-daterange input-group" id="txtCreateDateRange" style="float:left; padding-right:10px">
+                        <div class="form-group" style="padding:0">
+                            <div class="input-group-content" style="width:90px">
+                                <input type="text" class="form-control input-sm input-date" name="start" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1))" />
+                                <label>Create Date</label>
+                            </div>
+                            <span class="input-group-addon">to</span>
+                            <div class="input-group-content" style="width:90px">
+                                <input type="text" class="form-control input-sm input-date" name="end" value="@string.Format("{0:yyyy.MM.dd}", new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1))" />
+                                <div class="form-control-line"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="float:left;width:130px">
+                        <div class="form-group">
+                            <select id="cbStatus" class="form-control input-sm">
+                                <option value="">&nbsp;</option>
+                            </select>
+                            <label for="cbStatus">Status</label>
+                        </div>
+                    </div>
+                    <div style="float: right; padding-top:10px">
+                        <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                    </div>
+                </form>
+            </div>
+            <div class="">
+                <div id="grdApplicationMaster"></div>
+                <input type="hidden" id="hdfApplicationMasterId" value="1" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div id="toolbar" class="card" style="background-color:white; height:58px; padding:5px; margin-bottom:10px !important">
+                <form class="form" role="form">
+                    <div style="float: right; padding-top:10px">
+                        <button id="btnIssued" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Issued</button>
+                        <button name="btnSendMail" id="btnSendMailForVisitor" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Send Email</button>
+                        <div name="btnSendMail" class="btn-group" id="btnSendMailForVehicle" style="display:none">
+                            <button type="button" class="btn ink-reaction btn-primary btn-sm">Send Email</button>
+                            <button type="button" class="btn ink-reaction btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li><a href="javascript:;" data-type="1" name="btnSendMailForVehicle">P Waste</a></li>
+                                <li><a href="javascript:;" data-type="2" name="btnSendMailForVehicle">P Support</a></li>
+                                <li><a href="javascript:;" data-type="3" name="btnSendMailForVehicle">P Material</a></li>
+                                <li><a href="javascript:;" data-type="4" name="btnSendMailForVehicle">P Finished</a></li>
+                                <li><a href="javascript:;" data-type="5" name="btnSendMailForVehicle">P Contruction</a></li>
+                            </ul>
+                        </div><!--end .btn-group -->
+                    </div>
+                </form>
+            </div>
+            <div class="">
+
+                <div class="card card-underline">
+                    <div class="card-head">
+                        <ul class="nav nav-tabs pull-left" data-toggle="tabs">
+                            <li class="active"><a href="#divVisitor" name="tabVisitor">Visitor</a></li>
+                            <li><a href="#divVehicle" name="tabVisitor">Vehicle</a></li>
+                        </ul>
+                    </div><!--end .card-head -->
+                    <form class="form" role="form">
+                        <div class="card-body tab-content">
+                            <div class="tab-pane active" id="divVisitor" name="tabVisitorContent" style="padding:3px">
+                                <div id="grdVisitor"></div>
+                            </div>
+                            <div class="tab-pane" id="divVehicle" name="tabVisitorContent" style="padding:3px">
+                                <div id="grdVehicle"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div><!--end .card -->
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var _visitorInfor;
+    var _para = { fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString() };
+    (function (namespace, $) {
+        "use strict";
+
+        var FormCardIssuance = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+
+        };
+        var p = FormCardIssuance.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+
+            $("#txtCreateDateRange").datepicker({
+                todayHighlight: true, format: _dateFormat,
+                //startDate: _applicationMaster.FromDate,
+                //endDate: _applicationMaster.ToDate
+            });
+
+            fnGetCateValueViaParent("054E0F62-4EFE-41E1-A18D-5C28A6531539", false, $("#cbStatus"), 'EAF964F0-F557-40C7-AD06-F0B4A6571A4F', "00f2ec64-cc9b-4fca-ab4c-b37961efad53");
+            setTimeout(function () { p._gridApplicationMasterInit(); }, 500);
+
+            p._gridVisitorInit(1);
+            p._gridVehicleInit(1);
+        };
+        var record = 0;
+        p._gridApplicationMasterInit = function () {
+            var dateRange = $("#txtCreateDateRange").find("input");
+            _para.fromDate = _isValidDate($(dateRange[0]).val(), _minDate).toISOString();
+            _para.toDate = _isValidDate($(dateRange[1]).val(), _maxDate).toISOString();
+            _para.approvalStatus = $("#cbStatus").val();
+            $("#grdApplicationMaster").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/GetForIssued?fromDate=" + _para.fromDate + "&toDate=" + _para.toDate,
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                Id: { type: "int" }, IdEncypt: { type: "string" }, Code: { type: "string" }, Vendor: { type: "string" }, VendorName: { type: "string" },
+                                Applicant: { type: "string" }, ApplicantName: { type: "string" }, Purpose: { type: "string" },
+                                PurposeName: { type: "string" }, Gate: { type: "string" }, GateName: { type: "string" }, ApplicationType: { type: "string" }, ApplicationTypeName: { type: "string" },
+                                ApprovalLineJson: { type: "string" }, ApprovalLine: { type: "string" }, ApprovalStatus: { type: "string" }, ApprovalStatusName: { type: "string" },
+                                LocationOther: { type: "string" }, ApprovalKind: { type: "string" }, ApprovalKindName: { type: "string" }, FromDate: { type: "date" }, ToDate: { type: "date" },
+                                Location: { type: "string" }, ContactPerson: { type: "string" }, ContactNumber: { type: "string" },
+                                OrgName: { type: "string" }, PlantName: { type: "string" }, DeptName: { type: "string" }, SectionName: { type: "string" }, ConfirmDate: { type: "date" },
+                                NextApprover: { type: "string" }, NextApproverName: { type: "string" }, CreateUid: { type: "string" }, CreateName: { type: "string" }, CreateDate: { type: "date" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                height: $('footer').position().top - 178,
+                filterable: {
+                    mode: "row"
+                },
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                    var grid = this;
+                    var record = 0;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                        var model = grid.dataItem(this);
+                        //số thứ tự
+                        $($(this).children()[1]).html(++record);
+                        if (model.IsSendMail)
+                            $(this).children().first().addClass("style-success");
+                        else
+                            $(this).children().first().addClass("style-warning");
+                    });
+                },
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                navigatable: true,
+
+                columns: [
+                    { title: "#", template: "", width: 5},
+                    { title: "#", template: "", width: 50, attributes: { "class": "text-right" } },
+                    { title: "Issued/Visitor", template: "#:NumIssuedVisitor# / #: TotalVisitor#", width: 110, attributes: { "class": "text-right" } },
+                    { title: "Issued/Vehicle", template: "#:NumIssuedVehicle# / #: TotalVehicle#", width: 110, attributes: { "class": "text-right" } },
+                    { field: "Code", title: "Doc No", width: "171px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                    { field: "VendorName", title: "Company Name", width: "145px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "PurposeName", title: "Purpose", width: "165px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "LocationName", title: "Location", width: "270px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "LocationOther", title: "Location Other", width: "180px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    {
+                        title: "Visit Date",
+                        columns: [
+                            { field: "FromDate", title: "From", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "ToDate", title: "To", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } }
+                        ], headerAttributes: _headerAttributes
+                    },
+                    {
+                        title: "Contact Point",
+                        columns: [
+                            { field: "ContactPerson", title: "Person", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "ContactNumber", title: "Telephone", width: "113px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                        ], headerAttributes: _headerAttributes
+                    },
+                    {
+                        title: "Person in Charge",
+                        columns: [
+                            { field: "Applicant", title: "Emp Id", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                            { field: "ApplicantName", title: "Name", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "OrgName", title: "Org Name", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "PlantName", title: "Plant", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "DeptName", title: "Department", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                            { field: "SectionName", title: "Section", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+                        ], headerAttributes: _headerAttributes
+                    },
+                    { field: "CreateUid", title: "Create Uid", width: "111px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                    { field: "CreateName", title: "Create Name", width: "155px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false, lockable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } }
+                ]
+            });
+        }
+        p._gridVisitorInit = function (applicationMasterId) {
+            $("#grdVisitor").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/GetDetail?applicationMasterId=" + applicationMasterId,
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                VisitorCard: { type: "string" },
+                                FromDate: { type: "date", editable: false },
+                                ToDate: { type: "date", editable: false },
+                                IsWorkHourOfficialName: { type: "string", editable: false },
+                                WorkDate: { type: "date", editable: false },
+                                CreateDate: { type: "date", editable: false },
+                                Image: { type: "string", editable: false },
+                                IdentityCard: { type: "string", editable: false },
+                                PhoneNumber: { type: "string", editable: false },
+                                FullName: { type: "string", editable: false }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                filterable: {
+                    mode: "row"
+                },
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                    var grid = this;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                    });
+
+                },
+                height: $('footer').position().top - 238,
+                selectable: "multiple row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                editable: true,
+                columns: [
+                    { field: "VisitorCard", title: "Visitor Card", width: "135px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { template: '<img class="customer-photo" src="#: Image #" alt="" >', field: "Image", title: "Image", width: 100, filterable: false },
+                    { field: "FullName", title: "Full Name", width: 160, filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "IdentityCard", title: "Identity Card No", width: "135px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "PhoneNumber", title: "Phone Number", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "FromDate", title: "From Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "ToDate", title: "To Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "IsWorkHourOfficialName", title: "Office Hours", width: "150px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } }
+                ]
+            });
+        }
+        p._gridVehicleInit = function (applicationMasterId) {
+            $("#grdVehicle").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/GetDetailVehicle?applicationMasterId=" + applicationMasterId,
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                VisitorCard: { type: "string" },
+                                FromDate: { type: "date", editable: false },
+                                ToDate: { type: "date", editable: false },
+                                DriverPlate: { type: "string", editable: false },
+                                VehicleType: { type: "string", editable: false },
+                                DriverName: { type: "string", editable: false },
+                                PhoneDriver: { type: "string", editable: false },
+                                VehicleTypeName: { type: "string", editable: false },
+                                VehicleType: { type: "string", editable: false },
+
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                filterable: {
+                    mode: "row"
+                },
+                dataBound: function (e) {
+                    this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                    this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                    this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...")
+
+                    var grid = this;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                    });
+
+                },
+                height: $('footer').position().top - 238,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                editable: true,
+                columns: [
+                    { field: "VehicleCard", title: "Vehicle Card", width: "135px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "DriverName", title: "Driver Name", width: 130, filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "PhoneDriver", title: "Phone Driver", width: 100, filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "DriverPlate", title: "Driver Plate", width: 100, filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "VehicleTypeName", title: "Vehicle Type", width: 115, filterable: { cell: { showOperators: false, operator: "contains" } } },
+                    { field: "FromDate", title: "From Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false },
+                    { field: "ToDate", title: "To Date", width: "105px", format: "{0:yyyy.MM.dd}", filterable: false }
+                ]
+
+            });
+        }
+
+        $("#grdApplicationMaster").on("dblclick", "tbody > tr", function () {
+            var grid = $("#grdApplicationMaster").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+            $("#hdfApplicationMasterId").val(dataItem.Id);
+
+            if ($("#divVisitor").is(":visible"))
+                p._gridVisitorInit(dataItem.Id);
+            else
+                p._gridVehicleInit(dataItem.Id);
+        })
+
+        $("a[name='tabVisitor']").on("click", function () {
+            $("div[name='tabVisitorContent']").hide();
+            $($(this).attr("href")).show();
+
+            $("a[name='tabVisitor']").each(function (index, item) {
+                $(this).parent().removeClass("active");
+            })
+
+            $("div[name='tabVisitorContent']").each(function (index, item) {
+                $(this).addClass("tab-pane");
+            })
+
+            $(this).parent().addClass("active");
+            $($(this).attr("href")).removeClass("tab-pane");
+
+            $("[name='btnSendMail']").hide();
+
+            switch ($(this).attr("href")) {
+                case "#divVisitor":
+                    p._gridVisitorInit($("#hdfApplicationMasterId").val());
+                    $("#btnSendMailForVisitor").show();
+                    break;
+                case "#divVehicle":
+                    p._gridVehicleInit($("#hdfApplicationMasterId").val());
+                    $("#btnSendMailForVehicle").show();
+                    break;
+            }
+
+        })
+
+        $("#btnSearch").on("click", function () {
+            p._gridApplicationMasterInit();
+        })
+
+        $("#btnIssued").on("click", function () {
+            var $grid;
+            if ($("#divVisitor").is(":visible"))
+                $grid = $("#grdVisitor");
+            else
+                $grid = $("#grdVehicle");
+
+            var grid = $grid.data("kendoGrid");
+            var rows = $grid.find(".k-dirty");
+
+            var rowUpdate = [];
+            if (rows.length === 0)
+                return;
+            else {
+                $.each(rows, function (index, row) {
+                    var tr = $(row).parent().parent();
+                    var data = grid.dataItem(tr);
+                    rowUpdate.push({ Id: data.Id, VisitorCard: data.VisitorCard === null ? data.VehicleCard : data.VisitorCard });
+                });
+            }
+
+            if (rowUpdate.length === 0)
+                return;
+
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/CardIssued",
+                data: JSON.stringify({ list: rowUpdate, isVisitor: $("#divVisitor").is(":visible") }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Operation success", "gray success");
+                        if ($("#divVisitor").is(":visible"))
+                            p._gridVisitorInit($("#hdfApplicationMasterId").val());
+                        else
+                            p._gridVehicleInit($("#hdfApplicationMasterId").val());
+                        p._gridApplicationMasterInit();
+
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        })
+
+        $("#btnSendMailForVisitor").on("click", function () {
+           
+            var _dataVisitor = $("#grdVisitor").data("kendoGrid").dataSource.data();
+
+            if (_dataVisitor.some(function (item) { return item.VisitorCard === "" || item.VisitorCard === null; })) {
+                showNotification("Hyosung Portal", "Please enter visitor card number for all visitor before send email", "gray error");
+                return;
+            }
+            if (!confirm("Are you sure to process this operation?"))
+                return;
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/SendEmailForVisitor",
+                data: JSON.stringify({ masterId: $("#hdfApplicationMasterId").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Operation success", "gray success");
+                        if ($("#divVisitor").is(":visible"))
+                            p._gridVisitorInit($("#hdfApplicationMasterId").val());
+                        else
+                            p._gridVehicleInit($("#hdfApplicationMasterId").val());
+
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        })
+
+        $("[name='btnSendMailForVehicle']").on("click", function () {
+            var _dataVehicle = $("#grdVehicle").data("kendoGrid").dataSource.data();
+
+            if (_dataVehicle.some(function (item) { return item.VehicleCard === "" || item.VehicleCard === null; })) {
+                showNotification("Hyosung Portal", "Please enter vehicle card number for all vehicle before send email", "gray error");
+                return;
+            }
+            if (!confirm("Are you sure to process this operation?"))
+                return;
+            var type = $(this).attr("data-type");
+
+            $.ajax({
+                type: "POST",
+                url: "/VisitorApplicationMaster/SendEmailForVehicle",
+                data: JSON.stringify({ masterId: $("#hdfApplicationMasterId").val(), type: type }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Operation success", "gray success");
+                        if ($("#divVisitor").is(":visible"))
+                            p._gridVisitorInit($("#hdfApplicationMasterId").val());
+                        else
+                            p._gridVehicleInit($("#hdfApplicationMasterId").val());
+
+                    } else {
+                        showNotification("Hyosung Portal", result, "gray error");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        })
+
+        // =========================================================================
+        namespace.FormCardIssuance = new FormCardIssuance;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+
+</script>

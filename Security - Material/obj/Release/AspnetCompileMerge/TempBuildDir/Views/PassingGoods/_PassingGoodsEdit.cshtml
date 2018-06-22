@@ -1,0 +1,1023 @@
+﻿@using SSO_Material.Utilities;
+@using System.Security.Claims;
+@model SSO_Material.ViewModels.SecurityApplication.PassingGoodsMasterModel
+
+<link href="~/Content/assets/css/theme-1/libs/wizard/wizard.css" rel="stylesheet" />
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Passing Goods</h4>
+    <input type="hidden" id="hdfApplicationType" value="12" />
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="wzShortTerm" class="form-wizard form-wizard-horizontal">
+                <div id="frmViolation" role="form" class="form card card-body font-awesome-minus">
+
+                    <div class="form-wizard-nav">
+                        <div class="progress"><div class="progress-bar progress-bar-primary"></div></div>
+                        <ul class="nav nav-justified">
+                            <li class="active"><a href="#tab1" data-toggle="tab"><span class="step">1</span><span class="title">Main Information</span></a></li>
+                            <li><a href="#tab2" data-toggle="tab"><span class="step">2</span> <span class="title">Approval Line</span></a></li>
+                        </ul>
+                    </div><!--end .form-wizard-nav -->
+                    <div class="tab-content clearfix">
+                        <div class="tab-pane active" id="tab1">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4 class="text-primary" style="border-bottom:1px dotted">Person in charge</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group date" id="txtApplicationDate" style="padding-top:0">
+                                                <div class="input-group-content">
+                                                    <input type="text" class="form-control input-sm" value="@string.Format("{0:yyyy.MM.dd}", Model.ApplicationDate)">
+                                                    <label class="label-require">Application Date</label>
+                                                </div>
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group has-feedback">
+                                                <input type="text" class="form-control input-sm change-data" id="txtPicEmpId" value="@Model.Applicant" name="PicEmployeeInfor" maxlength="20">
+                                                <label for="txtPicEmpId" class="label-require">Emp Id/Name</label>
+                                                <span class="glyphicon glyphicon-search form-control-feedback" style="cursor:pointer"></span>
+                                                <input type="hidden" id="hdfMasterId" value="@Model.Id" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control input-sm change-data" id="PictxtPicEmpName" name="PicEmployeeInfor" readonly>
+                                                <label for="txtPicEmpName">Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="hidden" name="PicEmployeeInfor" />
+                                                <input type="hidden" name="PicEmployeeInfor" />
+                                                <input type="text" class="form-control input-sm change-data" name="PicEmployeeInfor" id="txtPicOrgName" readonly>
+                                                <label for="txtPicOrgName">Organization</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control input-sm change-data" name="PicEmployeeInfor" id="txtPicPlantName" readonly>
+                                                <label for="txtPicPlantName">Plant</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control input-sm change-data" name="PicEmployeeInfor" id="txPictDeptName" readonly>
+                                                <label for="txtPicDeptName">Department</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control input-sm change-data" name="PicEmployeeInfor" id="txtPicSectName" readonly>
+                                                <label for="txtPicSectName">Section</label>
+                                                <input type="hidden" id="hdfPicDeptId" name="PicEmployeeInfor" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                                                                               
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm change-data" id="txtReason" value="@Model.Reason">
+                                        <label for="txtReason" class="label-require">Reason</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <h4 class="text-primary" style="border-bottom:1px dotted">List of Goods</h4>
+                                </div>
+                                <div class="col-md-1">
+                                    <div style="float:right">
+                                        <button type="button" id="btnNewDetail" class="btn ink-reaction btn-primary btn-sm" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#mdPassingGoodsDetail">New</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="grdPassingGoodsDetail"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="card card-underline">
+                                            <div class="card-head">
+                                                <ul class="nav nav-tabs pull-left" data-toggle="tabs">
+                                                    <li class="active"><a href="#divMdApprovalLineSearch" name="tabApproval">Search</a></li>
+                                                    <li><a href="#divMdApprovalLineDefault" name="tabApproval">Default</a></li>
+                                                    <li><a href="#divMdApprovalLineRecent" name="tabApproval">Recent</a></li>
+                                                </ul>
+                                                <div class="tools">
+                                                    <div class="btn-group" style="display:none">
+                                                        <button id="btnMdShortTermApprRefresh" name="btnTabsAction" type="button" title="Refresh" class="btn btn-icon-toggle">
+                                                            <i class="md md-refresh"></i>
+                                                        </button>
+                                                        <button id="btnMdShortTermApprCopy" name="btnTabsAction" data-tab-active="" type="button" title="Copy" class="btn btn-icon-toggle">
+                                                            <i class="md md-content-copy"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div><!--end .card-head -->
+                                            <div class="card-body tab-content">
+                                                <div class="tab-pane active" id="divMdApprovalLineSearch" name="tabApprovalContent" style="padding:3px">
+                                                    <div class="col-md-3">
+                                                        <div class="form card card-body" role="form" style="margin-bottom:0 !important">
+                                                            <div id="tvShortTermEmpPlant"></div>
+                                                            <input id="hdfShortTermEmpPlant" type="hidden" value="0" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div id="toolbar" class="card row" style="background-color:white; height:58px; margin-bottom:10px">
+                                                            <div class="form card-body" role="form">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control input-sm change-data" value="@ViewBag.EmpId" id="txtShortTermEmpId">
+                                                                        <label for="txtShortTermEmpId">Emp Id/Emp Name</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-8" style="padding: 10px 0">
+                                                                    <div style="float:right">
+                                                                        <button id="btnShortTermEmpSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">View</button>
+                                                                        <button id="btnShortTermEmpApprover" name="btnApprovalTypeAction" data-id="E408D53D-6E62-4D63-A3D4-CD3EA9A14D36" data-name="Approver" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Approver</button>
+                                                                        <button id="btnShortTermEmpConsenter" name="btnApprovalTypeAction" data-id="5325E6FF-6430-49A2-B3D3-D9ABDBE06F9E" data-name="Consenter" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Consenter</button>
+                                                                        <button id="btnShortTermEmpCirculator" name="btnApprovalTypeAction" data-id="045872C8-638C-4A12-A70B-4E471C5D90EB" data-name="Circulator" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Circulator</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div id="gridShortTermEmpInfor"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="divMdApprovalLineDefault" name="tabApprovalContent" style="padding:3px">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div id="gridShortTermApprDefault"></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <input type="text" data-role="tagsinput" class="form-control input-sm change-data" id="txtCirculatorDefault">
+                                                                    <label for="txtCirculatorDefault">Circulator</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="divMdApprovalLineRecent" name="tabApprovalContent" style="padding:3px">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div id="gridShortTermApprHistory"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!--end .card-body -->
+                                        </div><!--end .card -->
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form" role="form">
+                                                    <div style="float: right; padding:3px 0">
+                                                        <div class="btn-group">
+                                                            <button id="btnMdShortTermApprInitial" type="button" title="Initial" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                                <i class="md md-autorenew"></i>
+                                                            </button>
+                                                            <button id="btnMdShortTermApprTop" type="button" title="Top" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                                <i class="md md-vertical-align-top"></i>
+                                                            </button>
+                                                            <button id="btnMdShortTermApprUp" type="button" title="Up" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                                <i class="md md-keyboard-arrow-up"></i>
+                                                            </button>
+                                                            <button id="btnMdShortTermApprDown" type="button" title="Down" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                                <i class="md md-keyboard-arrow-down"></i>
+                                                            </button>
+                                                            <button id="btnMdShortTermApprBottom" type="button" title="Bottom" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                                <i class="md md-vertical-align-bottom"></i>
+                                                            </button>
+                                                            <button id="btnMdShortTermApprDelete" type="button" title="Delete" name="btnApproveAction" class="btn ink-reaction btn-default-light">
+                                                                <i class="md md-delete"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input type="hidden" id="hdfApprovalLineJson" value="@Model.ApprovalLineJson" />
+                                                <div id="gridApprovalLine"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="text" data-role="tagsinput" class="form-control input-sm change-data" id="txtCirculator">
+                                                    <label for="txtCirculator">Circulator</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!--end #tab2 -->
+                    </div>
+                </div>
+            </div>
+        </div><!--end #rootwizard -->
+    </div>
+</div>
+<div class="modal-footer">
+    <button id="btnSave" type="submit" class="btn btn-primary submit">Save</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+
+<script type="text/javascript">
+    var _visitorList = [
+        //{ FullName: "", IdentifyNo: "", PhoneNumber: "", FromDate: new Date(), ToDate: new Date(), DriverPlate: "", VehicleType: "", IsContactPerson: false, IsWorkHourOfficial: false }
+    ];
+
+    var _entity = {
+        Id: 0, Applicant: "", DeptId: 0, ApplicationDate: new Date(), ReImport: false, ReImportDate: new Date(), Reason: "", FinishApplication: false, FinishReason: "", FinishDate: new Date(),
+        DeptId: 0, ViolateDate: new Date(), ViolateType: "", ViolationTypeName: "", ReasonDetail: "", IsBlackList: true, PersonInCharge: "", IsAttachment: true,
+        ApprovalKind: "", ApprovalKindName: "", ApprovalLine: "", ApprovalLineJson: "", ApprovalStatus: "", ApprovalStatusName: "", NextApprover: "",
+    };
+
+    var _passingGoodsDetail = [];
+
+    var _visitPlant = [];
+
+    var _apprLine = [];
+    var _circulator;
+    var _apprLineDefault;
+    var _circulatorDefault;
+    var _apprLineRecent;
+    var _circulatorRecent;
+    var _day = 86400000;
+
+    (function (namespace, $) {
+        "use strict";
+
+        var _paraMdEmp = {
+            deptCode: 0, userId: "vn551", userName: "", status: "", nation: "", sex: "", hasEmail: null
+        };
+
+        var _entityApproval = {
+            EmpId: "", Name: "", DeptFullName: "", ApproverType: "", ApproverTypeName: "", Seq: 0
+        };
+        var _attachmentFile = [];
+
+        var FormPassinGoodsDetail = function () {
+            // Create reference to this instance
+            var o = this;
+            // Initialize app when document is ready
+            $(document).ready(function () {
+                o.initialize();
+            });
+        };
+        var p = FormPassinGoodsDetail.prototype;
+
+        // =========================================================================
+        // INIT
+        // =========================================================================
+
+        p.initialize = function () {
+            
+            $("#mdAppDetailEdit").find(".modal-dialog").css({ "width": "60%" });
+
+            $("#txtApplicationDate").datepicker({ autoclose: true, todayHighlight: true, format: _dateFormat });
+            $("#txtReimportDate").datepicker({ autoclose: true, todayHighlight: true, format: _dateFormat, startDate: new Date(), endDate: new Date((new Date()).getTime() + 180 * _day) });
+
+            $('#txtApplicationDate').datepicker().on("changeDate", function () {
+                //$('#txtReimportDate').datepicker('destroy');
+                $("#txtReimportDate").datepicker('setStartDate', $(this).datepicker('getDate'));
+                $("#txtReimportDate").datepicker('setEndDate', new Date($(this).datepicker('getDate').getTime() + 180 * _day));
+            })
+
+            var o = this;
+            $("#divMdApprovalLineSearch").css({ height: $("footer").position().top - 299, "max-height": $("footer").position().top - 299, overflow: "auto" });
+            fnGetCateValueViaCateId("C6820F36-56BB-4F92-A128-73BA0F45C436", false, $("#cbViolationType"));
+            o._getGridDetail();
+
+            _fnGetEmployeeInfor($("#txtPicEmpId"), $("input[name='PicEmployeeInfor']"));
+            o._gridApprovalLineInit();
+
+            $('#wzShortTerm').bootstrapWizard({
+                onTabShow: function (tab, navigation, index) {
+                    _handleTabShow(tab, navigation, index, $('#wzShortTerm'));
+                },
+                onNext: function (tab, navigation, index) {
+                    if (!o._onTabClick(tab, navigation, index))
+                        return false;
+                },
+                onTabClick: function (tab, navigation, index) {
+                    if (!o._onTabClick(tab, navigation, index))
+                        return false;
+                }
+            });
+
+            //tab approval line
+            o._getApprPlant();
+            o._gridEmployeeInit();
+
+            $("#txtCirculator").tagsinput({ itemValue: 'EmpId', itemText: 'EmpName' });
+            $("#txtCirculatorDefault").tagsinput({ itemValue: 'EmpId', itemText: 'EmpName' });
+            $("#tvShortTermEmpPlant").css({ "max-height": $("#divMdApprovalLineSearch").height() - 11, height: $("#divMdApprovalLineSearch").height() - 11, overflow: "auto" });
+
+            _apprLine = JSON.parse($("#hdfApprovalLineJson").val().split('|')[0]);
+            o._gridApprovalLineInit();
+            if ($("#hdfApprovalLineJson").val().split('|')[1] !== "[]") {
+                _circulator = JSON.parse($("#hdfApprovalLineJson").val().split('|')[1]);
+
+                $('txtCirculator').tagsinput('removeAll');
+                $.each(_circulator, function (index, item) {
+                    var tagItem = { EmpId: item.EmpId, EmpName: item.EmpName };
+                    $("#txtCirculator").tagsinput('add', tagItem);
+                })
+            }
+        };
+
+        // =========================================================================
+        // SELECT DATA FROM DB
+        // =========================================================================
+
+        p._getGridDetail = function () {
+            $("#grdPassingGoodsDetail").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/PassingGoods/GetDetailViaMaster?id=" + 0 + "&masterId=" + $("#hdfMasterId").val(),
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                PassDate: { type: "date" },
+                                ImportDate: { type: "date" },
+                                ReImportDate: { type: "date" },
+                                ReImport: { type: "bool" },
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                //toolbar: ["create"],
+                height: $('footer').position().top - 455,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                dataBinding: function () {
+                    //record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+                    //console.log(record);
+                },
+                resizable: true,
+                cache: false,
+                editable: "inline",
+                columns: [
+                    { field: "ItemName", title: "Item Name", width: "135px" },
+                    { field: "Serial", title: "Serial", width: "90px" },
+                    { field: "Description", title: "Description" },
+                    { field: "Quantity", title: "Quantity", width: "85px" },
+                    //{ field: "ReImportName", title: "ReImport", width: "85px", headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                    { field: "ReImportDate", title: "ReImport Date", format: "{0:yyyy.MM.dd}", width: "111px", filterable: false },
+                    { field: "ItemLocation", title: "ItemLocation", width: "135px" },
+                    { field: "Remark", title: "Remark", width: "135px" }
+                ]
+
+            });
+        }
+
+        p._getApprPlant = function () {
+            var durl = "../../Common/GetDeptTreeView";
+            var data = new kendo.data.HierarchicalDataSource({
+                transport: {
+                    read: {
+                        url: durl,
+                        contentType: "application/json"
+                    },
+                    cache: "inmemory"
+                },
+                schema: {
+                    model: {
+                        id: "DeptCode",
+                        children: "Children",
+                        hasChildren: "HasChildren"
+                    }
+                }
+            });
+            $("#tvShortTermEmpPlant").kendoTreeView({
+                dataSource: data,
+                loadOnDemand: true,
+                dataTextField: "EnName",
+                select: treeviewSelect
+            });
+
+            function treeviewSelect(e) {
+                var data = this.dataItem(e.node);
+                _paraMdEmp.deptCode = data.Id;
+                _paraMdEmp.userId = $("#txtShortTermEmpId").val();
+                _paraMdEmp.userName = $("#txtShortTermEmpId").val();
+                p._gridEmployeeInit();
+            }
+            // function that gathers IDs of checked nodes
+        }
+
+
+        //GRID EMPLOYEE
+        //BEGIN APPROVAL
+        p._gridEmployeeInit = function () {
+            $("#gridShortTermEmpInfor").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/Common/GetEmployeeInfor?deptCode=" + _paraMdEmp.deptCode + "&userId="
+                        + _paraMdEmp.userId + "&userName=" + _paraMdEmp.userName + "&status=" + _paraMdEmp.status + "&nation="
+                        + _paraMdEmp.nation + "&sex=" + _paraMdEmp.sex + "&hasEmail=" + _paraMdEmp.hasEmail,
+                        create: {
+                            cache: true
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                ID: { type: "string" }, LoginID: { type: "string" }, Name: { type: "string" }, Email: { type: "string" }, DeptFullName: { type: "string" }, DeptId: { type: "string" }, CostCenter: { type: "string" },
+                                OrganizeName: { type: "string" }, PlantName: { type: "string" }, DeptName: { type: "string" }, SectionName: { type: "string" }, CreateName: { type: "string" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                dataBound: function (e) {
+                    var grid = this;
+                    grid.tbody.find("tr").each(function (e) {
+                        $(this).css("white-space", "nowrap");
+                    });
+                },
+                height: $("#divMdApprovalLineSearch").height() - 65,
+                filterable: false,
+                selectable: "multiple row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                columns: [
+                    { field: "LoginID", title: "Emp Id", width: "110px" },
+                    { field: "Name", title: "Emp Name", width: "190px" },
+                    { field: "Email", title: "Email", width: "150px" },
+                    { field: "OrganizeName", title: "Org Name", width: "140px" },
+                    { field: "PlantName", title: "Plant", width: "160px" },
+                    { field: "DeptName", title: "Department", width: "182px" },
+                    { field: "SectionName", title: "Section", width: "150px" }
+                ]
+            });
+        }
+        //GRID APPROVAL LINE
+        var record = 0;
+        p._gridApprovalLineInit = function () {
+            $("#gridApprovalLine").kendoGrid({
+                dataSource: {
+                    data: _apprLine,
+                    schema: {
+                        model: {
+                            fields: {
+                                EmpId: { type: "string" },
+                                Name: { type: "string" },
+                                DeptFullName: { type: "string" },
+                                ApproverType: { type: "string" },
+                                ApproverTypeName: { type: "string" },
+                                Seq: { type: "int" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                //toolbar: ["create"],
+                height: $('footer').position().top - 355,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                dataBinding: function () {
+                    record = (this.dataSource.page() - 1) * this.dataSource.pageSize();
+                    console.log(record);
+                },
+                resizable: true,
+                cache: false,
+                editable: "inline",
+                columns: [
+                    //{ title: "#", template: record, width: 35 },
+                    //{ field: "Seq", title: "No", width: "40px" },
+                    { field: "EmpId", title: "Emp Id", width: "115px" },
+                    { field: "Name", title: "Emp Name" },
+                    { field: "ApproverTypeName", title: "Approver Type", width: "130px" }
+                ]
+
+            });
+        }
+        p._gridDefaultAppr = function (applicationId) {
+            $.ajax({
+                type: "POST",
+                url: "/ApplicationConfig/GetDefaultApprovalLine",
+                data: JSON.stringify({ applicationId: applicationId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    _apprLineDefault = JSON.parse(result.data.split("|")[0]);
+                    _circulatorRecent = JSON.parse(result.data.split("|")[1]);
+                    $("#gridShortTermApprDefault").kendoGrid({
+                        dataSource: {
+                            data: _apprLineDefault,
+                            schema: {
+                                model: {
+                                    fields: {
+                                        EmpId: { type: "string" },
+                                        Name: { type: "string" },
+                                        DeptFullName: { type: "string" },
+                                        ApproverType: { type: "string" },
+                                        ApproverTypeName: { type: "string" },
+                                        Seq: { type: "int" }
+                                    }
+                                }
+                            },
+                            pageSize: 20
+                        },
+                        height: $('footer').position().top - 374,
+                        selectable: "row",
+                        sortable: true,
+                        pageable: true,
+                        resizable: true,
+                        cache: false,
+                        editable: "inline",
+                        columns: [
+                            { field: "EmpId", title: "Emp Id", width: "115px" },
+                            { field: "Name", title: "Emp Name" },
+                            { field: "DeptFullName", title: "Department" },
+                            { field: "ApproverTypeName", title: "Approver Type", width: "130px" }
+                        ]
+
+                    });
+                    $.each(_circulatorRecent, function (index, item) {
+                        var tagItem = { EmpId: item.EmpId, EmpName: item.Name };
+                        $("#txtCirculatorDefault").tagsinput('add', tagItem);
+                    })
+                },
+                error: function () {
+                    return [];
+                }
+            });
+        }
+        p._gridApprvalHistory = function (applicationId) {
+            $("#gridShortTermApprHistory").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "/VisitorApplicationMaster/ApprvalLineHistory?applicationId=" + applicationId
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                Id: { type: "int" }, ApplicationId: { type: "int" }, ApplicationMasterName: { type: "string" },
+                                MasterId: { type: "int" }, ApplicationSubject: { type: "string" }, ApprovalLine: { type: "string" }, Circulator: { type: "string" },
+                                ApprovalLineJson: { type: "string" }, CreateDate: { type: "date" }, ApprName: { type: "string" }, CirName: { type: "string" }
+                            }
+                        }
+                    },
+                    pageSize: 20
+                },
+                height: $("#divMdApprovalLineSearch").height(),
+                filterable: false,
+                selectable: "row",
+                sortable: true,
+                pageable: true,
+                resizable: true,
+                cache: false,
+                columns: [
+                    { field: "ApprName", title: "Approval Line", width: "500px" },
+                    { field: "CirName", title: "Circulator", width: "300px" },
+                    { field: "CreateDate", title: "Create Date", format: "{0:yyyy.MM.dd}", width: "90px" }
+                ]
+            });
+        }
+
+        //END APPROVAL
+
+        // =========================================================================
+        // ACTION CRUD
+        // =========================================================================
+        p._getBasicData = function () {
+            _entity.Id = $("#hdfMasterId").val();
+            _entity.Applicant = $("#txtPicEmpId").val();
+            if ($("#txtPicEmpName").val() === "") {
+                showNotification("Hyosung Portal", "Please select the PIC", "gray error");
+                return false;
+            }
+            _entity.DeptId = $("#hdfPicDeptId").val();
+
+            _entity.ApplicationDate = $("#txtApplicationDate").datepicker("getDate");
+
+            if (!_fnCheckEmpty($("#txtApplicationDate").find("input"), "Please select application date"))
+                return false;
+
+            //_entity.ReImport = $("#cbReImport").prop("checked");
+            _entity.ReImportDate = $("#txtReimportDate").datepicker("getDate");
+
+            if (!_fnCheckEmpty($("#txtReason"), "Please input into field: Reason"))
+                return false;
+            //if ($("#txtReimportDate").find("input").val() === "" && $("#cbReImport").prop("checked")) {
+            //    showNotification("Hyosung Portal", "Please select the reimport date", "gray error");
+            //    return false;
+            //}
+
+            return true;
+        };
+
+        p._insertData = function () {
+            if (!this._getBasicData())
+                return false;
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/PassingGoods/Insert",
+                data: JSON.stringify({ model: _entity }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result !== 0) {
+                        $("#hdfMasterId").val(result);
+                        if (_attachmentFile.length >= 1) {
+                            for (var i = 0; i < _attachmentFile.length; i++) {
+                                _attachmentFile[i].MasterId = result;
+                            }
+                            o._insertAttachment();
+                        }
+                        p._getGridDetail();
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+
+        p._saveAlldata = function () {
+            //kiểm tra lại dữ liệu của master
+            var result = false;
+            result = this._getBasicData();
+            if (!result)
+                return;
+
+            //kiểm tra dữ liệu của approval line
+            if (_apprLine.length === 0) {
+                showNotification("Hyosung Portal", "Please select the approval line", "gray error");
+                return;
+            }
+            //kiểm tra xong
+            //thì giờ sẽ get data tiếp
+            var _circulator = $("#txtCirculator").tagsinput("items");
+            _entity.ApprovalKind = '2600C4A7-CFB3-4E08-A08D-EDF0C1D99A71'//order
+            _entity.ApprovalLine = _fnConvertJsonToString(_apprLine, "EmpId", "_") + "|" +
+                _fnConvertJsonToString(_apprLine, "Name", " > ") + "|" +
+                _fnConvertJsonToString(_apprLine, "ApproverType", "_") + "|" +
+                _fnConvertJsonToString(_circulator, "EmpId", ",") + "|" +
+                _fnConvertJsonToString(_circulator, "EmpName", ", ");
+            _entity.ApprovalLineJson = JSON.stringify(_apprLine) + "|" + JSON.stringify(_circulator);
+
+            p._insertData();
+
+            var o = this;
+            $.ajax({
+                type: "POST",
+                url: "/PassingGoods/UpdateAll",
+                data: JSON.stringify({ model: _entity }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Operator success", "gray success");
+                        _fnGridApplicationMaster(_para);
+                        $("#mdAppDetailEdit").modal("hide");
+                    }
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+
+        }
+
+
+        p._insertAttachment = function () {
+            $.ajax({
+                type: "POST",
+                url: "/Common/AttachmentInsert",
+                data: JSON.stringify({ model: _attachmentFile }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    //alert(result);
+                    console.log(result);
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+
+        // =========================================================================
+        // EVENT IN FORM
+        // =========================================================================
+        p._onTabClick = function (tab, navigation, index) {
+            if ($("#grdPassingGoodsDetail").data("kendoGrid").dataSource.data().length === 0) {
+                showNotification("Hyosung Portal", "Please add at least one item", "gray error");
+                $('#wzShortTerm').bootstrapWizard('show', 0)
+                return false;
+            }
+            if (!this._getBasicData()) {
+                $('#wzShortTerm').bootstrapWizard('show', 0)
+            }
+            if (index === 0) {
+                $("#mdAppDetailEdit").find(".modal-dialog").css({ "width": "95%" });
+            } else {
+                $("#mdAppDetailEdit").find(".modal-dialog").css({ "width": "60%" });
+            }
+            this._insertData();
+
+            return true;
+        }
+
+        //BEGIN APPROVAL
+        p._onSetSelect = function (grid, rowIndex) {
+            var grid = grid.data("kendoGrid");
+            var row = grid.tbody.find(">tr").eq(rowIndex);
+            grid.select(row);
+        }
+        p._onPushToApproval = function (item, approverType, approverTypeName) {
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            if (!_apprLine.some(function (item) { return item.EmpId === empId; })) {
+                var _entityApproval = {
+                    EmpId: (item.LoginID == undefined ? item.EmpId : item.LoginID),
+                    Name: item.Name, DeptFullName: item.DeptFullName, ApproverType: approverType, ApproverTypeName: approverTypeName, Seq: _apprLine.length + 1
+                };
+                _apprLine.push(_entityApproval);
+            }
+            //console.log(_apprLine);
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), _apprLine.length - 1);
+        }
+        p._onSwapItem = function (item, index) {
+            console.log("item: " + JSON.stringify(item));
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            var i = _apprLine.map(function (d) { return d["EmpId"] }).indexOf(empId);
+
+            console.log("index: " + i);
+            if (i == 0 && index == -1) return;//item nằm ở đầu nên ko cho di chuyển lên nữa
+            if (i == _apprLine.length - 1 && index == 1) return;//item nằm ở cuối rồi thì ko cho di chuyển xuống nữa
+
+            _apprLine[i] = _apprLine[i + index];
+            _apprLine[i + index] = item;
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), i + index);
+            return i + index;
+        };
+        p._onMoveOnTop = function (item) {
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            var index = _apprLine.map(function (d) { return d["EmpId"] }).indexOf(empId);
+            if (index == 0)//nếu đã nằm ở vị trí đầu tiên thì return
+                return;
+            if (index > -1) {
+                //cắt item tại vị trí đó
+                var extracted = _apprLine.splice(index, 1)[0];
+                //hàm chèn vào đầu mảng
+                _apprLine.unshift(extracted);
+            }
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), 0);
+        };
+        p._onMoveOnBottom = function (item) {
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            var index = _apprLine.map(function (d) { return d["EmpId"] }).indexOf(empId);
+            if (index === _apprLine.length - 1) return;//nếu nằm vị trí cuối cùng rồi thì thôi
+            if (index > -1) {
+                //cắt item tại vị trí đó
+                var extracted = _apprLine.splice(index, 1)[0];
+                //hàm chèn vào đầu mảng
+                _apprLine.push(extracted);
+            }
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), _apprLine.length - 1);
+        };
+        p._onDelete = function (item) {
+            var empId = (item.LoginID == undefined ? item.EmpId : item.LoginID);
+            var index = _apprLine.map(function (d) { return d["EmpId"] }).indexOf(empId);
+            _apprLine.splice(index, 1)[0];
+            p._gridApprovalLineInit();
+            p._onSetSelect($("#gridApprovalLine"), index);
+        }
+        //END APPROVAL
+
+        // =========================================================================
+        // ACTION
+        // =========================================================================
+
+        $("#btnNewDetail").on("click", function () {
+            p._insertData();
+            return true;
+        })
+
+        $("#grdVisitorList").on("dblclick", "tbody > tr", function () {
+            $("#mdVisitorInforView").modal("show");
+        })
+
+
+        $("#txtPicEmpId").keyup(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) { //Enter keycode
+                _fnGetEmployeeInfor($("#txtPicEmpId"), $("input[name='PicEmployeeInfor']"));
+            }
+        })
+
+        $("#txtPicEmpId").on("change", function () {
+            var emptyData = { LoginID: $(this).val(), Name: "", OrganizeName: "", PlantName: "", DeptName: "", SectionName: "", DeptId: 0 };
+            _fnSetValueForElementEmployeeInfor($("input[name='PicEmployeeInfor']"), emptyData);
+        })
+
+
+        $("#btnSave").on("click", function () {
+            p._saveAlldata();
+        })
+        // =========================================================================
+        // ACTION - APPROVAL
+        // =========================================================================
+        $("a[name='tabApproval']").on("click", function () {
+            $("div[name='tabApprovalContent']").hide();
+            $($(this).attr("href")).show();
+
+            $("a[name='tabApproval']").each(function (index, item) {
+                $(this).parent().removeClass("active");
+            })
+
+            $("div[name='tabApprovalContent']").each(function (index, item) {
+                $(this).addClass("tab-pane");
+            })
+
+            $(this).parent().addClass("active");
+            $($(this).attr("href")).removeClass("tab-pane");
+
+            //ẩn tools
+            if ($(this).html() === "Search") {
+                $("button[name='btnTabsAction']").parent().hide();
+            } else {
+                $("button[name='btnTabsAction']").parent().show();
+            }
+            switch ($(this).html()) {
+                case "Recent":
+                    p._gridApprvalHistory($("#hdfApplicationType").val());
+                    break;
+                case "Default":
+                    p._gridDefaultAppr($("#hdfApplicationType").val());
+                    break;
+                default:
+            }
+            $("#btnMdShortTermApprCopy").attr("data-tab-active", $(this).html());
+        })
+        $("#txtShortTermEmpId").keyup(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                _paraMdEmp.userId = $(this).val();
+                _paraMdEmp.userName = $(this).val();
+                p._gridEmployeeInit();
+            }
+        })
+
+        $("#gridShortTermEmpInfor").on("dblclick", "tbody > tr", function () {
+            var grid = $("#gridShortTermEmpInfor").data("kendoGrid");
+            var rows = $(grid.select());
+            rows.each(function (index, item) {
+                var dataItem = grid.dataItem(this);
+                p._onPushToApproval(dataItem, $("#btnShortTermEmpApprover").attr("data-id"), $("#btnShortTermEmpApprover").attr("data-name"));
+            });
+        })
+
+        $("button[name='btnApproveAction']").on("click", function () {
+            var grid = $("#gridApprovalLine").data("kendoGrid");
+            var dataItem = grid.dataItem($(grid.select()));
+            if (dataItem === undefined || dataItem === null)
+                return;
+            switch ($(this).prop("id")) {
+                case "btnMdShortTermApprInitial":
+                    _apprLine = [];
+                    p._gridApprovalLineInit();
+                    break;
+                case "btnMdShortTermApprTop":
+                    p._onMoveOnTop(dataItem);
+                    break;
+                case "btnMdShortTermApprUp":
+                    p._onSwapItem(dataItem, -1);
+                    break;
+                case "btnMdShortTermApprDown":
+                    p._onSwapItem(dataItem, 1);
+                    break;
+                case "btnMdShortTermApprBottom":
+                    p._onMoveOnBottom(dataItem);
+                    break;
+                case "btnMdShortTermApprDelete":
+                    p._onDelete(dataItem);
+                    break;
+                default:
+            }
+        })
+
+        $("button[name='btnApprovalTypeAction']").on("click", function () {
+            var grid = $("#gridShortTermEmpInfor").data("kendoGrid");
+            var rows = $(grid.select());
+            var approverType = $(this).attr("data-id");
+            var approverTypeName = $(this).attr("data-name");
+
+            if ($(this).prop("id") === "btnShortTermEmpApprover" || $(this).prop("id") === "btnShortTermEmpConsenter") {
+                rows.each(function (index, item) {
+                    var dataItem = grid.dataItem(this);
+                    p._onPushToApproval(dataItem, approverType, approverTypeName);
+                });
+            } else {
+                rows.each(function (index, item) {
+                    var dataItem = grid.dataItem(this);
+                    var tagItem = { EmpId: (dataItem.LoginID == undefined ? dataItem.EmpId : dataItem.LoginID), EmpName: dataItem.Name };
+                    $("#txtCirculator").tagsinput('add', tagItem);
+                });
+            }
+        })
+
+        $("button[name='btnTabsAction']").on("click", function () {
+            switch ($(this).prop("id")) {
+                case "btnMdShortTermApprCopy":
+                    switch ($(this).attr("data-tab-active")) {
+                        case "Recent":
+
+                            var grid = $("#gridShortTermApprHistory").data("kendoGrid");
+                            var rows = $(grid.select());
+                            var dataItem = grid.dataItem($(grid.select()));
+                            if (dataItem === undefined || dataItem === null) return;
+
+                            _apprLine = JSON.parse(dataItem.ApprovalLineJson.split('|')[0]);
+                            _circulator = JSON.parse(dataItem.ApprovalLineJson.split('|')[1]);
+
+                            if (_apprLine.length != 0)
+                                p._gridApprovalLineInit();
+                            if (_circulator.length != 0) {
+                                $('txtCirculator').tagsinput('removeAll');
+                                $.each(_circulator, function (index, item) {
+                                    var tagItem = { EmpId: item.EmpId, EmpName: item.EmpName };
+                                    $("#txtCirculator").tagsinput('add', tagItem);
+                                })
+                            }
+                            break;
+                        case "Default":
+                            $.each(_apprLineDefault, function (index, item) {
+                                p._onPushToApproval(item, item.ApproverType, item.ApproverTypeName);
+                            })
+                            $.each(_circulatorRecent, function (index, item) {
+                                var tagItem = { EmpId: item.EmpId, EmpName: item.Name };
+                                $("#txtCirculator").tagsinput('add', tagItem);
+                            })
+                            break;
+                        default:
+                    }
+                    break;
+                case "btnMdShortTermApprRefresh":
+                    p._gridApprvalHistory($("#hdfApplicationType").val());
+                    p._gridDefaultAppr($("#hdfApplicationType").val());
+                    break;
+                default:
+            }
+        })
+
+        //END ACTION APPROVAL
+
+        // =========================================================================
+        namespace.FormPassinGoodsDetail = new FormPassinGoodsDetail;
+    }(this.materialadmin, jQuery)); // pass in (namespace, jQuery):
+</script>

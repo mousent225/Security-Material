@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ec4bc80e60564b4faaeeabc66d11cef5" Name="Diagram1" ZoomLevel="32">
+        <EntityTypeShape EntityType="PortalModel.Attachment" Width="1.5" PointX="7.5" PointY="15" />
+        <EntityTypeShape EntityType="PortalModel.HrDeptMaster" Width="1.5" PointX="3.75" PointY="4.625" />
+        <EntityTypeShape EntityType="PortalModel.HrDeptMasterFull" Width="1.5" PointX="5.75" PointY="2.5" />
+        <EntityTypeShape EntityType="PortalModel.HrEmpMaster" Width="1.5" PointX="0.75" PointY="6.375" />
+        <EntityTypeShape EntityType="PortalModel.SysAuthorization" Width="1.5" PointX="14.75" PointY="14.5" />
+        <EntityTypeShape EntityType="PortalModel.SysCategory" Width="1.5" PointX="3" PointY="16.375" />
+        <EntityTypeShape EntityType="PortalModel.SysCategoryValue" Width="1.5" PointX="5.25" PointY="13.5" />
+        <EntityTypeShape EntityType="PortalModel.SysLogHistory" Width="1.5" PointX="16.75" PointY="14.5" />
+        <EntityTypeShape EntityType="PortalModel.SysMenu" Width="1.5" PointX="14.75" PointY="18.5" />
+        <EntityTypeShape EntityType="PortalModel.SysRole" Width="1.5" PointX="0.75" PointY="1.25" />
+        <EntityTypeShape EntityType="PortalModel.SysRoleMapping" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="PortalModel.SysUser" Width="1.5" PointX="16.75" PointY="18.5" />
+        <EntityTypeShape EntityType="PortalModel.SysUserMapping" Width="1.5" PointX="3" PointY="9" />
+        <EntityTypeShape EntityType="PortalModel.ApplicationConfig" Width="1.5" PointX="6" PointY="7.875" />
+        <EntityTypeShape EntityType="PortalModel.SystemRole" Width="1.5" PointX="7.75" PointY="2.5" />
+        <EntityTypeShape EntityType="PortalModel.ForgetCard" Width="1.5" PointX="17.75" PointY="2.5" />
+        <EntityTypeShape EntityType="PortalModel.PassingGoodsDetail" Width="1.5" PointX="12" PointY="16.25" />
+        <EntityTypeShape EntityType="PortalModel.PassingGoodsMaster" Width="1.5" PointX="9.75" PointY="14.875" />
+        <EntityTypeShape EntityType="PortalModel.Violation" Width="1.5" PointX="5.75" PointY="20.5" />
+        <EntityTypeShape EntityType="PortalModel.VisitorApplicationDetailVehicle" Width="2" PointX="13.25" PointY="8.75" />
+        <AssociationConnector Association="PortalModel.FK_ModuleId_SysCategoryValue_ID" />
+        <AssociationConnector Association="PortalModel.FK_ApplicationConfig_HrDeptMaster" />
+        <AssociationConnector Association="PortalModel.FK_HrDeptMaster_HrDeptMaster" />
+        <AssociationConnector Association="PortalModel.FK_ApplicationConfig_HrEmpMaster" />
+        <AssociationConnector Association="PortalModel.FK_ApplicationConfig_HrEmpMaster1" />
+        <AssociationConnector Association="PortalModel.FK_CreateUid_HrEmpMaster" />
+        <AssociationConnector Association="PortalModel.FK_CreateUid_HrEmpMaster_EmpId" />
+        <AssociationConnector Association="PortalModel.FK_DeleteUid_HrEmpMaster_EmpId" />
+        <AssociationConnector Association="PortalModel.FK_SysCategory_DeleteUid_HrEmpMaster_EmpId" />
+        <AssociationConnector Association="PortalModel.FK_SysCategory_UpdateUid_HrEmpMaster_EmpId" />
+        <AssociationConnector Association="PortalModel.FK_SysUserMapping_HrEmpMaster" />
+        <AssociationConnector Association="PortalModel.FK_UpdateUid_HrEmpMaster_EmpId" />
+        <AssociationConnector Association="PortalModel.FK_Category_SysCategory_ID" />
+        <AssociationConnector Association="PortalModel.FK_ParentID_ID" />
+        <AssociationConnector Association="PortalModel.FK_SysRoleMapping_SysRole" />
+        <AssociationConnector Association="PortalModel.FK_SysUserMapping_SysRole" />
+        <AssociationConnector Association="PortalModel.FK_PassingGoodsDetail_PassingGoodsMaster" />
+        <EntityTypeShape EntityType="PortalModel.ContainerDetail" Width="1.5" PointX="19.375" PointY="12.75" />
+        <EntityTypeShape EntityType="PortalModel.Vendor" Width="1.5" PointX="8.375" PointY="5.75" />
+        <EntityTypeShape EntityType="PortalModel.VisitorApplicationMaster" Width="1.875" PointX="11" PointY="4.875" />
+        <AssociationConnector Association="PortalModel.FK_VisitorApplicationDetailVehicle_VisitorApplicationMaster1" />
+        <EntityTypeShape EntityType="PortalModel.VisitorApplicationDetailPerson" Width="1.5" PointX="13.25" PointY="2.875" />
+        <EntityTypeShape EntityType="PortalModel.VisitorWorkingDaily" Width="1.5" PointX="10.375" PointY="0.75" />
+        <AssociationConnector Association="PortalModel.FK_VisitorApplicationDetailPerson_VisitorApplicationMaster1" />
+        <EntityTypeShape EntityType="PortalModel.VehicleCheckingDaily" Width="1.5" PointX="16" PointY="8.75" />
+        <AssociationConnector Association="PortalModel.FK_VehicleCheckingDaily_VisitorApplicationDetailVehicle" />
+        <EntityTypeShape EntityType="PortalModel.ContainerTrackingDaily" Width="1.5" PointX="19.375" PointY="17.75" />
+        <EntityTypeShape EntityType="PortalModel.Guard" Width="1.5" PointX="18.375" PointY="7.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

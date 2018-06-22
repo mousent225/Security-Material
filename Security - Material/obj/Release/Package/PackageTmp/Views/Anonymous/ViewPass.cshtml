@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "ViewPass";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<input type="text" class="col-md-3" id="txtPassWord" style="font-family:'tnkeyvni-times-webfont'" value="YJƯ|H KĐŎH"/>
+<input type="text" class="col-md-3" id="txtDePassWord" />
+
+<script type="text/javascript">
+
+
+    $("#txtPassWord").keyup(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { //Enter keycode
+            $.ajax({
+                type: "POST",
+                url: "/Anonymous/DecryptPass",
+                data: JSON.stringify({ password: $("#txtPassWord").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    $("#txtDePassWord").val(result);
+                },
+                error: function (mess) {
+                    console.log(mess);
+                    return false;
+                }
+            });
+        }
+    })
+
+</script>
+

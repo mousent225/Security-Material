@@ -1,0 +1,219 @@
+﻿@using SSO_Material.Utilities;
+@using System.Security.Claims;
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Vendor's Information</h4>
+    </div>
+    <div class="modal-body">
+        <form id="frmMdVendorValidate" role="form" class="form form-validate card card-body" novalidate="novalidate">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorIdentifyNo" maxlength="15" required>
+                        <label for="txtMdVendorIdentifyNo" class="label-require">Tax Code</label>
+                        @*<p class="help-block">Maximum length 15</p>*@
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <input type="hidden" id="hdfVendorId" />
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorCompanyName" maxlength="100" style="text-transform:uppercase" required>
+                        <label for="txtMdVendorCompanyName">Company Name</label>
+                        <p class="help-block">Maximum length 100</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <div class="checkbox checkbox-styled">
+                            <label>
+                                <input id="cbActive" type="checkbox" checked>
+                                <span>Active</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorCompanyAddress" maxlength="300" required>
+                        <label for="txtMdVendorCompanyAddress">Address</label>
+                        @*<p class="help-block">Maximum length 300</p>*@
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorContactPerson" maxlength="70" required>
+                        <label for="txtMdVendorContactPerson">Contact Person</label>
+                        @*<p class="help-block">Maximum length 70</p>*@
+                    </div>
+                </div>
+                              
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="email" class="form-control input-sm change-data" id="txtMdVendorEmail" maxlength="70" required>
+                        <label for="txtMdVendorEmail">Email</label>
+                        @*<p class="help-block">Maximum length 70</p>*@
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorPhone" maxlength="15" data-rule-number="true" required>
+                        <label for="txtMdVendorPhone">Phone</label>
+                        @*<p class="help-block">Maximum length 15</p>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorEmpId" name="mdVendorEmployeeInfor" value="@User.GetClaimValue(ClaimTypes.Sid)" required>
+                        <label for="txtMdVendorEmpId">Emp Id/Emp Name</label>
+                        <span class="glyphicon glyphicon-search form-control-feedback" style="cursor:pointer"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorEmpName" name="mdVendorEmployeeInfor" readonly>
+                        <label for="txtMdVendorEmpName">Emp Name</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="hidden" name="mdVendorEmployeeInfor" />
+                        <input type="hidden" name="mdVendorEmployeeInfor" />
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorOrgName" name="mdVendorEmployeeInfor" readonly>
+                        <label for="txtMdVendorOrgName">Organization</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorPlantName" name="mdVendorEmployeeInfor" readonly>
+                        <label for="txtMdVendorPlantName">Plant</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorDeptName" name="mdVendorEmployeeInfor" readonly>
+                        <label for="txtMdVendorDeptName">Dept</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm change-data" id="txtMdVendorSectName" name="mdVendorEmployeeInfor" readonly>
+                        <label for="txtMdVendorSectName">Section</label>
+                        <input type="hidden" id="hdfMdVendorDeptId" name="mdVendorEmployeeInfor" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button id="btnMdVendorSave" type="submit" class="btn btn-primary submit">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</div><!-- /.modal-content -->
+<script type="text/javascript">
+    var _vendorModel = {
+        Id: 0, CompanyName: "", Address: "", DeptId: 0, PersonInCharge: "", ContactPerson: "", IdentityCard: "", PhoneNumber: "", Email: "", IsActive: true, VendorType: ""
+    };
+
+    $(document).ready(function () {
+        if ($("#txtVendorTaxCode").val() !== undefined)
+            $("#txtMdVendorIdentifyNo").val($("#txtVendorTaxCode").val());
+
+        $("#frmMdVendorValidate").validate();
+        //fnGetEmployeeInfor($("#txtMdVendorEmpId"));
+        _fnGetEmployeeInfor($("#txtMdVendorEmpId"), $("input[name='mdVendorEmployeeInfor']"));
+    })
+
+    function fnMdVendorGetData() {
+        _vendorModel.Id = $("#hdfVendorId").val();
+        _vendorModel.CompanyName = $("#txtMdVendorCompanyName").val();
+        _vendorModel.Address = $("#txtMdVendorCompanyAddress").val();
+        _vendorModel.DeptId = $("#hdfMdVendorDeptId").val();
+        _vendorModel.PersonInCharge = $("#txtMdVendorEmpId").val();
+        _vendorModel.ContactPerson = $("#txtMdVendorContactPerson").val();
+        _vendorModel.TaxCode = $("#txtMdVendorIdentifyNo").val();
+        _vendorModel.PhoneNumber = $("#txtMdVendorPhone").val();
+        _vendorModel.Email = $("#txtMdVendorEmail").val();
+        _vendorModel.IsActive = $("#cbActive").prop("checked");
+        _vendorModel.VendorType = $("#hdfVendorType").val();
+
+        if (!_fnCheckEmpty($("#txtMdVendorCompanyName"), "Please enter in this field: Company Name"))
+            return false;
+        if (!_fnCheckEmpty($("#txtMdVendorCompanyAddress"), "Please enter in this field: Company Address"))
+            return false;
+        if (!_fnCheckEmpty($("#txtMdVendorContactPerson"), "Please enter in this field: Contact Person"))
+            return false;
+        if (!_fnCheckEmpty($("#txtMdVendorIdentifyNo"), "Please enter in this field: Tax Code"))
+            return false;
+        //if (!_fnCheckEmpty($("#txtMdVendorEmail"), "Please enter in this field: Email"))
+        //    return false;
+        //if (!_fnCheckEmpty($("#txtMdVendorPhone"), "Please enter in this field: Phone"))
+        //    return false;
+        if (!_fnCheckEmpty($("#txtMdVendorEmpId"), "Please select Person In Charge"))
+            return false;
+        var isValid = true;
+        $("#frmMdVendorValidate").find("input").each(function (index, element) {
+            if (!$(this).valid()) {
+                isValid = false;
+            }
+        })
+        return isValid;
+    }
+
+    $("#txtMdVendorEmpId").keyup(function (e) {
+        var empId = $("#txtMdVendorEmpId").val();
+        if (e.keyCode == 13) {
+            _fnGetEmployeeInfor(this, $("input[name='mdVendorEmployeeInfor']"));
+        }
+    });
+
+    $("#txtMdVendorEmpId").on("change", function () {
+        var emptyData = { LoginID: $(this).val(), Name: "", OrganizeName: "", PlantName: "", DeptName: "", SectionName: "", DeptId: 0 };
+        _fnSetValueForElementEmployeeInfor($("input[name='mdVendorEmployeeInfor']"), emptyData);
+    })
+
+    function fnInsertVendor() {
+        if (!fnMdVendorGetData())
+            return;
+        $.ajax({
+            type: "POST",
+            url: "/VisitorApplicationMaster/VendorInsert",
+            data: JSON.stringify({ model: _vendorModel }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result === "Ok") {
+                    showNotification("Hyosung Portal", "Insert success", "gray success");
+                    if($("#grdVendor").is(":visible"))
+                        fnInitGridVendor();
+                    else
+                        _fnGetVendorInfor($("#txtMdVendorIdentifyNo"), $("input[name='VendorInformation']"), $("#hdfVendorType").val())
+                    $("#mdVendor").modal("hide");
+                } else {
+                    showNotification("Hyosung Portal", result, "gray error");
+                    console.log(result);
+                } 
+            },
+            error: function (mess) {
+                console.log(mess);
+                return false;
+            }
+        });
+    };
+
+    $("#btnMdVendorSave").on("click", function () {
+        fnInsertVendor();
+    })
+    
+</script>

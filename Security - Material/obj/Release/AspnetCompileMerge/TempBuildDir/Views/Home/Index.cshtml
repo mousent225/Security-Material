@@ -1,0 +1,689 @@
+﻿@using System.Security.Claims
+@using SSO_Material.Utilities
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<button class="btn btn-default-bright btn-raised" data-toggle="modal" data-target="#formModal">Form modal</button>*@
+
+<!--BEGIN GRID NOTICE-->
+<div id="main-body" style="height:100%;">
+    <div class="col-md-7">
+        <div id="toolbar" class="row card" style="background-color:white; height:45px; padding:5px; margin-bottom:10px">
+            <div style="float:left;width:190px">
+                <label for="txtFromDate">Từ ngày</label>
+                <input type="text" class="form-control input-sm" id="txtFromDate">
+            </div>
+            <div style="float:left;width:190px">
+                <label for="txtToDate">Tới ngày</label>
+                <input type="text" class="form-control input-sm" id="txtToDate">
+            </div>
+            <div>
+                <div style="float: right">
+                    <button id="btnSearch" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Xem</button>
+                    <button id="btnExport" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Xuất file excel</button>
+                    @*@if (User.GetClaimValue(ClaimTypes.Sid) != "SE201701")
+                        {
+                            <button id="btnResetPassForSecurity" type="button" data-toggle="modal" data-target="#mdSecurityChangePass" class="btn ink-reaction btn-raised btn-sm btn-primary">Đặt lại mật khẩu</button>
+                        }*@
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="grdForgetCard"></div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <form class="form" role="form">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm change-data" id="txtEmpId">
+                                        <label for="txtEmpId">Mã nhân viên/Họ tên</label>
+                                        <input type="hidden" id="hdfForgetId" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style="padding-top:15px">
+                                    <button id="btnReset" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Nhập mới</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm" id="txtEmpName" readonly>
+                                        <label for="txtEmpName">Họ tên</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm" id="txtJoinDate" readonly>
+                                        <label for="txtJoinDate">Ngày vào</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm" id="txtPosition" readonly>
+                                        <label for="txtPosition">Chức vụ</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm" id="txtJobTitle" readonly>
+                                        <label for="txtJobTitle">Công việc</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm" id="txtDept" readonly>
+                                        <label for="txtDept">Bộ phận</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5" style="position:relative">
+                            <img id="txtImage" class="img-thumbnail border-white border-xl img-responsive auto-width" src="../../Content/assets/img/none-image.png" alt=""
+                                 style="position:absolute; right:0; left:0;margin:auto; width:206px">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4" style="display:none">
+                            <input type="text" class="form-control input-sm change-data" id="txtWorkDate">
+                            <label for="txtWorkDate" style="font-style:italic">Ngày làm việc</label>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm" id="txtWorkDateView" readonly>
+                                <label for="txtWorkDateView">Ngày làm việc</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtTimeIn" readonly>
+                                <label for="txtTimeIn">Giờ vào</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtTimeOut" readonly>
+                                <label for="txtTimeOut">Giờ ra</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select id="txtReason" class="form-control input-sm">
+                                    <option value="">&nbsp;</option>
+                                </select>
+                                <label for="txtReason">Lý do quên thẻ</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtOtherReason" readonly>
+                                <label for="txtOtherReason">Lý do khác</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtTemporaryCard">
+                                <label for="txtTemporaryCard">Mã nhân viên tạm thời</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select id="txtGateNumber" class="form-control input-sm">
+                                    <option value="">&nbsp;</option>
+                                </select>
+                                <label for="txtGateNumber">Cổng</label>
+                                <input type="hidden" id="hdfGateDefaultId" value="@ViewBag.GateDefaultId" />
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm change-data" id="txtSecurityName">
+                                <label for="txtSecurityName">Tên bảo vệ</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="float:right">
+                        <div class="col-md-12">
+                            <button id="btnPrint" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">In phiếu quên thẻ</button>
+                            @*<button id="btnDelete" type="button" class="btn ink-reaction btn-danger btn-sm btn-primary">Xóa thông tin</button>*@
+                            @*<button id="btnSave" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Lưu thông tin</button>*@
+                            <button id="btnIn" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Cho vào</button>
+                            <button id="btnOut" type="button" class="btn ink-reaction btn-raised btn-sm btn-primary">Cho ra</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="col-md-3" style="height:100%"></div>
+    </div>
+</div>
+
+<!-- BEGIN FORM MODAL CHANGE PASS FOR SECURITY -->
+@*<div class="modal fade" id="mdSecurityChangePass" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="formModalLabel">Thông tin cá nhân</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Mã nhân viên</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" id="lblEmpidSecurity" class="form-control input-sm" value="SE201701" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Họ tên</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-sm" value="Bảo vệ" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="txtSecurityNew">Mật khẩu mới</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control input-sm" id="txtSecurityNew">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="txtSecurityConfirm">Xác nhận lại mật khẩu</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control input-sm" id="txtSecurityConfirm">
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+                    <div class="modal-footer">
+                        <button type="button" onclick="fnOnChangePasswordSecurity()" class="btn btn-primary">Cập nhật</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                    </div>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->*@
+<!-- END FORM MODAL CHANGE PASS FOR SECURITY -->
+
+<script type="text/javascript">
+    var _ent = { EmpName: "", EmpId: "", Position: "", JobTitle: "", JoinDate: "", DeptFullName: "", Image: "", WorkDate: new Date(), TimeIn: null, TimeOut: null, Reason: "", ReasonOthers: "", IsCheckIn: true };
+
+    var _minDate = new Date(2000, 01, 01);
+    var _maxDate = new Date(2990, 01, 01);
+    var _para = { deptId: 0, empId: "", empName: "", position: "", jobTitle: "", fromDate: _minDate.toISOString(), toDate: _maxDate.toISOString() };
+
+    $(document).ready(function () {
+
+        var d = new Date();
+        var firstDayInMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+        var lastDayInMonth = new Date(new Date(d.getFullYear(), d.getMonth() + 1, 1) - 1);
+
+        $("#txtFromDate").kendoDatePicker({ format: "yyyy.MM.dd", value: firstDayInMonth, width: "110px" });
+        $("#txtToDate").kendoDatePicker({ format: "yyyy.MM.dd", value: lastDayInMonth, width: "110px" });
+
+        $("#txtFromDate").parent().parent().css({ width: "115px" });
+        $("#txtToDate").parent().parent().css({ width: "115px" });
+
+        $("#txtWorkDate").kendoDatePicker({
+            format: "yyyy.MM.dd",
+            value: new Date(),
+            change: function () {
+                var value = this.value();
+                //console.log(value); //value is the selected date in the datepicker
+                fnGetForGetCardInfor($("#txtEmpId").val(), this.value().toISOString());
+            }
+        });
+        $("#txtWorkDateView").val($("#txtWorkDate").val());
+
+        //$("#txtTimeIn").kendoTimePicker({ format: "HH:mm" });
+        //$("#txtTimeOut").kendoTimePicker({ format: "HH:mm" });
+
+        var fromDate = $("#txtFromDate").data("kendoDatePicker");
+        var toDate = $("#txtToDate").data("kendoDatePicker");
+
+        _para.fromDate = fromDate.value() == null ? _minDate.toISOString() : fromDate.value().toISOString();
+        _para.toDate = toDate.value() == null ? _maxDate.toISOString() : toDate.value().toISOString();
+
+        //fnGetCateValueViaCateId("07643577-62D2-4AA3-83B6-148664A731EF", false, $("#txtGateNumber"));
+        fnGetCateValueViaCateId("07643577-62D2-4AA3-83B6-148664A731EF", false, $("#txtGateNumber"), $("#hdfGateDefaultId").val());
+        fnGetCateValueViaCateId("654039b3-e6e4-4df7-a4d8-4887bb832619", false, $("#txtReason"));
+
+        fnGridInitial(_para);
+        $("#btnDelete").hide();
+        $("#btnPrint").hide();
+    });
+
+    function fnGridInitial(para) {
+        $("#grdForgetCard").html("");
+        $("#grdForgetCard").kendoGrid({
+            //toolbar: ["excel"],
+            excel: {
+                fileName: "Danh-sach-nhan-vien-quen-the.xlsx",
+                filterable: true,
+                allPages: true
+            },
+            dataSource: {
+                transport: {
+                    read: "/Home/GetAll?deptId=" + para.deptId + "&empId=" + para.empId + "&empName=" + para.empName
+                    + "&position=" + para.position + "&jobTitle=" + para.jobTitle + "&fromDate=" + para.fromDate + "&toDate=" + para.toDate,
+                    create: {
+                        /* omitted for brevity */
+                        cache: true
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            EmpId: { type: "string" },
+                            EmpName: { type: "string" },
+                            OrgName: { type: "string" },
+                            PlantName: { type: "string" },
+                            DeptName: { type: "string" },
+                            SectName: { type: "string" },
+                            Position: { type: "string" },
+                            WorkDate: { type: "date" },
+                            JobTitle: { type: "string" },
+                            TimeIn: { type: "string" },
+                            TimeOut: { type: "string" },
+                            ReasonName: { type: "string" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: $('footer').position().top - 178,
+            filterable: {
+                mode: "row"
+            },
+            dataBound: function (e) {
+                this.element.find(".k-filtercell .k-autocomplete .k-clear-value").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-button").remove();
+                this.element.find(".k-filter-row .k-filtercell .k-operator-hidden").css({ "padding-right": 0 });
+                this.element.find(".k-filter-row .k-filtercell").find("input").attr("placeholder", "Search...");
+            },
+            selectable: "row",
+            //change: onChange,
+            sortable: true,
+            pageable: true,
+            resizable: true,
+            cache: false,
+            columns: [
+                { field: "EmpId", title: "Mã nhân viên", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } }, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "EmpName", title: "Họ và tên", width: "200px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "WorkDate", title: "Ngày làm việc", format: "{0:yyyy.MM.dd}", width: "150px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "ReasonName", title: "Lý do quên thẻ", width: "200px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "TimeIn", title: "Giờ vào", width: "100px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "TimeOut", title: "Giờ ra", width: "100px", filterable: false, headerAttributes: _headerAttributes, attributes: { "class": "text-center" } },
+                { field: "PlantName", title: "Nhà máy", width: "160px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "DeptName", title: "Bộ phận", width: "160px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "SectName", title: "Nhóm", width: "160px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "Position", title: "Công việc", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } },
+                { field: "JobTitle", title: "Chức vụ", width: "140px", filterable: { cell: { showOperators: false, operator: "contains" } } }
+
+            ]
+            //aggregate: [
+            //    { field: "PlantName", aggregate: "count" }
+            //],
+        });
+    }
+
+    $("#grdForgetCard").on("dblclick", "tbody > tr", function () {
+        _$preloader.show();
+        var grid = $("#grdForgetCard").data("kendoGrid");
+        var data = grid.dataItem($(this));
+        //console.log(data);
+        fnGetForGetCardInfor(data.EmpId, data.WorkDate);
+        $("#btnDelete").show();
+        $("#btnPrint").show();
+        _$preloader.hide();
+
+
+
+    })
+
+    function fnGetData() {
+        _ent.EmpId = $("#txtEmpId").val();
+        if (_ent.EmpId === "") {
+            $("#txtEmpId").focus();
+            showNotification("Hyosung Portal", "Xin nhập vào thông tin mã nhân viên", "gray error");
+            return false;
+        }
+
+        var workDate = $("#txtWorkDate").data("kendoDatePicker");
+        _ent.WorkDate = workDate.value();
+        if (_ent.WorkDate === null) {
+            showNotification("Hyosung Portal", "Xin nhập vào thông tin ngày làm việc", "gray error");
+            return false;
+        }
+
+        //_ent.TimeIn = $("#txtTimeIn").val();
+        //_ent.TimeOut = $("#txtTimeOut").val();
+
+        //if (_ent.TimeIn === "" && _ent.TimeOut === "") {
+        //    showNotification("Hyosung Portal", "Xin nhập vào thông tin giờ ra hoặc giờ vào", "gray error");
+        //    return false;
+        //}
+
+        _ent.Reason = $("#txtReason").val();
+        if (_ent.Reason === "") {
+            $("#txtReason").focus();
+            showNotification("Hyosung Portal", "Xin chọn lý do quên thẻ", "gray error");
+            return false;
+        }
+        _ent.ReasonOthers = $("#txtOtherReason").val();
+        if (_ent.ReasonOthers === "" && _ent.Reason === "0f5e6657-5e46-4d2a-9376-217682cb8eac") {
+            $("#txtOtherReason").focus();
+            showNotification("Hyosung Portal", "Xin nhập vào lý do khác", "gray error");
+            return false;
+        }
+
+        _ent.GateNumber = $("#txtGateNumber").val();
+        if (_ent.GateNumber === "") {
+            $("#txtGateNumber").focus();
+            showNotification("Hyosung Portal", "Xin chọn thông tin vị trí cổng", "gray error");
+            return false;
+        }
+
+        _ent.SecurityName = $("#txtSecurityName").val();
+        if (_ent.SecurityName === "") {
+            $("#txtSecurityName").focus();
+            showNotification("Hyosung Portal", "Xin nhập vào thông tin tên nhân viên thao tác", "gray error");
+            return false;
+        }
+        _ent.TemporaryCard = $("#txtTemporaryCard").val();
+        return _ent;
+    }
+
+    function fnGetForGetCardInfor(empId, workDate, newData) {
+        if (newData === undefined)
+            newData = 0;
+        var result = null;
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetForGetCardInfor",
+            data: JSON.stringify({
+                empId: empId,
+                workDate: workDate
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                //console.log(result);
+                if (result === null) {
+                    showNotification("Hyosung Portal", "Nhân viên không tồn tại hoặc đã nghỉ việc", "gray error");
+                    result = { EmpName: "", EmpId: "", Position: "", JobTitle: "", JoinDate: "", DeptFullName: "", Image: "", WorkDate: null, TimeIn: "", TimeOut: "", Reason: "", ReasonOthers: "", SecurityName: "" };
+                }
+
+                fnSetInFor(result, newData);
+            },
+            error: function () {
+                return [];
+            }
+        });
+    }
+
+    function fnUpdateData() {
+        var para = fnGetData();
+        if (para === false)
+            return;
+        if ($("#txtEmpName").val() === "") {
+            showNotification("Hyosung Portal", "Xin nhập vào chính xác thông tin nhân viên", "gray error");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Home/UpdateForgetCardInfor",
+            data: JSON.stringify(para),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result === "Ok") {
+                    showNotification("Hyosung Portal", "Lưu thông tin thành công", "gray success");
+                   
+                    fnGridInitial(_para);
+                    var data = { Id: 0, EmpName: "", EmpId: "", Position: "", JobTitle: "", JoinDate: "", DeptFullName: "", Image: "", WorkDate: null, TimeIn: "", TimeOut: "" };
+
+                }
+                if (!_ent.IsCheckIn) {
+                    $("#btnPrint").trigger("click");
+                } else {
+                    fnSetInFor(data);
+                }
+            },
+            error: function () {
+                return [];
+            }
+        });
+    }
+
+    function fnSetInFor(result, newData) {
+        if (newData === undefined)
+            newData = 0;
+
+        $("#txtEmpId").val(result.EmpId);
+        $("#txtEmpName").val(result.EmpName);
+        $("#txtPosition").val(result.Position);
+        $("#txtJobTitle").val(result.JobTitle);
+        $("#txtJoinDate").val(result.JoinDate);
+        $("#txtDept").val(result.DeptFullName);
+        $("#txtWorkDate").data("kendoDatePicker").value(kendo.parseDate(result.WorkDate));
+        $("#txtWorkDateView").val($("#txtWorkDate").val());
+        if (newData === 0) {
+            $("#txtTimeOut").val((result.TimeOut === "") ? moment().format("hh:mm") : result.TimeOut);
+            $("#txtGateNumber").val(result.GateNumber);
+        }
+        else {
+            $("#txtTimeOut").val(result.TimeOut);
+        }
+
+        $("#txtTimeIn").val(result.TimeIn === "" ? moment().format("hh:mm") : result.TimeIn);
+
+        $("#txtReason").val(result.Reason);
+
+        $("#txtOtherReason").val(result.ReasonOthers);
+        if ($("#txtReason").val() === "0f5e6657-5e46-4d2a-9376-217682cb8eac") {
+            $("#txtOtherReason").prop("readonly", false);
+            $("#txtOtherReason").removeProp("readonly");
+        } else {
+            $("#txtOtherReason").prop("readonly", true);
+        }
+
+
+        $("#txtTemporaryCard").val(result.TemporaryCard);
+
+        $("#txtImage").attr("src", "");
+        if (result.Image !== "")
+            $("#txtImage").attr("src", "data:image/jpeg;base64," + btoa(String.fromCharCode.apply(null, result.Image.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" "))));
+        else
+            $("#txtImage").attr("src", "../../Content/assets/img/none-image.png");
+        $("#txtSecurityName").val(result.SecurityName);
+
+        $("#hdfForgetId").val(result.Id);
+        //console.log("result.TimeIn: " + result.TimeIn + "-----result.TimeOut: " + result.TimeOut);
+        if (result.TimeIn !== "" && result.TimeOut !== "") {
+            $("#btnIn").hide();
+            $("#btnOut").hide();
+        }
+        if (result.TimeOut === "" && result.TimeIn !== "") {
+            $("#btnIn").hide();
+            $("#btnOut").show();
+        }
+        if (result.TimeIn === "" && result.TimeOut === "") {
+            $("#btnIn").show();
+            $("#btnOut").hide();
+        }
+    }
+
+    var SecurityModel = { LoginID: "", Password: "", PasswordOld: "", PasswordNew: "", PasswordRepeat: "" };
+    function getDataChangePassSecurity() {
+        SecurityModel.LoginID = $("#lblEmpidSecurity").val();
+
+        SecurityModel.PasswordNew = $("#txtSecurityNew").val();
+        if (!fnCheckEmpty($("#txtSecurityNew"), "Xin nhập vào mật khẩu mới"))
+            return false;
+        SecurityModel.PasswordRepeat = $("#txtSecurityConfirm").val();
+        if (!fnCheckEmpty($("#txtSecurityConfirm"), "Xin nhập lại mật khẩu"))
+            return false;
+
+        if (SecurityModel.PasswordNew !== SecurityModel.PasswordRepeat) {
+            $("#txtSecurityConfirm").focus();
+            showNotification("Hyosung Portal", "Mật khẩu vừa nhập không trùng khớp", "gray error");
+            return false;
+        }
+        return true;
+    }
+
+    function fnOnChangePasswordSecurity() {
+        if (!getDataChangePassSecurity())
+            return false;
+        $.ajax({
+            url: "/Anonymous/UpdatePassForSecurity",
+            async: false,
+            type: "POST",
+            data: JSON.stringify(SecurityModel),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.result === "OK") {
+                    showNotification("Hyosung Portal", "Cập nhật mật khẩu thành công!", "gray success");
+                    $("#mdSecurityChangePass").modal("hide");
+                } else {
+                    showNotification("Hyosung Portal", data.mess, "gray error");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
+
+    $("#btnReset").on("click", function () {
+        var result = { EmpName: "", EmpId: "", Position: "", JobTitle: "", JoinDate: "", DeptFullName: "", Image: "", WorkDate: null, TimeIn: "", TimeOut: "", Reason: "", ReasonOthers: "", SecurityName: "" };
+        fnSetInFor(result);
+        $("#btnDelete").hide();
+        $("#btnPrint").hide();
+    })
+
+    $("#txtEmpId").keyup(function (e) {
+        if (e.keyCode == 13) {
+            fnGetForGetCardInfor($("#txtEmpId").val(), null, 1);
+
+        }
+    });
+
+    $("#txtSecurityName").keyup(function (e) {
+        if (e.keyCode == 13) {
+            fnUpdateData();
+        }
+    });
+
+    $("#txtReason").on("change", function () {
+        if ($(this).val() === "0f5e6657-5e46-4d2a-9376-217682cb8eac") {
+            $("#txtOtherReason").prop("readonly", false);
+            $("#txtOtherReason").removeProp("readonly");
+        } else {
+            $("#txtOtherReason").prop("readonly", true);
+        }
+    })
+
+    $("#btnSave").on("click", function () {
+        fnUpdateData();
+    })
+
+    $("#btnIn").on("click", function () {
+        _ent.IsCheckIn = true;
+        fnUpdateData();
+    })
+
+    $("#btnOut").on("click", function () {
+        _ent.IsCheckIn = false;
+        _ent.Id = $("#hdfForgetId").val();
+        fnUpdateData();
+    })
+
+    $("#btnExport").on("click", function () {
+        var grid = $("#grdForgetCard").data("kendoGrid");
+        grid.saveAsExcel();
+    });
+
+    $("#btnSearch").on("click", function () {
+        var fromDate = $("#txtFromDate").data("kendoDatePicker");
+        var toDate = $("#txtToDate").data("kendoDatePicker");
+
+        _para.fromDate = fromDate.value() == null ? _minDate.toISOString() : fromDate.value().toISOString();
+        _para.toDate = toDate.value() == null ? _maxDate.toISOString() : toDate.value().toISOString();
+        fnGridInitial(_para);
+    })
+
+    $(".change-data").on("change", function () {
+        $("#btnDelete").hide();
+        $("#btnPrint").hide();
+    })
+
+    $("#btnDelete").on("click", function () {
+        var workDate = $("#txtWorkDate").data("kendoDatePicker");
+        var result = confirmDelete();
+        if (result) {
+            $.ajax({
+                type: "POST",
+                url: "/Home/DeleteForgetCardInfor",
+                data: JSON.stringify({
+                    empId: $("#txtEmpId").val(),
+                    workDate: workDate.value()
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result === "Ok") {
+                        showNotification("Hyosung Portal", "Xóa thông tin thành công", "gray success");
+                        //$("#grdForgetCard").html("");
+                        fnGridInitial(_para);
+                    }
+                },
+                error: function (result) {
+                    alert('Oh no: ' + result.responseText);
+                    return false;
+                }
+            });
+        }
+    })
+
+    $("#btnPrint").on("click", function () {
+        var workDate = $("#txtWorkDate").data("kendoDatePicker");
+        var url = window.location.origin + "/Home/Print?empId=" + $("#txtEmpId").val() + "&workDate=" + workDate.value().toISOString();
+        var myWindow = window.open(url, "", "scrollbars=yes, top=20, left=50, width=1350, height=600");
+
+    })
+</script>
